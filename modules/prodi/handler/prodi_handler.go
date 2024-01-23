@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"tracer-study-grpc/common/config"
+
 	"tracer-study-grpc/common/errors"
 	"tracer-study-grpc/modules/prodi/entity"
 	"tracer-study-grpc/modules/prodi/service"
@@ -39,9 +40,12 @@ func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *pb.EmptyProdiReque
 		prodiArr = append(prodiArr, prodiProto)
 	}
 
+	code := uint32(http.StatusOK)
+	message := "get all prodi success"
+
 	return &pb.GetAllProdiResponse{
-		Code:    http.StatusBadRequest,
-		Message: "get all prodi success",
+		Code:    code,
+		Message: message,
 		Data:    prodiArr,
 	}, nil
 }

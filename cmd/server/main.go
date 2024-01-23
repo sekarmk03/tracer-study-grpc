@@ -8,6 +8,7 @@ import (
 	"tracer-study-grpc/server"
 
 	prodiModules "tracer-study-grpc/modules/prodi"
+	provinsiModules "tracer-study-grpc/modules/provinsi"
 
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
@@ -34,6 +35,7 @@ func main() {
 
 func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, grpcConn *grpc.ClientConn) {
 	prodiModules.InitGrpc(server, cfg, db, grpcConn)
+	provinsiModules.InitGrpc(server, cfg, db, grpcConn)
 }
 
 func checkError(err error) {

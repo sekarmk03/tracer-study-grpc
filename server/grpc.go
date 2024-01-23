@@ -13,6 +13,7 @@ import (
 
 const (
 	connProtocol = "tcp"
+	maxMsgSize   = 1024 * 1024 * 150
 )
 
 type Grpc struct {
@@ -21,8 +22,12 @@ type Grpc struct {
 	Port     string
 }
 
-func NewGrpc(port string) *Grpc {
-	server := grpc.NewServer()
+func NewGrpc(port string /*, options ...grpc.ServerOption*/) *Grpc {
+	// options = append(options, grpc.MaxSendMsgSize(maxMsgSize))
+	// options = append(options, grpc.MaxRecvMsgSize(maxMsgSize))
+
+	server := grpc.NewServer( /*options...*/ )
+
 	return &Grpc{
 		Server: server,
 		Port:   port,
@@ -30,7 +35,9 @@ func NewGrpc(port string) *Grpc {
 }
 
 func NewGrpcServer(port string) *Grpc {
-	server := NewGrpc(port)
+	// var options grpc.ServerOption
+	// add option unary interceptor
+	server := NewGrpc(port /*, options*/)
 	return server
 }
 
@@ -60,3 +67,11 @@ func (g *Grpc) AwaitTermination() error {
 	g.Server.GracefulStop()
 	return g.listener.Close()
 }
+
+// func defaultUnaryServerInterceptor() []grpc.UnaryServerInterceptor {
+// 	options := []grpc.UnaryServerInterceptor{
+// 		grpc_auth.UnaryServerInterceptor(commonJwt.Authorize)
+// 	}
+
+// 	return options
+// }

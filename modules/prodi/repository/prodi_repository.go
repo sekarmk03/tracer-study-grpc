@@ -23,7 +23,7 @@ type ProdiRepositoryUseCase interface {
 }
 
 func (p *ProdiRepository) FindAll(ctx context.Context, req any) ([]*entity.Prodi, error) {
-	ctxSpan, span := trace.StartSpan(ctx, "ProdiRepository-FindAll")
+	ctxSpan, span := trace.StartSpan(ctx, "ProdiRepository - FindAll")
 	defer span.End()
 
 	var prodi []*entity.Prodi

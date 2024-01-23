@@ -27,7 +27,7 @@ func NewProdiService(cfg config.Config, prodiRepository repository.ProdiReposito
 func (svc *ProdiService) FindAll(ctx context.Context, req any) ([]*entity.Prodi, error) {
 	res, err := svc.prodiRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("[ProdiService - GetAllProdi] Error while get all prodi: ", err)
+		log.Println("[ProdiService - FindAll] Error while find all prodi: ", err)
 		return nil, err
 	}
 
