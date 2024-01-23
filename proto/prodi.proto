@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package tracer_study_grpc;
+option go_package = "./;pb";
+
+import "google/protobuf/timestamp.proto";
+
+message Prodi {
+    string kode = 1;
+    string kode_dikti = 2;
+    string kode_fak = 3;
+    string kode_integrasi = 4;
+    string nama = 5;
+    string jenjang = 6;
+    string nama_fak = 7;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp updated_at = 9;
+    google.protobuf.Timestamp deleted_at = 10;
+}
+
+message EmptyProdiRequest {}
+
+message GetAllProdiResponse {
+    uint32 code = 1;
+    string message = 2;
+    repeated Prodi data = 3;
+}
+
+service ProdiService {
+    rpc GetAllProdi(EmptyProdiRequest) returns (GetAllProdiResponse) {};
+}
