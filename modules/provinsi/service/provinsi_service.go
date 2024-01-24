@@ -27,7 +27,7 @@ func NewProvinsiService(cfg config.Config, provinsiRepository repository.Provins
 func (svc *ProvinsiService) FindAll(ctx context.Context, req any) ([]*entity.Provinsi, error) {
 	res, err := svc.provinsiRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("[ProvinsiService - ] Error while find all provinsi: ", err)
+		log.Println("[ProvinsiService - FindAll] Error while find all provinsi: ", err)
 		return nil, err
 	}
 

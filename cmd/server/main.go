@@ -7,6 +7,7 @@ import (
 	"tracer-study-grpc/common/mysql"
 	"tracer-study-grpc/server"
 
+	kabkotaModules "tracer-study-grpc/modules/kabkota"
 	prodiModules "tracer-study-grpc/modules/prodi"
 	provinsiModules "tracer-study-grpc/modules/provinsi"
 
@@ -36,6 +37,7 @@ func main() {
 func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, grpcConn *grpc.ClientConn) {
 	prodiModules.InitGrpc(server, cfg, db, grpcConn)
 	provinsiModules.InitGrpc(server, cfg, db, grpcConn)
+	kabkotaModules.InitGrpc(server, cfg, db, grpcConn)
 }
 
 func checkError(err error) {

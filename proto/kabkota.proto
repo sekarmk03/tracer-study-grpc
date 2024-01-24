@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package tracer_study_grpc;
+option go_package = "./;pb";
+
+import "google/protobuf/timestamp.proto";
+
+message KabKota {
+    string id_wil = 1;
+    string nama = 2;
+    string id_induk_wilayah = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    google.protobuf.Timestamp deleted_at = 6;
+}
+
+message EmptyKabKotaRequest {}
+
+message GetAllKabKotaResponse {
+    uint32 code = 1;
+    string message = 2;
+    repeated KabKota data = 3;
+}
+
+service KabKotaService {
+    rpc GetAllKabKota(EmptyKabKotaRequest) returns (GetAllKabKotaResponse) {};
+}
