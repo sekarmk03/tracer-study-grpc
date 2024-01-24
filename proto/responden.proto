@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package tracer_study_grpc;
+option go_package = "./;pb";
+
+import "google/protobuf/timestamp.proto";
+
+message Responden {
+    uint32 id = 1;
+    string thn_ak = 2;
+    uint32 semester = 3;
+    string type = 4;
+    string status_update = 5;
+    string jlrmasuk = 6;
+    string thnmasuk = 7;
+    string lamastd = 8;
+    string kodefak = 9;
+    string namafak = 10;
+    string nim = 11;
+    string nama = 12;
+    string kodeprodi = 13;
+    string kodeprodi2 = 14;
+    string namaprodi = 15;
+    string namaprodi2 = 16;
+    string kodedikti = 17;
+    string jenjang = 18;
+    string jk = 19;
+    string email = 20;
+    string hp = 21;
+    string ipk = 22;
+    string tgl_sidang = 23;
+    string thn_sidang = 24;
+    string tgl_wisuda = 25;
+    string nik = 26;
+    string npwp = 27;
+    string created_by = 28;
+    string updated_by = 29;
+    google.protobuf.Timestamp created_at = 30;
+    google.protobuf.Timestamp updated_at = 31;
+    google.protobuf.Timestamp deleted_at = 32;
+}
+
+message EmptyRespondenRequest {}
+
+message GetAllRespondenResponse {
+    uint32 code = 1;
+    string message = 2;
+    repeated Responden data = 3;
+}
+
+service RespondenService {
+    rpc GetAllResponden(EmptyRespondenRequest) returns (GetAllRespondenResponse) {};
+}

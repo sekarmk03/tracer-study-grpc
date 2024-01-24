@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MhsBiodataService_FetchMhsBiodata_FullMethodName = "/tracer_study_grpc.MhsBiodataService/FetchMhsBiodata"
+	MhsBiodataService_FetchMhsBiodataByNim_FullMethodName = "/tracer_study_grpc.MhsBiodataService/FetchMhsBiodataByNim"
 )
 
 // MhsBiodataServiceClient is the client API for MhsBiodataService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MhsBiodataServiceClient interface {
-	FetchMhsBiodata(ctx context.Context, in *MhsBiodataRequest, opts ...grpc.CallOption) (*MhsBiodataResponse, error)
+	FetchMhsBiodataByNim(ctx context.Context, in *MhsBiodataRequest, opts ...grpc.CallOption) (*MhsBiodataResponse, error)
 }
 
 type mhsBiodataServiceClient struct {
@@ -37,9 +37,9 @@ func NewMhsBiodataServiceClient(cc grpc.ClientConnInterface) MhsBiodataServiceCl
 	return &mhsBiodataServiceClient{cc}
 }
 
-func (c *mhsBiodataServiceClient) FetchMhsBiodata(ctx context.Context, in *MhsBiodataRequest, opts ...grpc.CallOption) (*MhsBiodataResponse, error) {
+func (c *mhsBiodataServiceClient) FetchMhsBiodataByNim(ctx context.Context, in *MhsBiodataRequest, opts ...grpc.CallOption) (*MhsBiodataResponse, error) {
 	out := new(MhsBiodataResponse)
-	err := c.cc.Invoke(ctx, MhsBiodataService_FetchMhsBiodata_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, MhsBiodataService_FetchMhsBiodataByNim_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (c *mhsBiodataServiceClient) FetchMhsBiodata(ctx context.Context, in *MhsBi
 // All implementations must embed UnimplementedMhsBiodataServiceServer
 // for forward compatibility
 type MhsBiodataServiceServer interface {
-	FetchMhsBiodata(context.Context, *MhsBiodataRequest) (*MhsBiodataResponse, error)
+	FetchMhsBiodataByNim(context.Context, *MhsBiodataRequest) (*MhsBiodataResponse, error)
 	mustEmbedUnimplementedMhsBiodataServiceServer()
 }
 
@@ -58,8 +58,8 @@ type MhsBiodataServiceServer interface {
 type UnimplementedMhsBiodataServiceServer struct {
 }
 
-func (UnimplementedMhsBiodataServiceServer) FetchMhsBiodata(context.Context, *MhsBiodataRequest) (*MhsBiodataResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FetchMhsBiodata not implemented")
+func (UnimplementedMhsBiodataServiceServer) FetchMhsBiodataByNim(context.Context, *MhsBiodataRequest) (*MhsBiodataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchMhsBiodataByNim not implemented")
 }
 func (UnimplementedMhsBiodataServiceServer) mustEmbedUnimplementedMhsBiodataServiceServer() {}
 
@@ -74,20 +74,20 @@ func RegisterMhsBiodataServiceServer(s grpc.ServiceRegistrar, srv MhsBiodataServ
 	s.RegisterService(&MhsBiodataService_ServiceDesc, srv)
 }
 
-func _MhsBiodataService_FetchMhsBiodata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MhsBiodataService_FetchMhsBiodataByNim_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MhsBiodataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MhsBiodataServiceServer).FetchMhsBiodata(ctx, in)
+		return srv.(MhsBiodataServiceServer).FetchMhsBiodataByNim(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MhsBiodataService_FetchMhsBiodata_FullMethodName,
+		FullMethod: MhsBiodataService_FetchMhsBiodataByNim_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MhsBiodataServiceServer).FetchMhsBiodata(ctx, req.(*MhsBiodataRequest))
+		return srv.(MhsBiodataServiceServer).FetchMhsBiodataByNim(ctx, req.(*MhsBiodataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -100,8 +100,8 @@ var MhsBiodataService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*MhsBiodataServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "FetchMhsBiodata",
-			Handler:    _MhsBiodataService_FetchMhsBiodata_Handler,
+			MethodName: "FetchMhsBiodataByNim",
+			Handler:    _MhsBiodataService_FetchMhsBiodataByNim_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

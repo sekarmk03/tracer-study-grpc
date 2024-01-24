@@ -25,11 +25,11 @@ message MhsBiodataRequest {
 }
 
 message MhsBiodataResponse {
-    int32 code = 1;
+    uint32 code = 1;
     string message = 2;
     MhsBiodata data = 3;
 }
 
 service MhsBiodataService {
-    rpc FetchMhsBiodata(MhsBiodataRequest) returns (MhsBiodataResponse) {};
+    rpc FetchMhsBiodataByNim(MhsBiodataRequest) returns (MhsBiodataResponse) {};
 }

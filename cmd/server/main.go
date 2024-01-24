@@ -8,8 +8,10 @@ import (
 	"tracer-study-grpc/server"
 
 	kabkotaModules "tracer-study-grpc/modules/kabkota"
+	mhsbiodataModules "tracer-study-grpc/modules/mhsbiodata"
 	prodiModules "tracer-study-grpc/modules/prodi"
 	provinsiModules "tracer-study-grpc/modules/provinsi"
+	respondenModules "tracer-study-grpc/modules/responden"
 
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
@@ -38,6 +40,8 @@ func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, g
 	prodiModules.InitGrpc(server, cfg, db, grpcConn)
 	provinsiModules.InitGrpc(server, cfg, db, grpcConn)
 	kabkotaModules.InitGrpc(server, cfg, db, grpcConn)
+	mhsbiodataModules.InitGrpc(server, cfg, db, grpcConn)
+	respondenModules.InitGrpc(server, cfg, db, grpcConn)
 }
 
 func checkError(err error) {

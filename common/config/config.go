@@ -12,6 +12,7 @@ type Config struct {
 	MySQL       MySQL
 	// Redis       Redis
 	// JWTConfig   JWTConfig
+	SIAK_API SIAK_API
 }
 
 type Port struct {
@@ -35,6 +36,11 @@ type MySQL struct {
 // type JWTConfig struct {
 // 	SecretKey string `env:"JWT_SECRET_KEY"`
 // }
+
+type SIAK_API struct {
+	URL string `env:"SIAK_API_URL"`
+	KEY string `env:"SIAK_API_KEY"`
+}
 
 func NewConfig(env string) (*Config, error) {
 	_ = godotenv.Load(env)
