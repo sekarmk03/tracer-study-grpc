@@ -40,3 +40,18 @@ func (rh *RespondenHandler) GetAllResponden(ctx context.Context, req *pb.EmptyRe
 		Data:    respondenArr,
 	}, nil
 }
+
+func (rh *RespondenHandler) GetRespondenByNim(ctx context.Context, req *pb.GetRespondenByNimRequest) (*pb.GetRespondenByNimResponse, error) {
+	responden, err := rh.respondenSvc.FindByNim(ctx, req.GetNim())
+	if err != nil {
+		return nil, err
+	}
+
+	respondenProto := entity.ConvertEntityToProto(responden)
+
+	return &pb.GetRespondenByNimResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "get responden by nim success",
+		Data:    respondenProto,
+	}, nil
+}

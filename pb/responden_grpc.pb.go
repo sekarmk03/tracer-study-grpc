@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RespondenService_GetAllResponden_FullMethodName = "/tracer_study_grpc.RespondenService/GetAllResponden"
+	RespondenService_GetAllResponden_FullMethodName   = "/tracer_study_grpc.RespondenService/GetAllResponden"
+	RespondenService_GetRespondenByNim_FullMethodName = "/tracer_study_grpc.RespondenService/GetRespondenByNim"
 )
 
 // RespondenServiceClient is the client API for RespondenService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RespondenServiceClient interface {
 	GetAllResponden(ctx context.Context, in *EmptyRespondenRequest, opts ...grpc.CallOption) (*GetAllRespondenResponse, error)
+	GetRespondenByNim(ctx context.Context, in *GetRespondenByNimRequest, opts ...grpc.CallOption) (*GetRespondenByNimResponse, error)
 }
 
 type respondenServiceClient struct {
@@ -46,11 +48,21 @@ func (c *respondenServiceClient) GetAllResponden(ctx context.Context, in *EmptyR
 	return out, nil
 }
 
+func (c *respondenServiceClient) GetRespondenByNim(ctx context.Context, in *GetRespondenByNimRequest, opts ...grpc.CallOption) (*GetRespondenByNimResponse, error) {
+	out := new(GetRespondenByNimResponse)
+	err := c.cc.Invoke(ctx, RespondenService_GetRespondenByNim_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RespondenServiceServer is the server API for RespondenService service.
 // All implementations must embed UnimplementedRespondenServiceServer
 // for forward compatibility
 type RespondenServiceServer interface {
 	GetAllResponden(context.Context, *EmptyRespondenRequest) (*GetAllRespondenResponse, error)
+	GetRespondenByNim(context.Context, *GetRespondenByNimRequest) (*GetRespondenByNimResponse, error)
 	mustEmbedUnimplementedRespondenServiceServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedRespondenServiceServer struct {
 
 func (UnimplementedRespondenServiceServer) GetAllResponden(context.Context, *EmptyRespondenRequest) (*GetAllRespondenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllResponden not implemented")
+}
+func (UnimplementedRespondenServiceServer) GetRespondenByNim(context.Context, *GetRespondenByNimRequest) (*GetRespondenByNimResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRespondenByNim not implemented")
 }
 func (UnimplementedRespondenServiceServer) mustEmbedUnimplementedRespondenServiceServer() {}
 
@@ -92,6 +107,24 @@ func _RespondenService_GetAllResponden_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RespondenService_GetRespondenByNim_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRespondenByNimRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RespondenServiceServer).GetRespondenByNim(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RespondenService_GetRespondenByNim_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RespondenServiceServer).GetRespondenByNim(ctx, req.(*GetRespondenByNimRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RespondenService_ServiceDesc is the grpc.ServiceDesc for RespondenService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var RespondenService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllResponden",
 			Handler:    _RespondenService_GetAllResponden_Handler,
+		},
+		{
+			MethodName: "GetRespondenByNim",
+			Handler:    _RespondenService_GetRespondenByNim_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

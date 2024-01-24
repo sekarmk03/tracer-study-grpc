@@ -48,6 +48,17 @@ message GetAllRespondenResponse {
     repeated Responden data = 3;
 }
 
+message GetRespondenByNimRequest {
+    string nim = 1;
+}
+
+message GetRespondenByNimResponse {
+    uint32 code = 1;
+    string message = 2;
+    Responden data = 3;
+}
+
 service RespondenService {
     rpc GetAllResponden(EmptyRespondenRequest) returns (GetAllRespondenResponse) {};
+    rpc GetRespondenByNim(GetRespondenByNimRequest) returns (GetRespondenByNimResponse) {};
 }
