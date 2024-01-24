@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package tracer_study_grpc;
+option go_package = "./;pb";
+
+message MhsBiodata {
+    string NIM = 1;
+    string NAMA = 2;
+    string IPK = 3;
+    string HP = 4;
+    string EMAIL = 5;
+    string KODEPSTD = 6;
+    string JENJANG = 7;
+    string PRODI = 8;
+    string NAMAPST = 9;
+    string KODEFAK = 10;
+    string NAMAFAK = 11;
+    string JLRMASUK = 12;
+    string THNMASUK = 13;
+    string LAMASTD = 14;
+}
+
+message MhsBiodataRequest {
+    string nim = 1;
+}
+
+message MhsBiodataResponse {
+    int32 code = 1;
+    string message = 2;
+    MhsBiodata data = 3;
+}
+
+service MhsBiodataService {
+    rpc FetchMhsBiodata(MhsBiodataRequest) returns (MhsBiodataResponse) {};
+}
