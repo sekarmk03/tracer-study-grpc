@@ -11,13 +11,13 @@ import (
 
 type RespondenHandler struct {
 	pb.UnimplementedRespondenServiceServer
-	config config.Config
+	config       config.Config
 	respondenSvc service.RespondenServiceUseCase
 }
 
 func NewRespondenHandler(config config.Config, respondenService service.RespondenServiceUseCase) *RespondenHandler {
 	return &RespondenHandler{
-		config: config,
+		config:       config,
 		respondenSvc: respondenService,
 	}
 }
@@ -52,6 +52,21 @@ func (rh *RespondenHandler) GetRespondenByNim(ctx context.Context, req *pb.GetRe
 	return &pb.GetRespondenByNimResponse{
 		Code:    uint32(http.StatusOK),
 		Message: "get responden by nim success",
+		Data:    respondenProto,
+	}, nil
+}
+
+func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb.UpdateRespondenFromSiakRequest) (*pb.UpdateRespondenFromSiakResponse, error) {
+	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), req.GetData())
+	if err != nil {
+		return nil, err
+	}
+
+	respondenProto := entity.ConvertEntityToProto(responden)
+
+	return &pb.UpdateRespondenFromSiakResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "update responden from siak success",
 		Data:    respondenProto,
 	}, nil
 }

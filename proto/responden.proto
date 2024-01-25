@@ -58,7 +58,34 @@ message GetRespondenByNimResponse {
     Responden data = 3;
 }
 
+message RespondenUpdate {
+    string ipk = 1;
+    string kodedikti = 2;
+    string jenjang = 3;
+    string namaprodi = 4;
+    string namaprodi2 = 5;
+    string kodeprodi = 6;
+    string kodeprodi2 = 7;
+    string kodefak = 8;
+    string namafak = 9;
+    string jlrmasuk = 10;
+    string thnmasuk = 11;
+    string lamastd = 12;
+}
+
+message UpdateRespondenFromSiakRequest {
+    string nim = 1;
+    RespondenUpdate data = 2;
+}
+
+message UpdateRespondenFromSiakResponse {
+    uint32 code = 1;
+    string message = 2;
+    Responden data = 3;
+}
+
 service RespondenService {
     rpc GetAllResponden(EmptyRespondenRequest) returns (GetAllRespondenResponse) {};
     rpc GetRespondenByNim(GetRespondenByNimRequest) returns (GetRespondenByNimResponse) {};
+    rpc UpdateRespondenFromSiak(UpdateRespondenFromSiakRequest) returns (UpdateRespondenFromSiakResponse) {};
 }

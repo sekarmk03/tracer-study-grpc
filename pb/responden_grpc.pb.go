@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RespondenService_GetAllResponden_FullMethodName   = "/tracer_study_grpc.RespondenService/GetAllResponden"
-	RespondenService_GetRespondenByNim_FullMethodName = "/tracer_study_grpc.RespondenService/GetRespondenByNim"
+	RespondenService_GetAllResponden_FullMethodName         = "/tracer_study_grpc.RespondenService/GetAllResponden"
+	RespondenService_GetRespondenByNim_FullMethodName       = "/tracer_study_grpc.RespondenService/GetRespondenByNim"
+	RespondenService_UpdateRespondenFromSiak_FullMethodName = "/tracer_study_grpc.RespondenService/UpdateRespondenFromSiak"
 )
 
 // RespondenServiceClient is the client API for RespondenService service.
@@ -29,6 +30,7 @@ const (
 type RespondenServiceClient interface {
 	GetAllResponden(ctx context.Context, in *EmptyRespondenRequest, opts ...grpc.CallOption) (*GetAllRespondenResponse, error)
 	GetRespondenByNim(ctx context.Context, in *GetRespondenByNimRequest, opts ...grpc.CallOption) (*GetRespondenByNimResponse, error)
+	UpdateRespondenFromSiak(ctx context.Context, in *UpdateRespondenFromSiakRequest, opts ...grpc.CallOption) (*UpdateRespondenFromSiakResponse, error)
 }
 
 type respondenServiceClient struct {
@@ -57,12 +59,22 @@ func (c *respondenServiceClient) GetRespondenByNim(ctx context.Context, in *GetR
 	return out, nil
 }
 
+func (c *respondenServiceClient) UpdateRespondenFromSiak(ctx context.Context, in *UpdateRespondenFromSiakRequest, opts ...grpc.CallOption) (*UpdateRespondenFromSiakResponse, error) {
+	out := new(UpdateRespondenFromSiakResponse)
+	err := c.cc.Invoke(ctx, RespondenService_UpdateRespondenFromSiak_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RespondenServiceServer is the server API for RespondenService service.
 // All implementations must embed UnimplementedRespondenServiceServer
 // for forward compatibility
 type RespondenServiceServer interface {
 	GetAllResponden(context.Context, *EmptyRespondenRequest) (*GetAllRespondenResponse, error)
 	GetRespondenByNim(context.Context, *GetRespondenByNimRequest) (*GetRespondenByNimResponse, error)
+	UpdateRespondenFromSiak(context.Context, *UpdateRespondenFromSiakRequest) (*UpdateRespondenFromSiakResponse, error)
 	mustEmbedUnimplementedRespondenServiceServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedRespondenServiceServer) GetAllResponden(context.Context, *Emp
 }
 func (UnimplementedRespondenServiceServer) GetRespondenByNim(context.Context, *GetRespondenByNimRequest) (*GetRespondenByNimResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRespondenByNim not implemented")
+}
+func (UnimplementedRespondenServiceServer) UpdateRespondenFromSiak(context.Context, *UpdateRespondenFromSiakRequest) (*UpdateRespondenFromSiakResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRespondenFromSiak not implemented")
 }
 func (UnimplementedRespondenServiceServer) mustEmbedUnimplementedRespondenServiceServer() {}
 
@@ -125,6 +140,24 @@ func _RespondenService_GetRespondenByNim_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RespondenService_UpdateRespondenFromSiak_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRespondenFromSiakRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RespondenServiceServer).UpdateRespondenFromSiak(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RespondenService_UpdateRespondenFromSiak_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RespondenServiceServer).UpdateRespondenFromSiak(ctx, req.(*UpdateRespondenFromSiakRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RespondenService_ServiceDesc is the grpc.ServiceDesc for RespondenService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +172,10 @@ var RespondenService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRespondenByNim",
 			Handler:    _RespondenService_GetRespondenByNim_Handler,
+		},
+		{
+			MethodName: "UpdateRespondenFromSiak",
+			Handler:    _RespondenService_UpdateRespondenFromSiak_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

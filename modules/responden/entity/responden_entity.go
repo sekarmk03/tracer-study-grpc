@@ -14,24 +14,24 @@ const (
 
 type Responden struct {
 	ID           uint32         `json:"id"`
-	ThnAngkatan  string         `json:"thn_ak"`
+	ThnAk        string         `json:"thn_ak"`
 	Semester     uint32         `json:"semester"`
 	Type         string         `json:"type"`
 	StatusUpdate string         `json:"status_update"`
-	JalurMasuk   string         `json:"jlrmasuk"`
-	TahunMasuk   string         `json:"thnmasuk"`
-	LamaStudi    string         `json:"lamastd"`
-	KodeFak      string         `json:"kodefak"`
-	NamaFak      string         `json:"namafak"`
+	Jlrmasuk     string         `json:"jlrmasuk"`
+	Thnmasuk     string         `json:"thnmasuk"`
+	Lamastd      string         `json:"lamastd"`
+	Kodefak      string         `json:"kodefak"`
+	Namafak      string         `json:"namafak"`
 	Nim          string         `json:"nim"`
 	Nama         string         `json:"nama"`
-	KodeProdi    string         `json:"kodeprodi"`
-	KodeProdi2   string         `json:"kodeprodi2"`
-	NamaProdi    string         `json:"namaprodi"`
-	NamaProdi2   string         `json:"namaprodi2"`
-	KodeDikti    string         `json:"kodedikti"`
+	Kodeprodi    string         `json:"kodeprodi"`
+	Kodeprodi2   string         `json:"kodeprodi2"`
+	Namaprodi    string         `json:"namaprodi"`
+	Namaprodi2   string         `json:"namaprodi2"`
+	Kodedikti    string         `json:"kodedikti"`
 	Jenjang      string         `json:"jenjang"`
-	JenisKel     string         `json:"jk"`
+	JK           string         `json:"jk"`
 	Email        string         `json:"email"`
 	Hp           string         `json:"hp"`
 	Ipk          string         `json:"ipk"`
@@ -50,23 +50,23 @@ type Responden struct {
 func NewResponden(id uint32, thnAk string, semester uint32, tipe, statusUpdate, jlrMasuk, thnMasuk, lamaStudi, kodeFak, namaFak, nim, nama, kodeProdi, kodeProdi2, namaProdi, namaProdi2, kodeDikti, jenjang, jenisKel, email, hp, ipk, tglSidang, thnSidang, tglWisuda, nik, npwp, createdBy, updatedBy string) *Responden {
 	return &Responden{
 		ID:           id,
-		ThnAngkatan:  thnAk,
+		ThnAk:        thnAk,
 		Semester:     semester,
 		Type:         tipe,
 		StatusUpdate: statusUpdate,
-		JalurMasuk:   jlrMasuk,
-		TahunMasuk:   thnMasuk,
-		LamaStudi:    lamaStudi,
-		KodeFak:      kodeFak,
-		NamaFak:      namaFak,
+		Jlrmasuk:     jlrMasuk,
+		Thnmasuk:     thnMasuk,
+		Lamastd:      lamaStudi,
+		Kodefak:      kodeFak,
+		Namafak:      namaFak,
 		Nim:          nim,
 		Nama:         nama,
-		KodeProdi:    kodeProdi,
-		KodeProdi2:   kodeProdi2,
-		NamaProdi:    namaProdi2,
-		KodeDikti:    kodeDikti,
+		Kodeprodi:    kodeProdi,
+		Kodeprodi2:   kodeProdi2,
+		Namaprodi:    namaProdi2,
+		Kodedikti:    kodeDikti,
 		Jenjang:      jenjang,
-		JenisKel:     jenisKel,
+		JK:           jenisKel,
 		Email:        email,
 		Hp:           hp,
 		Ipk:          ipk,
@@ -88,35 +88,36 @@ func (r *Responden) TableName() string {
 
 func ConvertEntityToProto(r *Responden) *pb.Responden {
 	return &pb.Responden{
-		Id:    r.ID,
-		ThnAk: r.ThnAngkatan,
-		Semester: r.Semester,
-		Type: r.Type,
+		Id:           r.ID,
+		ThnAk:        r.ThnAk,
+		Semester:     r.Semester,
+		Type:         r.Type,
 		StatusUpdate: r.StatusUpdate,
-		Jlrmasuk: r.JalurMasuk,
-		Thnmasuk: r.TahunMasuk,
-		Lamastd: r.LamaStudi,
-		Kodefak: r.KodeFak,
-		Namafak: r.NamaFak,
-		Nim: r.Nim,
-		Nama: r.Nama,
-		Kodeprodi: r.KodeProdi,
-		Kodeprodi2: r.KodeProdi2,
-		Namaprodi: r.NamaProdi,
-		Namaprodi2: r.NamaProdi2,
-		Kodedikti: r.KodeDikti,
-		Jenjang: r.Jenjang,
-		Jk: r.JenisKel,
-		Email: r.Email,
-		Hp: r.Hp,
-		TglSidang: r.TglSidang,
-		ThnSidang: r.ThnSidang,
-		TglWisuda: r.TglWisuda,
-		Nik: r.Nik,
-		Npwp: r.Npwp,
-		CreatedBy: r.CreatedBy,
-		UpdatedBy: r.UpdatedBy,
-		CreatedAt: timestamppb.New(r.CreatedAt),
-		UpdatedAt: timestamppb.New(r.UpdatedAt),
+		Jlrmasuk:     r.Jlrmasuk,
+		Thnmasuk:     r.Thnmasuk,
+		Lamastd:      r.Lamastd,
+		Kodefak:      r.Kodefak,
+		Namafak:      r.Namafak,
+		Nim:          r.Nim,
+		Nama:         r.Nama,
+		Kodeprodi:    r.Kodeprodi,
+		Kodeprodi2:   r.Kodeprodi2,
+		Namaprodi:    r.Namaprodi,
+		Namaprodi2:   r.Namaprodi2,
+		Kodedikti:    r.Kodedikti,
+		Jenjang:      r.Jenjang,
+		Jk:           r.JK,
+		Email:        r.Email,
+		Hp:           r.Hp,
+		Ipk:          r.Ipk,
+		TglSidang:    r.TglSidang,
+		ThnSidang:    r.ThnSidang,
+		TglWisuda:    r.TglWisuda,
+		Nik:          r.Nik,
+		Npwp:         r.Npwp,
+		CreatedBy:    r.CreatedBy,
+		UpdatedBy:    r.UpdatedBy,
+		CreatedAt:    timestamppb.New(r.CreatedAt),
+		UpdatedAt:    timestamppb.New(r.UpdatedAt),
 	}
 }
