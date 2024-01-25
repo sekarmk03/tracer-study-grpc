@@ -12,6 +12,7 @@ type MhsBiodata struct {
 	JENJANG  string `json:"jenjang"`
 	PRODI    string `json:"prodi"`
 	NAMAPST  string `json:"namapst"`
+	KODEPST  string `json:"kodepst"`
 	KODEFAK  string `json:"kodefak"`
 	NAMAFAK  string `json:"namafak"`
 	JLRMASUK string `json:"jlrmasuk"`
@@ -19,7 +20,7 @@ type MhsBiodata struct {
 	LAMASTD  string `json:"lamastd"`
 }
 
-func NewMhsBiodata(nim, nama, ipk, hp, email, kodepstd, jenjang, prodi, namapst, kodefak, namafak, jlrmasuk, thnmasuk, lamastd string) *MhsBiodata {
+func NewMhsBiodata(nim, nama, ipk, hp, email, kodepstd, jenjang, prodi, namapst, kodepst, kodefak, namafak, jlrmasuk, thnmasuk, lamastd string) *MhsBiodata {
 	return &MhsBiodata{
 		NIM:      nim,
 		NAMA:     nama,
@@ -30,6 +31,7 @@ func NewMhsBiodata(nim, nama, ipk, hp, email, kodepstd, jenjang, prodi, namapst,
 		JENJANG:  jenjang,
 		PRODI:    prodi,
 		NAMAPST:  namapst,
+		KODEPST:  kodepst,
 		KODEFAK:  kodefak,
 		NAMAFAK:  namafak,
 		JLRMASUK: jlrmasuk,
@@ -49,6 +51,7 @@ func ConvertEntityToProto(m *MhsBiodata) *pb.MhsBiodata {
 		JENJANG:  m.JENJANG,
 		PRODI:    m.PRODI,
 		NAMAPST:  m.NAMAPST,
+		KODEPST:  m.KODEPST,
 		KODEFAK:  m.KODEFAK,
 		JLRMASUK: m.JLRMASUK,
 		THNMASUK: m.THNMASUK,

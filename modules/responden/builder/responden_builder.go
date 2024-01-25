@@ -2,9 +2,10 @@ package builder
 
 import (
 	"tracer-study-grpc/common/config"
+	mhsbSvc "tracer-study-grpc/modules/mhsbiodata/service"
 	"tracer-study-grpc/modules/responden/handler"
 	"tracer-study-grpc/modules/responden/repository"
-	"tracer-study-grpc/modules/responden/service"
+	respSvc "tracer-study-grpc/modules/responden/service"
 
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
@@ -12,8 +13,9 @@ import (
 
 func BuildRespondenHandler(cfg config.Config, db *gorm.DB, grpcConn *grpc.ClientConn) *handler.RespondenHandler {
 	respondenRepo := repository.NewRespondenRepository(db)
-	respondenSvc := service.NewRespondenService(cfg, respondenRepo)
+	respondenSvc := respSvc.NewRespondenService(cfg, respondenRepo)
 
-	return handler.NewRespondenHandler(cfg, respondenSvc)
+	mhsbiodataSvc := mhsbSvc.NewMhsBiodataService(cfg)
 
+	return handler.NewRespondenHandler(cfg, respondenSvc, mhsbiodataSvc)
 }

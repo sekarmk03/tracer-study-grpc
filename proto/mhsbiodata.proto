@@ -13,11 +13,12 @@ message MhsBiodata {
     string JENJANG = 7;
     string PRODI = 8;
     string NAMAPST = 9;
-    string KODEFAK = 10;
-    string NAMAFAK = 11;
-    string JLRMASUK = 12;
-    string THNMASUK = 13;
-    string LAMASTD = 14;
+    string KODEPST = 10;
+    string KODEFAK = 11;
+    string NAMAFAK = 12;
+    string JLRMASUK = 13;
+    string THNMASUK = 14;
+    string LAMASTD = 15;
 }
 
 message MhsBiodataRequest {

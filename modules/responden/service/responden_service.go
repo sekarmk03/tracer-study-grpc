@@ -5,9 +5,9 @@ import (
 	"log"
 	"time"
 	"tracer-study-grpc/common/config"
-	"tracer-study-grpc/modules/responden/entity"
+	mhsbEntity "tracer-study-grpc/modules/mhsbiodata/entity"
+	respEntity "tracer-study-grpc/modules/responden/entity"
 	"tracer-study-grpc/modules/responden/repository"
-	"tracer-study-grpc/pb"
 )
 
 type RespondenService struct {
@@ -16,9 +16,9 @@ type RespondenService struct {
 }
 
 type RespondenServiceUseCase interface {
-	FindAll(ctx context.Context, req any) ([]*entity.Responden, error)
-	FindByNim(ctx context.Context, nim string) (*entity.Responden, error)
-	Update(ctx context.Context, nim string, fields *pb.RespondenUpdate) (*entity.Responden, error)
+	FindAll(ctx context.Context, req any) ([]*respEntity.Responden, error)
+	FindByNim(ctx context.Context, nim string) (*respEntity.Responden, error)
+	Update(ctx context.Context, nim string, fields *mhsbEntity.MhsBiodata) (*respEntity.Responden, error)
 }
 
 func NewRespondenService(cfg config.Config, respondenRepository repository.RespondenRepositoryUseCase) *RespondenService {
@@ -28,7 +28,7 @@ func NewRespondenService(cfg config.Config, respondenRepository repository.Respo
 	}
 }
 
-func (svc *RespondenService) FindAll(ctx context.Context, req any) ([]*entity.Responden, error) {
+func (svc *RespondenService) FindAll(ctx context.Context, req any) ([]*respEntity.Responden, error) {
 	res, err := svc.respondenRepository.FindAll(ctx, req)
 	if err != nil {
 		log.Println("[RespondenService - FindAll] Error while find all responden: ", err)
@@ -38,7 +38,7 @@ func (svc *RespondenService) FindAll(ctx context.Context, req any) ([]*entity.Re
 	return res, nil
 }
 
-func (scv *RespondenService) FindByNim(ctx context.Context, nim string) (*entity.Responden, error) {
+func (scv *RespondenService) FindByNim(ctx context.Context, nim string) (*respEntity.Responden, error) {
 	res, err := scv.respondenRepository.FindByNim(ctx, nim)
 	if err != nil {
 		log.Println("[RespondenService - FindByNim] Error while find responden by nim: ", err)
@@ -48,20 +48,20 @@ func (scv *RespondenService) FindByNim(ctx context.Context, nim string) (*entity
 	return res, nil
 }
 
-func (scv *RespondenService) Update(ctx context.Context, nim string, fields *pb.RespondenUpdate) (*entity.Responden, error) {
+func (scv *RespondenService) Update(ctx context.Context, nim string, fields *mhsbEntity.MhsBiodata) (*respEntity.Responden, error) {
 	updateMap := map[string]interface{}{
-		"ipk":           fields.GetIpk(),
-		"kodedikti":     fields.GetKodedikti(),
-		"jenjang":       fields.GetJenjang(),
-		"namaprodi":     fields.GetNamaprodi(),
-		"namaprodi2":    fields.GetNamaprodi2(),
-		"kodeprodi":     fields.GetKodeprodi(),
-		"kodeprodi2":    fields.GetKodeprodi2(),
-		"kodefak":       fields.GetKodefak(),
-		"namafak":       fields.GetNamafak(),
-		"jlrmasuk":      fields.GetJlrmasuk(),
-		"thnmasuk":      fields.GetThnmasuk(),
-		"lamastd":       fields.GetLamastd(),
+		"ipk":           fields.IPK,
+		"kodedikti":     fields.KODEPSTD,
+		"jenjang":       fields.JENJANG,
+		"namaprodi":     fields.PRODI,
+		"namaprodi2":    fields.NAMAPST,
+		"kodeprodi":     fields.KODEPST,
+		"kodeprodi2":    fields.KODEPST[:4],
+		"kodefak":       fields.KODEFAK,
+		"namafak":       fields.NAMAFAK,
+		"jlrmasuk":      fields.JLRMASUK,
+		"thnmasuk":      fields.THNMASUK,
+		"lamastd":       fields.LAMASTD,
 		"updated_at":    time.Now(),
 		"status_update": "1",
 		"updated_by":    "system",

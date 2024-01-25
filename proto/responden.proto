@@ -75,7 +75,7 @@ message RespondenUpdate {
 
 message UpdateRespondenFromSiakRequest {
     string nim = 1;
-    RespondenUpdate data = 2;
+    // RespondenUpdate data = 2;
 }
 
 message UpdateRespondenFromSiakResponse {
