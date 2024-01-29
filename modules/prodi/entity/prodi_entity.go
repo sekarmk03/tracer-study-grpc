@@ -26,6 +26,14 @@ type Prodi struct {
 	DeletedAt     gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
+type Fakultas struct {
+	KodeFak   string         `json:"kode_fak"`
+	NamaFak   string         `json:"nama_fak"`
+	CreatedAt time.Time      `gorm:"type:timestamptz;not_null" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"type:timestamptz;not_null" json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+}
+
 func NewProdi(
 	kode, kodeDikti, kodeFak, kodeIntegrasi, nama, jenjang, namaFak string,
 ) *Prodi {
@@ -42,11 +50,20 @@ func NewProdi(
 	}
 }
 
+func NewFakultas(kodeFak, namaFak string) *Fakultas {
+	return &Fakultas{
+		KodeFak:   kodeFak,
+		NamaFak:   namaFak,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+}
+
 func (p *Prodi) TableName() string {
 	return ProdiTableName
 }
 
-func ConvertEntityToProto(p *Prodi) *pb.Prodi {
+func ConvertEntityProdiToProto(p *Prodi) *pb.Prodi {
 	return &pb.Prodi{
 		Kode:          p.Kode,
 		KodeDikti:     p.KodeDikti,
@@ -57,5 +74,14 @@ func ConvertEntityToProto(p *Prodi) *pb.Prodi {
 		NamaFak:       p.NamaFak,
 		CreatedAt:     timestamppb.New(p.CreatedAt),
 		UpdatedAt:     timestamppb.New(p.CreatedAt),
+	}
+}
+
+func ConvertEntityFakultasToProto(f *Fakultas) *pb.Fakultas {
+	return &pb.Fakultas{
+		KodeFak:   f.KodeFak,
+		NamaFak:   f.NamaFak,
+		CreatedAt: timestamppb.New(f.CreatedAt),
+		UpdatedAt: timestamppb.New(f.CreatedAt),
 	}
 }

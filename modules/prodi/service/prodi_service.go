@@ -15,6 +15,7 @@ type ProdiService struct {
 
 type ProdiServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.Prodi, error)
+	FindAllFakultas(ctx context.Context, req any) ([]*entity.Fakultas, error)
 }
 
 func NewProdiService(cfg config.Config, prodiRepository repository.ProdiRepositoryUseCase) *ProdiService {
@@ -28,6 +29,16 @@ func (svc *ProdiService) FindAll(ctx context.Context, req any) ([]*entity.Prodi,
 	res, err := svc.prodiRepository.FindAll(ctx, req)
 	if err != nil {
 		log.Println("[ProdiService - FindAll] Error while find all prodi: ", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *ProdiService) FindAllFakultas(ctx context.Context, req any) ([]*entity.Fakultas, error) {
+	res, err := svc.prodiRepository.FindAllFakultas(ctx, req)
+	if err != nil {
+		log.Println("[ProdiService - FindAllFakultas] Error while find all fakultas: ", err)
 		return nil, err
 	}
 

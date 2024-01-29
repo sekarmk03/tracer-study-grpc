@@ -18,7 +18,7 @@ message Prodi {
     google.protobuf.Timestamp deleted_at = 10;
 }
 
-message EmptyProdiRequest {}
+message EmptyRequest {}
 
 message GetAllProdiResponse {
     uint32 code = 1;
@@ -26,6 +26,22 @@ message GetAllProdiResponse {
     repeated Prodi data = 3;
 }
 
+message Fakultas {
+    string kode_fak = 1;
+    string nama_fak = 2;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    google.protobuf.Timestamp deleted_at = 6;
+}
+
+message GetAllFakultasResponse {
+    uint32 code = 1;
+    string message = 2;
+    repeated Fakultas data = 3;
+
+}
+
 service ProdiService {
-    rpc GetAllProdi(EmptyProdiRequest) returns (GetAllProdiResponse) {};
+    rpc GetAllProdi(EmptyRequest) returns (GetAllProdiResponse) {};
+    rpc GetAllFakultas(EmptyRequest) returns (GetAllFakultasResponse) {};
 }
