@@ -75,7 +75,6 @@ message RespondenUpdate {
 
 message UpdateRespondenFromSiakRequest {
     string nim = 1;
-    // RespondenUpdate data = 2;
 }
 
 message UpdateRespondenResponse {
@@ -86,14 +85,14 @@ message UpdateRespondenResponse {
 
 message CreateRespondenRequest {
     string nim = 1;
-    string semester = 2; // api->lamastd
-    string type = 3; // alumni
-    string nama = 4; // api->nama
-    string kodeprodi = 5; // api->kodepst
-    string jk = 6; // api->jeniskel
-    string tgl_wisuda = 7; // api->wisudatgl
-    string tgl_sidang = 8; // api->tglsidang
-    string thn_sidang = 9; // api->tglsidang[:4]
+    string semester = 2;
+    string type = 3;
+    string nama = 4;
+    string kodeprodi = 5;
+    string jk = 6;
+    string tgl_wisuda = 7;
+    string tgl_sidang = 8;
+    string thn_sidang = 9;
 }
 
 message CreateRespondenResponse {
@@ -107,5 +106,5 @@ service RespondenService {
     rpc GetRespondenByNim(GetRespondenByNimRequest) returns (GetRespondenByNimResponse) {};
     rpc UpdateRespondenFromSiak(UpdateRespondenFromSiakRequest) returns (UpdateRespondenResponse) {};
     rpc CreateResponden(CreateRespondenRequest) returns (CreateRespondenResponse) {};
-    rpc UpdateResponden(Responden) returns (Responden) {};
+    rpc UpdateResponden(Responden) returns (UpdateRespondenResponse) {};
 }

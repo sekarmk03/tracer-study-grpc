@@ -65,7 +65,23 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), mhsbiodata)
+	convertEntity := &entity.Responden{
+		Ipk:        mhsbiodata.IPK,
+		Kodedikti:  mhsbiodata.KODEPSTD,
+		Jenjang:    mhsbiodata.JENJANG,
+		Namaprodi:  mhsbiodata.PRODI,
+		Namaprodi2: mhsbiodata.NAMAPST,
+		Kodeprodi:  mhsbiodata.KODEPST,
+		Kodeprodi2: mhsbiodata.KODEPST[:4],
+		Kodefak:    mhsbiodata.KODEFAK,
+		Namafak:    mhsbiodata.NAMAFAK,
+		Jlrmasuk:   mhsbiodata.JLRMASUK,
+		Thnmasuk:   mhsbiodata.THNMASUK,
+		ThnAk:      mhsbiodata.THNMASUK,
+		Lamastd:    mhsbiodata.LAMASTD,
+	}
+
+	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), convertEntity)
 	if err != nil {
 		return nil, err
 	}
@@ -91,6 +107,28 @@ func (rh *RespondenHandler) CreateResponden(ctx context.Context, req *pb.CreateR
 	return &pb.CreateRespondenResponse{
 		Code:    uint32(http.StatusOK),
 		Message: "create responden success",
+		Data:    respondenProto,
+	}, nil
+}
+
+func (rh *RespondenHandler) UpdateResponden(ctx context.Context, req *pb.Responden) (*pb.UpdateRespondenResponse, error) {
+	respDataUpdate := &entity.Responden{
+		Email: req.GetEmail(),
+		Hp:    req.GetHp(),
+		Nik:   req.GetNik(),
+		Npwp:  req.GetNpwp(),
+	}
+
+	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), respDataUpdate)
+	if err != nil {
+		return nil, err
+	}
+
+	respondenProto := entity.ConvertEntityToProto(responden)
+
+	return &pb.UpdateRespondenResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "update responden success",
 		Data:    respondenProto,
 	}, nil
 }

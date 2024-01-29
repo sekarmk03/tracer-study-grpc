@@ -34,7 +34,7 @@ type RespondenServiceClient interface {
 	GetRespondenByNim(ctx context.Context, in *GetRespondenByNimRequest, opts ...grpc.CallOption) (*GetRespondenByNimResponse, error)
 	UpdateRespondenFromSiak(ctx context.Context, in *UpdateRespondenFromSiakRequest, opts ...grpc.CallOption) (*UpdateRespondenResponse, error)
 	CreateResponden(ctx context.Context, in *CreateRespondenRequest, opts ...grpc.CallOption) (*CreateRespondenResponse, error)
-	UpdateResponden(ctx context.Context, in *Responden, opts ...grpc.CallOption) (*Responden, error)
+	UpdateResponden(ctx context.Context, in *Responden, opts ...grpc.CallOption) (*UpdateRespondenResponse, error)
 }
 
 type respondenServiceClient struct {
@@ -81,8 +81,8 @@ func (c *respondenServiceClient) CreateResponden(ctx context.Context, in *Create
 	return out, nil
 }
 
-func (c *respondenServiceClient) UpdateResponden(ctx context.Context, in *Responden, opts ...grpc.CallOption) (*Responden, error) {
-	out := new(Responden)
+func (c *respondenServiceClient) UpdateResponden(ctx context.Context, in *Responden, opts ...grpc.CallOption) (*UpdateRespondenResponse, error) {
+	out := new(UpdateRespondenResponse)
 	err := c.cc.Invoke(ctx, RespondenService_UpdateResponden_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ type RespondenServiceServer interface {
 	GetRespondenByNim(context.Context, *GetRespondenByNimRequest) (*GetRespondenByNimResponse, error)
 	UpdateRespondenFromSiak(context.Context, *UpdateRespondenFromSiakRequest) (*UpdateRespondenResponse, error)
 	CreateResponden(context.Context, *CreateRespondenRequest) (*CreateRespondenResponse, error)
-	UpdateResponden(context.Context, *Responden) (*Responden, error)
+	UpdateResponden(context.Context, *Responden) (*UpdateRespondenResponse, error)
 	mustEmbedUnimplementedRespondenServiceServer()
 }
 
@@ -118,7 +118,7 @@ func (UnimplementedRespondenServiceServer) UpdateRespondenFromSiak(context.Conte
 func (UnimplementedRespondenServiceServer) CreateResponden(context.Context, *CreateRespondenRequest) (*CreateRespondenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateResponden not implemented")
 }
-func (UnimplementedRespondenServiceServer) UpdateResponden(context.Context, *Responden) (*Responden, error) {
+func (UnimplementedRespondenServiceServer) UpdateResponden(context.Context, *Responden) (*UpdateRespondenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateResponden not implemented")
 }
 func (UnimplementedRespondenServiceServer) mustEmbedUnimplementedRespondenServiceServer() {}
