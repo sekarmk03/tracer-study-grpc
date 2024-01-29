@@ -4,23 +4,23 @@ import (
 	"context"
 	"net/http"
 	"tracer-study-grpc/common/config"
+	mhsbSvc "tracer-study-grpc/modules/mhsbiodata/service"
 	"tracer-study-grpc/modules/responden/entity"
 	resSvc "tracer-study-grpc/modules/responden/service"
-	mhsbSvc "tracer-study-grpc/modules/mhsbiodata/service"
 	"tracer-study-grpc/pb"
 )
 
 type RespondenHandler struct {
 	pb.UnimplementedRespondenServiceServer
-	config       config.Config
-	respondenSvc resSvc.RespondenServiceUseCase
+	config        config.Config
+	respondenSvc  resSvc.RespondenServiceUseCase
 	mhsbiodataSvc mhsbSvc.MhsBiodataServiceUseCase
 }
 
 func NewRespondenHandler(config config.Config, respondenService resSvc.RespondenServiceUseCase, mhsbiodataService mhsbSvc.MhsBiodataServiceUseCase) *RespondenHandler {
 	return &RespondenHandler{
-		config:       config,
-		respondenSvc: respondenService,
+		config:        config,
+		respondenSvc:  respondenService,
 		mhsbiodataSvc: mhsbiodataService,
 	}
 }
@@ -59,7 +59,7 @@ func (rh *RespondenHandler) GetRespondenByNim(ctx context.Context, req *pb.GetRe
 	}, nil
 }
 
-func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb.UpdateRespondenFromSiakRequest) (*pb.UpdateRespondenFromSiakResponse, error) {
+func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb.UpdateRespondenFromSiakRequest) (*pb.UpdateRespondenResponse, error) {
 	mhsbiodata, err := rh.mhsbiodataSvc.FetchMhsBiodataByNimFromSiakApi(req.GetNim())
 	if err != nil {
 		return nil, err
@@ -72,9 +72,25 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 
 	respondenProto := entity.ConvertEntityToProto(responden)
 
-	return &pb.UpdateRespondenFromSiakResponse{
+	return &pb.UpdateRespondenResponse{
 		Code:    uint32(http.StatusOK),
 		Message: "update responden from siak success",
+		Data:    respondenProto,
+	}, nil
+}
+
+func (rh *RespondenHandler) CreateResponden(ctx context.Context, req *pb.CreateRespondenRequest) (*pb.CreateRespondenResponse, error) {
+	responden, err := rh.respondenSvc.Create(ctx, req.GetNim(), req.GetSemester(), req.GetType(), req.GetNama(), req.GetKodeprodi(), req.GetJk(), req.GetTglWisuda(), req.GetTglSidang(), req.GetThnSidang())
+
+	if err != nil {
+		return nil, err
+	}
+
+	respondenProto := entity.ConvertEntityToProto(responden)
+
+	return &pb.CreateRespondenResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "create responden success",
 		Data:    respondenProto,
 	}, nil
 }

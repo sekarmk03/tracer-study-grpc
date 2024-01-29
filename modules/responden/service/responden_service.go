@@ -2,7 +2,9 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strconv"
 	"time"
 	"tracer-study-grpc/common/config"
 	mhsbEntity "tracer-study-grpc/modules/mhsbiodata/entity"
@@ -19,6 +21,7 @@ type RespondenServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*respEntity.Responden, error)
 	FindByNim(ctx context.Context, nim string) (*respEntity.Responden, error)
 	Update(ctx context.Context, nim string, fields *mhsbEntity.MhsBiodata) (*respEntity.Responden, error)
+	Create(ctx context.Context, nim string, semester, tipe, nama, kodeprodi, jk, tgl_wisuda, tgl_sidang, thn_sidang string) (*respEntity.Responden, error)
 }
 
 func NewRespondenService(cfg config.Config, respondenRepository repository.RespondenRepositoryUseCase) *RespondenService {
@@ -61,6 +64,7 @@ func (scv *RespondenService) Update(ctx context.Context, nim string, fields *mhs
 		"namafak":       fields.NAMAFAK,
 		"jlrmasuk":      fields.JLRMASUK,
 		"thnmasuk":      fields.THNMASUK,
+		"thn_ak":        fields.THNMASUK,
 		"lamastd":       fields.LAMASTD,
 		"updated_at":    time.Now(),
 		"status_update": "1",
@@ -70,6 +74,41 @@ func (scv *RespondenService) Update(ctx context.Context, nim string, fields *mhs
 	res, err := scv.respondenRepository.Update(ctx, nim, updateMap)
 	if err != nil {
 		log.Println("[RespondenService - Update] Error while update responden: ", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (scv *RespondenService) Create(ctx context.Context, nim string, semester, tipe, nama, kodeprodi, jk, tgl_wisuda, tgl_sidang, thn_sidang string) (*respEntity.Responden, error) {
+	lamaStdInt, err := strconv.ParseUint(semester, 10, 32)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return nil, err
+	}
+
+	reqEntity := &respEntity.Responden{
+		Nim:          nim,
+		Semester:     uint32(lamaStdInt),
+		Lamastd:      semester,
+		CreatedBy:    nim,
+		UpdatedBy:    nim,
+		Type:         tipe,
+		StatusUpdate: "1",
+		Nama:         nama,
+		Kodeprodi:    kodeprodi,
+		Kodeprodi2:   kodeprodi[:4],
+		JK:           jk,
+		TglWisuda:    tgl_wisuda,
+		TglSidang:    tgl_sidang,
+		ThnSidang:    thn_sidang,
+		CreatedAt:    time.Now(),
+		UpdatedAt:    time.Now(),
+	}
+
+	res, err := scv.respondenRepository.Create(ctx, reqEntity)
+	if err != nil {
+		log.Println("[RespondenService - Create] Error while create responden: ", err)
 		return nil, err
 	}
 

@@ -23,6 +23,7 @@ type RespondenRepositoryUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.Responden, error)
 	FindByNim(ctx context.Context, nim string) (*entity.Responden, error)
 	Update(ctx context.Context, nim string, updatedFields map[string]interface{}) (*entity.Responden, error)
+	Create(ctx context.Context, req *entity.Responden) (*entity.Responden, error)
 }
 
 func (r *RespondenRepository) FindAll(ctx context.Context, req any) ([]*entity.Responden, error) {
@@ -65,4 +66,15 @@ func (r *RespondenRepository) Update(ctx context.Context, nim string, updatedFie
 	}
 
 	return &responden, nil
+}
+
+func (r *RespondenRepository) Create(ctx context.Context, req *entity.Responden) (*entity.Responden, error) {
+	ctxSpan, span := trace.StartSpan(ctx, "RespondenRepository - Create")
+	defer span.End()
+
+	if err := r.db.Debug().WithContext(ctxSpan).Create(&req).Error; err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }

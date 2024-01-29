@@ -78,7 +78,25 @@ message UpdateRespondenFromSiakRequest {
     // RespondenUpdate data = 2;
 }
 
-message UpdateRespondenFromSiakResponse {
+message UpdateRespondenResponse {
+    uint32 code = 1;
+    string message = 2;
+    Responden data = 3;
+}
+
+message CreateRespondenRequest {
+    string nim = 1;
+    string semester = 2; // api->lamastd
+    string type = 3; // alumni
+    string nama = 4; // api->nama
+    string kodeprodi = 5; // api->kodepst
+    string jk = 6; // api->jeniskel
+    string tgl_wisuda = 7; // api->wisudatgl
+    string tgl_sidang = 8; // api->tglsidang
+    string thn_sidang = 9; // api->tglsidang[:4]
+}
+
+message CreateRespondenResponse {
     uint32 code = 1;
     string message = 2;
     Responden data = 3;
@@ -87,5 +105,7 @@ message UpdateRespondenFromSiakResponse {
 service RespondenService {
     rpc GetAllResponden(EmptyRespondenRequest) returns (GetAllRespondenResponse) {};
     rpc GetRespondenByNim(GetRespondenByNimRequest) returns (GetRespondenByNimResponse) {};
-    rpc UpdateRespondenFromSiak(UpdateRespondenFromSiakRequest) returns (UpdateRespondenFromSiakResponse) {};
+    rpc UpdateRespondenFromSiak(UpdateRespondenFromSiakRequest) returns (UpdateRespondenResponse) {};
+    rpc CreateResponden(CreateRespondenRequest) returns (CreateRespondenResponse) {};
+    rpc UpdateResponden(Responden) returns (Responden) {};
 }

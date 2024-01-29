@@ -121,3 +121,39 @@ func ConvertEntityToProto(r *Responden) *pb.Responden {
 		UpdatedAt:    timestamppb.New(r.UpdatedAt),
 	}
 }
+
+func ConvertProtoToEntity(r *pb.Responden) *Responden {
+	return &Responden{
+		ID:           r.GetId(),
+		ThnAk:        r.GetThnAk(),
+		Semester:     r.GetSemester(),
+		Type:         r.GetType(),
+		StatusUpdate: r.GetStatusUpdate(),
+		Jlrmasuk:     r.GetJlrmasuk(),
+		Thnmasuk:     r.GetThnmasuk(),
+		Lamastd:      r.GetLamastd(),
+		Kodefak:      r.GetKodefak(),
+		Namafak:      r.GetNamafak(),
+		Nim:          r.GetNim(),
+		Nama:         r.GetNama(),
+		Kodeprodi:    r.GetKodeprodi(),
+		Kodeprodi2:   r.GetKodeprodi2(),
+		Namaprodi:    r.GetNamaprodi(),
+		Namaprodi2:   r.GetNamaprodi2(),
+		Kodedikti:    r.GetKodedikti(),
+		Jenjang:      r.GetJenjang(),
+		JK:           r.GetJk(),
+		Email:        r.GetEmail(),
+		Hp:           r.GetHp(),
+		Ipk:          r.GetIpk(),
+		TglSidang:    r.GetTglSidang(),
+		ThnSidang:    r.GetThnSidang(),
+		TglWisuda:    r.GetTglWisuda(),
+		Nik:          r.GetNik(),
+		Npwp:         r.GetNpwp(),
+		CreatedBy:    r.GetCreatedBy(),
+		UpdatedBy:    r.GetUpdatedBy(),
+		CreatedAt:    r.GetCreatedAt().AsTime(),
+		UpdatedAt:    r.GetUpdatedAt().AsTime(),
+	}
+}
