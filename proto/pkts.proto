@@ -108,6 +108,18 @@ message GetAllPKTSResponse {
     repeated PKTS data = 3;
 }
 
+message GetPKTSByNimRequest {
+    string nim = 1;
+}
+
+message GetPKTSResponse {
+    uint32 code = 1;
+    string message = 2;
+    PKTS data = 3;
+}
+
 service PKTSService {
     rpc GetAllPKTS(EmptyPKTSRequest) returns (GetAllPKTSResponse);
+    rpc GetPKTSByNim(GetPKTSByNimRequest) returns (GetPKTSResponse);
+    rpc CreatePKTS(PKTS) returns (GetPKTSResponse);
 }

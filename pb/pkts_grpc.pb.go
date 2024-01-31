@@ -19,7 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PKTSService_GetAllPKTS_FullMethodName = "/tracer_study_grpc.PKTSService/GetAllPKTS"
+	PKTSService_GetAllPKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/GetAllPKTS"
+	PKTSService_GetPKTSByNim_FullMethodName = "/tracer_study_grpc.PKTSService/GetPKTSByNim"
+	PKTSService_CreatePKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/CreatePKTS"
 )
 
 // PKTSServiceClient is the client API for PKTSService service.
@@ -27,6 +29,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PKTSServiceClient interface {
 	GetAllPKTS(ctx context.Context, in *EmptyPKTSRequest, opts ...grpc.CallOption) (*GetAllPKTSResponse, error)
+	GetPKTSByNim(ctx context.Context, in *GetPKTSByNimRequest, opts ...grpc.CallOption) (*GetPKTSResponse, error)
+	CreatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 }
 
 type pKTSServiceClient struct {
@@ -46,11 +50,31 @@ func (c *pKTSServiceClient) GetAllPKTS(ctx context.Context, in *EmptyPKTSRequest
 	return out, nil
 }
 
+func (c *pKTSServiceClient) GetPKTSByNim(ctx context.Context, in *GetPKTSByNimRequest, opts ...grpc.CallOption) (*GetPKTSResponse, error) {
+	out := new(GetPKTSResponse)
+	err := c.cc.Invoke(ctx, PKTSService_GetPKTSByNim_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pKTSServiceClient) CreatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error) {
+	out := new(GetPKTSResponse)
+	err := c.cc.Invoke(ctx, PKTSService_CreatePKTS_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PKTSServiceServer is the server API for PKTSService service.
 // All implementations must embed UnimplementedPKTSServiceServer
 // for forward compatibility
 type PKTSServiceServer interface {
 	GetAllPKTS(context.Context, *EmptyPKTSRequest) (*GetAllPKTSResponse, error)
+	GetPKTSByNim(context.Context, *GetPKTSByNimRequest) (*GetPKTSResponse, error)
+	CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	mustEmbedUnimplementedPKTSServiceServer()
 }
 
@@ -60,6 +84,12 @@ type UnimplementedPKTSServiceServer struct {
 
 func (UnimplementedPKTSServiceServer) GetAllPKTS(context.Context, *EmptyPKTSRequest) (*GetAllPKTSResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllPKTS not implemented")
+}
+func (UnimplementedPKTSServiceServer) GetPKTSByNim(context.Context, *GetPKTSByNimRequest) (*GetPKTSResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPKTSByNim not implemented")
+}
+func (UnimplementedPKTSServiceServer) CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePKTS not implemented")
 }
 func (UnimplementedPKTSServiceServer) mustEmbedUnimplementedPKTSServiceServer() {}
 
@@ -92,6 +122,42 @@ func _PKTSService_GetAllPKTS_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PKTSService_GetPKTSByNim_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPKTSByNimRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PKTSServiceServer).GetPKTSByNim(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PKTSService_GetPKTSByNim_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PKTSServiceServer).GetPKTSByNim(ctx, req.(*GetPKTSByNimRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PKTSService_CreatePKTS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PKTS)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PKTSServiceServer).CreatePKTS(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PKTSService_CreatePKTS_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PKTSServiceServer).CreatePKTS(ctx, req.(*PKTS))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PKTSService_ServiceDesc is the grpc.ServiceDesc for PKTSService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +168,14 @@ var PKTSService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllPKTS",
 			Handler:    _PKTSService_GetAllPKTS_Handler,
+		},
+		{
+			MethodName: "GetPKTSByNim",
+			Handler:    _PKTSService_GetPKTSByNim_Handler,
+		},
+		{
+			MethodName: "CreatePKTS",
+			Handler:    _PKTSService_CreatePKTS_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
