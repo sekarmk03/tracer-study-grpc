@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package tracer_study_grpc;
+option go_package = "./;pb";
+
+import "google/protobuf/timestamp.proto";
+
+message PKTS {
+    uint32 id = 1;
+    string nim = 2;
+    string kodeprodi = 3;
+    string thn_sidang = 4;
+    uint32 f8 = 5;
+    uint32 f5_04 = 6;
+    string f5_02 = 7;
+    string f5_06 = 8;
+    string f5_05 = 9;
+    string f5a1 = 10;
+    string f5a2 = 11;
+    uint32 f11_01 = 12;
+    string f11_02 = 13;
+    string f5b = 14;
+    uint32 f5c = 15;
+    uint32 f5d = 16;
+    uint32 f18a = 17;
+    string f18b = 18;
+    string f18c = 19;
+    string f18d = 20;
+    uint32 f12_01 = 21;
+    string f12_02 = 22;
+    uint32 f14 = 23;
+    uint32 f15 = 24;
+    uint32 f1761 = 25;
+    uint32 f1762 = 26;
+    uint32 f1763 = 27;
+    uint32 f1764 = 28;
+    uint32 f1765 = 29;
+    uint32 f1766 = 30;
+    uint32 f1767 = 31;
+    uint32 f1768 = 32;
+    uint32 f1769 = 33;
+    uint32 f1770 = 34;
+    uint32 f1771 = 35;
+    uint32 f1772 = 36;
+    uint32 f1773 = 37;
+    uint32 f1774 = 38;
+    uint32 f21 = 39;
+    uint32 f22 = 40;
+    uint32 f23 = 41;
+    uint32 f24 = 42;
+    uint32 f25 = 43;
+    uint32 f26 = 44;
+    uint32 f27 = 45;
+    uint32 f301 = 46;
+    string f302 = 47;
+    uint32 f303 = 48;
+    string f4_01 = 49;
+    string f4_02 = 50;
+    string f4_03 = 51;
+    string f4_04 = 52;
+    string f4_05 = 53;
+    string f4_06 = 54;
+    string f4_07 = 55;
+    string f4_08 = 56;
+    string f4_09 = 57;
+    string f4_10 = 58;
+    string f4_11 = 59;
+    string f4_12 = 60;
+    string f4_13 = 61;
+    string f4_14 = 62;
+    string f4_15 = 63;
+    string f4_16 = 64;
+    uint32 f6 = 65;
+    uint32 f7 = 66;
+    uint32 f7a = 67;
+    uint32 f10_01 = 68;
+    string f10_02 = 69;
+    string f16_01 = 70;
+    string f16_02 = 71;
+    string f16_03 = 72;
+    string f16_04 = 73;
+    string f16_05 = 74;
+    string f16_06 = 75;
+    string f16_07 = 76;
+    string f16_08 = 77;
+    string f16_09 = 78;
+    string f16_10 = 79;
+    string f16_11 = 80;
+    string f16_12 = 81;
+    string f16_13 = 82;
+    string f16_14 = 83;
+    string nama_atasan = 84;
+    string hp_atasan = 85;
+    string email_atasan = 86;
+    string tinggal_selama_kuliah = 87;
+    string code = 88;
+    string mail_sent = 89;
+    google.protobuf.Timestamp created_at = 90;
+    google.protobuf.Timestamp updated_at = 91;
+    google.protobuf.Timestamp deleted_at = 92;
+}
+
+message EmptyPKTSRequest {}
+
+message GetAllPKTSResponse {
+    uint32 code = 1;
+    string message = 2;
+    repeated PKTS data = 3;
+}
+
+service PKTSService {
+    rpc GetAllPKTS(EmptyPKTSRequest) returns (GetAllPKTSResponse);
+}

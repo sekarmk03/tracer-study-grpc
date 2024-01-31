@@ -9,6 +9,7 @@ import (
 
 	kabkotaModules "tracer-study-grpc/modules/kabkota"
 	mhsbiodataModules "tracer-study-grpc/modules/mhsbiodata"
+	pktsModules "tracer-study-grpc/modules/pkts"
 	prodiModules "tracer-study-grpc/modules/prodi"
 	provinsiModules "tracer-study-grpc/modules/provinsi"
 	respondenModules "tracer-study-grpc/modules/responden"
@@ -42,6 +43,7 @@ func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, g
 	kabkotaModules.InitGrpc(server, cfg, db, grpcConn)
 	mhsbiodataModules.InitGrpc(server, cfg, db, grpcConn)
 	respondenModules.InitGrpc(server, cfg, db, grpcConn)
+	pktsModules.InitGrpc(server, cfg, db, grpcConn)
 }
 
 func checkError(err error) {

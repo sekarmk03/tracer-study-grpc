@@ -1,8 +1,8 @@
-package responden
+package pkts
 
 import (
 	"tracer-study-grpc/common/config"
-	"tracer-study-grpc/modules/responden/builder"
+	"tracer-study-grpc/modules/pkts/builder"
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc"
@@ -10,6 +10,6 @@ import (
 )
 
 func InitGrpc(server *grpc.Server, cfg config.Config, db *gorm.DB, grpcConn *grpc.ClientConn) {
-	responden := builder.BuildRespondenHandler(cfg, db, grpcConn)
-	pb.RegisterRespondenServiceServer(server, responden)
+	pkts := builder.BuildPKTSHandler(cfg, db, grpcConn)
+	pb.RegisterPKTSServiceServer(server, pkts)
 }
