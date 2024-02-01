@@ -25,12 +25,13 @@ type PKTSRepositoryUseCase interface {
 	FindByNim(ctx context.Context, nim string) (*entity.PKTS, error)
 	Create(ctx context.Context, req *entity.PKTS) (*entity.PKTS, error)
 	Update(ctx context.Context, nim string, updatedFields map[string]interface{}) (*entity.PKTS, error)
+	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
 }
 
 func (p *PKTSRepository) FindAll(ctx context.Context, req any) ([]*entity.PKTS, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - FindAll")
 	defer span.End()
-	
+
 	var pkts []*entity.PKTS
 	if err := p.db.Debug().WithContext(ctxSpan).Order("created_at desc").Limit(10).Find(&pkts).Error; err != nil {
 		return nil, err
@@ -77,4 +78,23 @@ func (p *PKTSRepository) Update(ctx context.Context, nim string, updatedFields m
 	}
 
 	return &pkts, nil
+}
+
+func (p *PKTSRepository) FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error) {
+	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - FindByAtasan")
+	defer span.End()
+
+	var nims []*string
+	if err := p.db.Debug().WithContext(ctxSpan).
+		Table(entity.PKTSTableName).
+		Select("nim").
+		Where("hp_atasan LIKE ?", "%"+hpA+"%").
+		Or("LOWER(email_atasan) LIKE LOWER(?)", "%"+emailA+"%").
+		Or("LOWER(nama_atasan) LIKE LOWER(?)", "%"+namaA+"%").
+		Pluck("nim", &nims).
+		Error; err != nil {
+		return nil, err
+	}
+
+	return nims, nil
 }

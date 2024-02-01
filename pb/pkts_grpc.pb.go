@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PKTSService_GetAllPKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/GetAllPKTS"
-	PKTSService_GetPKTSByNim_FullMethodName = "/tracer_study_grpc.PKTSService/GetPKTSByNim"
-	PKTSService_CreatePKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/CreatePKTS"
-	PKTSService_UpdatePKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/UpdatePKTS"
+	PKTSService_GetAllPKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/GetAllPKTS"
+	PKTSService_GetPKTSByNim_FullMethodName       = "/tracer_study_grpc.PKTSService/GetPKTSByNim"
+	PKTSService_CreatePKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/CreatePKTS"
+	PKTSService_UpdatePKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/UpdatePKTS"
+	PKTSService_GetNimByDataAtasan_FullMethodName = "/tracer_study_grpc.PKTSService/GetNimByDataAtasan"
 )
 
 // PKTSServiceClient is the client API for PKTSService service.
@@ -33,6 +34,7 @@ type PKTSServiceClient interface {
 	GetPKTSByNim(ctx context.Context, in *GetPKTSByNimRequest, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	CreatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	UpdatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
+	GetNimByDataAtasan(ctx context.Context, in *GetNimByDataAtasanRequest, opts ...grpc.CallOption) (*GetNimByDataAtasanResponse, error)
 }
 
 type pKTSServiceClient struct {
@@ -79,6 +81,15 @@ func (c *pKTSServiceClient) UpdatePKTS(ctx context.Context, in *PKTS, opts ...gr
 	return out, nil
 }
 
+func (c *pKTSServiceClient) GetNimByDataAtasan(ctx context.Context, in *GetNimByDataAtasanRequest, opts ...grpc.CallOption) (*GetNimByDataAtasanResponse, error) {
+	out := new(GetNimByDataAtasanResponse)
+	err := c.cc.Invoke(ctx, PKTSService_GetNimByDataAtasan_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PKTSServiceServer is the server API for PKTSService service.
 // All implementations must embed UnimplementedPKTSServiceServer
 // for forward compatibility
@@ -87,6 +98,7 @@ type PKTSServiceServer interface {
 	GetPKTSByNim(context.Context, *GetPKTSByNimRequest) (*GetPKTSResponse, error)
 	CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
+	GetNimByDataAtasan(context.Context, *GetNimByDataAtasanRequest) (*GetNimByDataAtasanResponse, error)
 	mustEmbedUnimplementedPKTSServiceServer()
 }
 
@@ -105,6 +117,9 @@ func (UnimplementedPKTSServiceServer) CreatePKTS(context.Context, *PKTS) (*GetPK
 }
 func (UnimplementedPKTSServiceServer) UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePKTS not implemented")
+}
+func (UnimplementedPKTSServiceServer) GetNimByDataAtasan(context.Context, *GetNimByDataAtasanRequest) (*GetNimByDataAtasanResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNimByDataAtasan not implemented")
 }
 func (UnimplementedPKTSServiceServer) mustEmbedUnimplementedPKTSServiceServer() {}
 
@@ -191,6 +206,24 @@ func _PKTSService_UpdatePKTS_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PKTSService_GetNimByDataAtasan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNimByDataAtasanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PKTSServiceServer).GetNimByDataAtasan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PKTSService_GetNimByDataAtasan_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PKTSServiceServer).GetNimByDataAtasan(ctx, req.(*GetNimByDataAtasanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PKTSService_ServiceDesc is the grpc.ServiceDesc for PKTSService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -213,6 +246,10 @@ var PKTSService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdatePKTS",
 			Handler:    _PKTSService_UpdatePKTS_Handler,
+		},
+		{
+			MethodName: "GetNimByDataAtasan",
+			Handler:    _PKTSService_GetNimByDataAtasan_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

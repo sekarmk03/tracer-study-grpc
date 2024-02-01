@@ -20,6 +20,7 @@ type PKTSServiceUseCase interface {
 	FindByNim(ctx context.Context, nim string) (*entity.PKTS, error)
 	Create(ctx context.Context, nim, kodeprodi, thnSidang string, f8, f5_04 uint32, f5_02, f5_06, f5_05, f5a1, f5a2 string, f11_01 uint32, f11_02, f5b string, f5c, f5d, f18a uint32, f18b, f18c, f18d string, f12_01 uint32, f12_02 string, f14, f15, f1761, f1762, f1763, f1764, f1765, f1766, f1767, f1768, f1769, f1770, f1771, f1772, f1773, f1774, f21, f22, f23, f24, f25, f26, f27, f301 uint32, f302 string, f303 uint32, f4_01, f4_02, f4_03, f4_04, f4_05, f4_06, f4_07, f4_08, f4_09, f4_10, f4_11, f4_12, f4_13, f4_14, f4_15, f4_16 string, f6, f7, f7a, f10_01 uint32, f10_02, f16_01, f16_02, f16_03, f16_04, f16_05, f16_06, f16_07, f16_08, f16_09, f16_10, f16_11, f16_12, f16_13, f16_14, namaAtasan, hpAtasan, emailAtasan, tinggalSelamaKuliah string) (*entity.PKTS, error)
 	Update(ctx context.Context, nim string, fields *entity.PKTS) (*entity.PKTS, error)
+	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
 }
 
 func NewPKTSService(cfg config.Config, pktsRepository repository.PKTSRepositoryUseCase) *PKTSService {
@@ -242,6 +243,16 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 	res, err := svc.pktsRepository.Update(ctx, nim, updateMap)
 	if err != nil {
 		log.Println("[PKTSService - Update] Error while update pkts: ", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *PKTSService) FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error) {
+	res, err := svc.pktsRepository.FindByAtasan(ctx, namaA, hpA, emailA)
+	if err != nil {
+		log.Println("[PKTSService - FindByAtasan] Error while find pkts by atasan: ", err)
 		return nil, err
 	}
 

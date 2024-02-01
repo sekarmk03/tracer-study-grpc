@@ -118,9 +118,22 @@ message GetPKTSResponse {
     PKTS data = 3;
 }
 
+message GetNimByDataAtasanRequest {
+    string nama_atasan = 1;
+    string hp_atasan = 2;
+    string email_atasan = 3;
+}
+
+message GetNimByDataAtasanResponse {
+    uint32 code = 1;
+    string message = 2;
+    repeated string nim = 3;
+}
+
 service PKTSService {
     rpc GetAllPKTS(EmptyPKTSRequest) returns (GetAllPKTSResponse);
     rpc GetPKTSByNim(GetPKTSByNimRequest) returns (GetPKTSResponse);
     rpc CreatePKTS(PKTS) returns (GetPKTSResponse);
     rpc UpdatePKTS(PKTS) returns (GetPKTSResponse);
+    rpc GetNimByDataAtasan(GetNimByDataAtasanRequest) returns (GetNimByDataAtasanResponse);
 }
