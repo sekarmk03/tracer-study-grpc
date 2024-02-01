@@ -122,4 +122,5 @@ service PKTSService {
     rpc GetAllPKTS(EmptyPKTSRequest) returns (GetAllPKTSResponse);
     rpc GetPKTSByNim(GetPKTSByNimRequest) returns (GetPKTSResponse);
     rpc CreatePKTS(PKTS) returns (GetPKTSResponse);
+    rpc UpdatePKTS(PKTS) returns (GetPKTSResponse);
 }

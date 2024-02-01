@@ -22,6 +22,7 @@ const (
 	PKTSService_GetAllPKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/GetAllPKTS"
 	PKTSService_GetPKTSByNim_FullMethodName = "/tracer_study_grpc.PKTSService/GetPKTSByNim"
 	PKTSService_CreatePKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/CreatePKTS"
+	PKTSService_UpdatePKTS_FullMethodName   = "/tracer_study_grpc.PKTSService/UpdatePKTS"
 )
 
 // PKTSServiceClient is the client API for PKTSService service.
@@ -31,6 +32,7 @@ type PKTSServiceClient interface {
 	GetAllPKTS(ctx context.Context, in *EmptyPKTSRequest, opts ...grpc.CallOption) (*GetAllPKTSResponse, error)
 	GetPKTSByNim(ctx context.Context, in *GetPKTSByNimRequest, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	CreatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
+	UpdatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 }
 
 type pKTSServiceClient struct {
@@ -68,6 +70,15 @@ func (c *pKTSServiceClient) CreatePKTS(ctx context.Context, in *PKTS, opts ...gr
 	return out, nil
 }
 
+func (c *pKTSServiceClient) UpdatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error) {
+	out := new(GetPKTSResponse)
+	err := c.cc.Invoke(ctx, PKTSService_UpdatePKTS_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PKTSServiceServer is the server API for PKTSService service.
 // All implementations must embed UnimplementedPKTSServiceServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type PKTSServiceServer interface {
 	GetAllPKTS(context.Context, *EmptyPKTSRequest) (*GetAllPKTSResponse, error)
 	GetPKTSByNim(context.Context, *GetPKTSByNimRequest) (*GetPKTSResponse, error)
 	CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
+	UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	mustEmbedUnimplementedPKTSServiceServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedPKTSServiceServer) GetPKTSByNim(context.Context, *GetPKTSByNi
 }
 func (UnimplementedPKTSServiceServer) CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePKTS not implemented")
+}
+func (UnimplementedPKTSServiceServer) UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePKTS not implemented")
 }
 func (UnimplementedPKTSServiceServer) mustEmbedUnimplementedPKTSServiceServer() {}
 
@@ -158,6 +173,24 @@ func _PKTSService_CreatePKTS_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PKTSService_UpdatePKTS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PKTS)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PKTSServiceServer).UpdatePKTS(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PKTSService_UpdatePKTS_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PKTSServiceServer).UpdatePKTS(ctx, req.(*PKTS))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PKTSService_ServiceDesc is the grpc.ServiceDesc for PKTSService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var PKTSService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreatePKTS",
 			Handler:    _PKTSService_CreatePKTS_Handler,
+		},
+		{
+			MethodName: "UpdatePKTS",
+			Handler:    _PKTSService_UpdatePKTS_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

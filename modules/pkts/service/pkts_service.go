@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 	"tracer-study-grpc/common/config"
+	"tracer-study-grpc/common/utils"
 	"tracer-study-grpc/modules/pkts/entity"
 	"tracer-study-grpc/modules/pkts/repository"
 )
@@ -18,6 +19,7 @@ type PKTSServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.PKTS, error)
 	FindByNim(ctx context.Context, nim string) (*entity.PKTS, error)
 	Create(ctx context.Context, nim, kodeprodi, thnSidang string, f8, f5_04 uint32, f5_02, f5_06, f5_05, f5a1, f5a2 string, f11_01 uint32, f11_02, f5b string, f5c, f5d, f18a uint32, f18b, f18c, f18d string, f12_01 uint32, f12_02 string, f14, f15, f1761, f1762, f1763, f1764, f1765, f1766, f1767, f1768, f1769, f1770, f1771, f1772, f1773, f1774, f21, f22, f23, f24, f25, f26, f27, f301 uint32, f302 string, f303 uint32, f4_01, f4_02, f4_03, f4_04, f4_05, f4_06, f4_07, f4_08, f4_09, f4_10, f4_11, f4_12, f4_13, f4_14, f4_15, f4_16 string, f6, f7, f7a, f10_01 uint32, f10_02, f16_01, f16_02, f16_03, f16_04, f16_05, f16_06, f16_07, f16_08, f16_09, f16_10, f16_11, f16_12, f16_13, f16_14, namaAtasan, hpAtasan, emailAtasan, tinggalSelamaKuliah string) (*entity.PKTS, error)
+	Update(ctx context.Context, nim string, fields *entity.PKTS) (*entity.PKTS, error)
 }
 
 func NewPKTSService(cfg config.Config, pktsRepository repository.PKTSRepositoryUseCase) *PKTSService {
@@ -142,6 +144,104 @@ func (svc *PKTSService) Create(ctx context.Context, nim, kodeprodi, thnSidang st
 	res, err := svc.pktsRepository.Create(ctx, reqEntity)
 	if err != nil {
 		log.Println("[PKTSService - Create] Error while create pkts: ", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.PKTS) (*entity.PKTS, error) {
+	updateMap := make(map[string]interface{})
+
+	utils.AddItemToMap(updateMap, "f8", fields.F8)
+	utils.AddItemToMap(updateMap, "f5_04", fields.F5_04)
+	utils.AddItemToMap(updateMap, "f5_02", fields.F5_02)
+	utils.AddItemToMap(updateMap, "f5_06", fields.F5_06)
+	utils.AddItemToMap(updateMap, "f5_05", fields.F5_05)
+	utils.AddItemToMap(updateMap, "f5a1", fields.F5a1)
+	utils.AddItemToMap(updateMap, "f5a2", fields.F5a2)
+	utils.AddItemToMap(updateMap, "f11_01", fields.F11_01)
+	utils.AddItemToMap(updateMap, "f11_02", fields.F11_02)
+	utils.AddItemToMap(updateMap, "f5b", fields.F5b)
+	utils.AddItemToMap(updateMap, "f5c", fields.F5c)
+	utils.AddItemToMap(updateMap, "f5d", fields.F5d)
+	utils.AddItemToMap(updateMap, "f18a", fields.F18a)
+	utils.AddItemToMap(updateMap, "f18b", fields.F18b)
+	utils.AddItemToMap(updateMap, "f18c", fields.F18c)
+	utils.AddItemToMap(updateMap, "f18d", fields.F18d)
+	utils.AddItemToMap(updateMap, "f12_01", fields.F12_01)
+	utils.AddItemToMap(updateMap, "f12_02", fields.F12_02)
+	utils.AddItemToMap(updateMap, "f14", fields.F14)
+	utils.AddItemToMap(updateMap, "f15", fields.F15)
+	utils.AddItemToMap(updateMap, "f1761", fields.F1761)
+	utils.AddItemToMap(updateMap, "f1762", fields.F1762)
+	utils.AddItemToMap(updateMap, "f1763", fields.F1763)
+	utils.AddItemToMap(updateMap, "f1764", fields.F1764)
+	utils.AddItemToMap(updateMap, "f1765", fields.F1765)
+	utils.AddItemToMap(updateMap, "f1766", fields.F1766)
+	utils.AddItemToMap(updateMap, "f1767", fields.F1767)
+	utils.AddItemToMap(updateMap, "f1768", fields.F1768)
+	utils.AddItemToMap(updateMap, "f1769", fields.F1769)
+	utils.AddItemToMap(updateMap, "f1770", fields.F1770)
+	utils.AddItemToMap(updateMap, "f1771", fields.F1771)
+	utils.AddItemToMap(updateMap, "f1772", fields.F1772)
+	utils.AddItemToMap(updateMap, "f1773", fields.F1773)
+	utils.AddItemToMap(updateMap, "f1774", fields.F1774)
+	utils.AddItemToMap(updateMap, "f21", fields.F21)
+	utils.AddItemToMap(updateMap, "f22", fields.F22)
+	utils.AddItemToMap(updateMap, "f23", fields.F23)
+	utils.AddItemToMap(updateMap, "f24", fields.F24)
+	utils.AddItemToMap(updateMap, "f25", fields.F25)
+	utils.AddItemToMap(updateMap, "f26", fields.F26)
+	utils.AddItemToMap(updateMap, "f27", fields.F27)
+	utils.AddItemToMap(updateMap, "f301", fields.F301)
+	utils.AddItemToMap(updateMap, "f302", fields.F302)
+	utils.AddItemToMap(updateMap, "f303", fields.F303)
+	utils.AddItemToMap(updateMap, "f4_01", fields.F4_01)
+	utils.AddItemToMap(updateMap, "f4_02", fields.F4_02)
+	utils.AddItemToMap(updateMap, "f4_03", fields.F4_03)
+	utils.AddItemToMap(updateMap, "f4_04", fields.F4_04)
+	utils.AddItemToMap(updateMap, "f4_05", fields.F4_05)
+	utils.AddItemToMap(updateMap, "f4_06", fields.F4_06)
+	utils.AddItemToMap(updateMap, "f4_07", fields.F4_07)
+	utils.AddItemToMap(updateMap, "f4_08", fields.F4_08)
+	utils.AddItemToMap(updateMap, "f4_09", fields.F4_09)
+	utils.AddItemToMap(updateMap, "f4_10", fields.F4_10)
+	utils.AddItemToMap(updateMap, "f4_11", fields.F4_11)
+	utils.AddItemToMap(updateMap, "f4_12", fields.F4_12)
+	utils.AddItemToMap(updateMap, "f4_13", fields.F4_13)
+	utils.AddItemToMap(updateMap, "f4_14", fields.F4_14)
+	utils.AddItemToMap(updateMap, "f4_15", fields.F4_15)
+	utils.AddItemToMap(updateMap, "f4_16", fields.F4_16)
+	utils.AddItemToMap(updateMap, "f6", fields.F6)
+	utils.AddItemToMap(updateMap, "f7", fields.F7)
+	utils.AddItemToMap(updateMap, "f7a", fields.F7a)
+	utils.AddItemToMap(updateMap, "f10_01", fields.F10_01)
+	utils.AddItemToMap(updateMap, "f10_02", fields.F10_02)
+	utils.AddItemToMap(updateMap, "f16_01", fields.F16_01)
+	utils.AddItemToMap(updateMap, "f16_02", fields.F16_02)
+	utils.AddItemToMap(updateMap, "f16_03", fields.F16_03)
+	utils.AddItemToMap(updateMap, "f16_04", fields.F16_04)
+	utils.AddItemToMap(updateMap, "f16_05", fields.F16_05)
+	utils.AddItemToMap(updateMap, "f16_06", fields.F16_06)
+	utils.AddItemToMap(updateMap, "f16_07", fields.F16_07)
+	utils.AddItemToMap(updateMap, "f16_08", fields.F16_08)
+	utils.AddItemToMap(updateMap, "f16_09", fields.F16_09)
+	utils.AddItemToMap(updateMap, "f16_10", fields.F16_10)
+	utils.AddItemToMap(updateMap, "f16_11", fields.F16_11)
+	utils.AddItemToMap(updateMap, "f16_12", fields.F16_12)
+	utils.AddItemToMap(updateMap, "f16_13", fields.F16_13)
+	utils.AddItemToMap(updateMap, "f16_14", fields.F16_14)
+	utils.AddItemToMap(updateMap, "nama_atasan", fields.NamaAtasan)
+	utils.AddItemToMap(updateMap, "hp_atasan", fields.HpAtasan)
+	utils.AddItemToMap(updateMap, "email_atasan", fields.EmailAtasan)
+	utils.AddItemToMap(updateMap, "tinggal_selama_kuliah", fields.TinggalSelamaKuliah)
+
+	log.Print(updateMap)
+
+	res, err := svc.pktsRepository.Update(ctx, nim, updateMap)
+	if err != nil {
+		log.Println("[PKTSService - Update] Error while update pkts: ", err)
 		return nil, err
 	}
 

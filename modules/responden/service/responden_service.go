@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 	"tracer-study-grpc/common/config"
+	"tracer-study-grpc/common/utils"
 	"tracer-study-grpc/modules/responden/entity"
 	"tracer-study-grpc/modules/responden/repository"
 )
@@ -57,24 +58,24 @@ func (scv *RespondenService) Update(ctx context.Context, nim string, fields *ent
 		"updated_by":    "system",
 	}
 
-	addItemToMap(updateMap, "ipk", fields.Ipk)
-	addItemToMap(updateMap, "kodedikti", fields.Kodedikti)
-	addItemToMap(updateMap, "jenjang", fields.Jenjang)
-	addItemToMap(updateMap, "namaprodi", fields.Namaprodi)
-	addItemToMap(updateMap, "namaprodi2", fields.Namaprodi2)
-	addItemToMap(updateMap, "kodeprodi", fields.Kodeprodi)
-	addItemToMap(updateMap, "kodeprodi2", fields.Kodeprodi2)
-	addItemToMap(updateMap, "kodefak", fields.Kodefak)
-	addItemToMap(updateMap, "namafak", fields.Namafak)
-	addItemToMap(updateMap, "jlrmasuk", fields.Jlrmasuk)
-	addItemToMap(updateMap, "thnmasuk", fields.Thnmasuk)
-	addItemToMap(updateMap, "thn_ak", fields.ThnAk)
-	addItemToMap(updateMap, "lamastd", fields.Lamastd)
-	addItemToMap(updateMap, "semester", fields.Semester)
-	addItemToMap(updateMap, "email", fields.Email)
-	addItemToMap(updateMap, "hp", fields.Hp)
-	addItemToMap(updateMap, "nik", fields.Nik)
-	addItemToMap(updateMap, "npwp", fields.Npwp)
+	utils.AddItemToMap(updateMap, "ipk", fields.Ipk)
+	utils.AddItemToMap(updateMap, "kodedikti", fields.Kodedikti)
+	utils.AddItemToMap(updateMap, "jenjang", fields.Jenjang)
+	utils.AddItemToMap(updateMap, "namaprodi", fields.Namaprodi)
+	utils.AddItemToMap(updateMap, "namaprodi2", fields.Namaprodi2)
+	utils.AddItemToMap(updateMap, "kodeprodi", fields.Kodeprodi)
+	utils.AddItemToMap(updateMap, "kodeprodi2", fields.Kodeprodi2)
+	utils.AddItemToMap(updateMap, "kodefak", fields.Kodefak)
+	utils.AddItemToMap(updateMap, "namafak", fields.Namafak)
+	utils.AddItemToMap(updateMap, "jlrmasuk", fields.Jlrmasuk)
+	utils.AddItemToMap(updateMap, "thnmasuk", fields.Thnmasuk)
+	utils.AddItemToMap(updateMap, "thn_ak", fields.ThnAk)
+	utils.AddItemToMap(updateMap, "lamastd", fields.Lamastd)
+	utils.AddItemToMap(updateMap, "semester", fields.Semester)
+	utils.AddItemToMap(updateMap, "email", fields.Email)
+	utils.AddItemToMap(updateMap, "hp", fields.Hp)
+	utils.AddItemToMap(updateMap, "nik", fields.Nik)
+	utils.AddItemToMap(updateMap, "npwp", fields.Npwp)
 
 	log.Print(updateMap)
 
@@ -120,10 +121,4 @@ func (scv *RespondenService) Create(ctx context.Context, nim string, semester, t
 	}
 
 	return res, nil
-}
-
-func addItemToMap(m map[string]interface{}, key string, value any) {
-	if value != nil && value != "" {
-		m[key] = value
-	}
 }

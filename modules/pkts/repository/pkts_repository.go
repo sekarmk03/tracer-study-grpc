@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
-	"go.opencensus.io/trace"
+	"time"
 	"tracer-study-grpc/modules/pkts/entity"
+
+	"go.opencensus.io/trace"
 
 	"gorm.io/gorm"
 )
@@ -22,6 +24,7 @@ type PKTSRepositoryUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.PKTS, error)
 	FindByNim(ctx context.Context, nim string) (*entity.PKTS, error)
 	Create(ctx context.Context, req *entity.PKTS) (*entity.PKTS, error)
+	Update(ctx context.Context, nim string, updatedFields map[string]interface{}) (*entity.PKTS, error)
 }
 
 func (p *PKTSRepository) FindAll(ctx context.Context, req any) ([]*entity.PKTS, error) {
@@ -57,4 +60,21 @@ func (p *PKTSRepository) Create(ctx context.Context, req *entity.PKTS) (*entity.
 	}
 
 	return req, nil
+}
+
+func (p *PKTSRepository) Update(ctx context.Context, nim string, updatedFields map[string]interface{}) (*entity.PKTS, error) {
+	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - Update")
+	defer span.End()
+
+	var pkts entity.PKTS
+	if err := p.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&pkts).Error; err != nil {
+		return nil, err
+	}
+
+	updatedFields["updated_at"] = time.Now()
+	if err := p.db.Debug().WithContext(ctxSpan).Model(&pkts).Updates(updatedFields).Error; err != nil {
+		return nil, err
+	}
+
+	return &pkts, nil
 }
