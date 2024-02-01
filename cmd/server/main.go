@@ -22,6 +22,8 @@ func main() {
 	cfg, cerr := config.NewConfig(".env")
 	checkError(cerr)
 
+	splash(cfg)
+
 	dsn, derr := mysql.NewPool(&cfg.MySQL)
 	checkError(derr)
 
@@ -50,4 +52,26 @@ func checkError(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+// splash prints out the splash screen
+func splash(cfg *config.Config) {
+	version := "1.0.0"
+	colorReset := "\033[0m"
+	// colorBlue := "\033[34m"
+	colorCyan := "\033[36m"
+
+	fmt.Printf(`
+    __                                                    __                    __
+  _/  |_ _______ ______   ____  ______ _______     ______/  |__  __   __       |  \ __   __
+  \   __\\_  __ \\___  \_/ ___\/  __  \\_  __ \   /  ___/\   __\|  | |  |   ___|  ||  | |  |
+   |  |   |  | \/  / ___\  \___\   ___/ |  | \/   \___ \  |  |  |  |_|  | /  __   ||  |_|  | >>
+   |__|   |__|    (____  /\__  >\___  > |__|     /____  > |__|  | ______|(  ____  )\__   __/
+                       \/    \/     \/                \/        \/        \/    \/ _ /  /    v%s
+                                                                                  / ___/
+	`, version)
+
+	// fmt.Println(colorBlue, fmt.Sprintf(`⇨ REST server started on port :%s`, cfg.Port.REST))
+	fmt.Println(colorCyan, fmt.Sprintf(`⇨ GRPC server started on port :%s`, cfg.Port.GRPC))
+	fmt.Println(colorReset, "")
 }
