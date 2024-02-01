@@ -101,10 +101,15 @@ message CreateRespondenResponse {
     Responden data = 3;
 }
 
+message GetRespondenByNimListRequest {
+    repeated string nims = 1;
+}
+
 service RespondenService {
     rpc GetAllResponden(EmptyRespondenRequest) returns (GetAllRespondenResponse) {};
     rpc GetRespondenByNim(GetRespondenByNimRequest) returns (GetRespondenByNimResponse) {};
     rpc UpdateRespondenFromSiak(UpdateRespondenFromSiakRequest) returns (UpdateRespondenResponse) {};
     rpc CreateResponden(CreateRespondenRequest) returns (CreateRespondenResponse) {};
     rpc UpdateResponden(Responden) returns (UpdateRespondenResponse) {};
+    rpc GetRespondenByNimList(GetRespondenByNimListRequest) returns (GetAllRespondenResponse) {};
 }

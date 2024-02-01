@@ -127,7 +127,7 @@ message GetNimByDataAtasanRequest {
 message GetNimByDataAtasanResponse {
     uint32 code = 1;
     string message = 2;
-    repeated string nim = 3;
+    repeated string nims = 3;
 }
 
 service PKTSService {

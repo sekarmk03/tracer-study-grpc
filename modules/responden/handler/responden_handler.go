@@ -132,3 +132,22 @@ func (rh *RespondenHandler) UpdateResponden(ctx context.Context, req *pb.Respond
 		Data:    respondenProto,
 	}, nil
 }
+
+func (rh *RespondenHandler) GetRespondenByNimList(ctx context.Context, req *pb.GetRespondenByNimListRequest) (*pb.GetAllRespondenResponse, error) {
+	responden, err := rh.respondenSvc.FindByNimList(ctx, req.GetNims())
+	if err != nil {
+		return nil, err
+	}
+
+	var respondenArr []*pb.Responden
+	for _, r := range responden {
+		respondenProto := entity.ConvertEntityToProto(r)
+		respondenArr = append(respondenArr, respondenProto)
+	}
+
+	return &pb.GetAllRespondenResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "get responden by nim list success",
+		Data:    respondenArr,
+	}, nil
+}

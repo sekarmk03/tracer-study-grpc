@@ -189,6 +189,6 @@ func (ph *PKTSHandler) GetNimByDataAtasan(ctx context.Context, req *pb.GetNimByD
 	return &pb.GetNimByDataAtasanResponse{
 		Code:    uint32(http.StatusOK),
 		Message: "get pkts by atasan success",
-		Nim:     result,
+		Nims:     result,
 	}, nil
 }
