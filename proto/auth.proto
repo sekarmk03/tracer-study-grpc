@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package tracer_study_grpc;
+option go_package = "./;pb";
+
+message LoginRequest {
+    string nim = 1;
+    string tgl_sidang = 2;
+}
+
+message LoginResponse {
+    uint32 code = 1;
+    string message = 2;
+    string token = 3;
+}
+
+service AuthService {
+    rpc Login(LoginRequest) returns (LoginResponse);
+}

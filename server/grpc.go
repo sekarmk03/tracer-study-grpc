@@ -7,13 +7,19 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
+
+	commonJwt "tracer-study-grpc/common/jwt"
+	"tracer-study-grpc/server/interceptor"
 
 	"google.golang.org/grpc"
 )
 
 const (
-	connProtocol = "tcp"
-	maxMsgSize   = 1024 * 1024 * 150
+	connProtocol  = "tcp"
+	maxMsgSize    = 1024 * 1024 * 150
+	tokenDuration = 5 * time.Minute
+	secretKey     = "secret"
 )
 
 type Grpc struct {
@@ -22,11 +28,11 @@ type Grpc struct {
 	Port     string
 }
 
-func NewGrpc(port string /*, options ...grpc.ServerOption*/) *Grpc {
-	// options = append(options, grpc.MaxSendMsgSize(maxMsgSize))
-	// options = append(options, grpc.MaxRecvMsgSize(maxMsgSize))
+func NewGrpc(port string, options ...grpc.ServerOption) *Grpc {
+	options = append(options, grpc.MaxSendMsgSize(maxMsgSize))
+	options = append(options, grpc.MaxRecvMsgSize(maxMsgSize))
 
-	server := grpc.NewServer( /*options...*/ )
+	server := grpc.NewServer(options...)
 
 	return &Grpc{
 		Server: server,
@@ -34,10 +40,16 @@ func NewGrpc(port string /*, options ...grpc.ServerOption*/) *Grpc {
 	}
 }
 
-func NewGrpcServer(port string) *Grpc {
+func NewGrpcServer(port string, jwtManager *commonJwt.JWT) *Grpc {
 	// var options grpc.ServerOption
+	// options := grpc_middleware.WithUnaryServerChain()
 	// add option unary interceptor
-	server := NewGrpc(port /*, options*/)
+	// jwtManager := commonJwt.NewJWT(secretKey, tokenDuration)
+	authInterceptor := interceptor.NewAuthInterceptor(jwtManager, accessibleRoles())
+	options := []grpc.ServerOption{
+		grpc.UnaryInterceptor(authInterceptor.Unary()),
+	}
+	server := NewGrpc(port, options...)
 	return server
 }
 
@@ -69,9 +81,19 @@ func (g *Grpc) AwaitTermination() error {
 }
 
 // func defaultUnaryServerInterceptor() []grpc.UnaryServerInterceptor {
-// 	options := []grpc.UnaryServerInterceptor{
-// 		grpc_auth.UnaryServerInterceptor(commonJwt.Authorize)
+// 	jwtManager := commonJwt.NewJWT(secretKey, tokenDuration)
+// 	authInterceptor := interceptor.NewAuthInterceptor(jwtManager, accessibleRoles())
+
+// 	options := []grpc.ServerOption{
+// 		grpc.UnaryInterceptor(authInterceptor.Unary()),
 // 	}
 
 // 	return options
 // }
+
+func accessibleRoles() map[string][]uint32 {
+	const prodiService = "/tracer_study_grpc.ProdiService/"
+	return map[string][]uint32{
+		prodiService + "GetAllProdi": {1},
+	}
+}

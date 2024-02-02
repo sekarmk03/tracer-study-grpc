@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/modules/mhsbiodata/entity"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type MhsBiodataService struct {
@@ -60,6 +63,10 @@ func (svc *MhsBiodataService) FetchMhsBiodataByNimFromSiakApi(nim string) (*enti
 	var apiResponse []entity.MhsBiodata
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return nil, err
+	}
+
+	if len(apiResponse) == 0 {
+		return nil, status.Errorf(codes.NotFound, "resource not found")
 	}
 
 	return &apiResponse[0], nil
