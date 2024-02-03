@@ -1,12 +1,13 @@
 package jwt
 
 import (
+	"fmt"
 	"log"
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	// "google.golang.org/grpc/codes"
+	// "google.golang.org/grpc/status"
 )
 
 type JWT struct {
@@ -47,27 +48,29 @@ func (j *JWT) Verify(accessToken string) (*CustomClaims, error) {
 		func(token *jwt.Token) (interface{}, error) {
 			_, ok := token.Method.(*jwt.SigningMethodHMAC)
 			if !ok {
-				log.Println("[JWT - Verify] ERROR Unexpected signing method")
-				return nil, status.Errorf(codes.Internal, "unexpected signing method")
+				log.Println("ERROR [JWT - Verify] Unexpected signing method")
+				return nil, fmt.Errorf("unexpected signing method")
 			}
 			return []byte(j.secretKey), nil
 		},
 	)
 
 	if err != nil {
-		log.Println("[JWT - Verify] ERROR While parsing token: ", err)
-		return nil, status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
+		log.Println("ERROR [JWT - Verify] Error while parsing token:", err)
+		// return nil, status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
+		return nil, err
 	}
 
 	claims, ok := token.Claims.(*CustomClaims)
 	if !ok {
-		log.Println("[JWT - Verify] ERROR Invalid token claims")
-		return nil, status.Error(codes.Unauthenticated, "invalid token claims")
+		log.Println("ERROR [JWT - Verify] Invalid token claims")
+		// return nil, status.Error(codes.Unauthenticated, "invalid token claims")
+		return nil, fmt.Errorf("invalid token claims")
 	}
 
 	if err := claims.Valid(); err != nil {
-		log.Println("[JWT - Verify] ERROR Invalid token: ", err)
-		return nil, status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
+		log.Println("ERROR [JWT - Verify] Invalid token:", err)
+		return nil, err
 	}
 
 	return claims, nil
@@ -76,7 +79,8 @@ func (j *JWT) Verify(accessToken string) (*CustomClaims, error) {
 func (c *CustomClaims) Valid() error {
 	// check if the token has expired.
 	if time.Now().Unix() > c.StandardClaims.ExpiresAt {
-		return status.Error(codes.Unauthenticated, "token has expired")
+		// return status.Error(codes.Unauthenticated, "token has expired")
+		return fmt.Errorf("token has expired")
 	}
 
 	return nil

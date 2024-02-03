@@ -34,11 +34,11 @@ func (mbh *MhsBiodataHandler) FetchMhsBiodataByNim(ctx context.Context, req *pb.
 	apiResponse, err := mbh.mhsbiodataSvc.FetchMhsBiodataByNimFromSiakApi(nim)
 	if err != nil {
 		if apiResponse == nil {
-			log.Println("[MhsBiodataHandler - FetchMhsBiodataByNim] Mhs resource not found")
+			log.Println("WARNING [MhsBiodataHandler - FetchMhsBiodataByNim] Mhs resource not found")
 			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 		}
 
-		log.Println("[MhsBiodataHandler - FetchMhsBiodataByNim] ERROR While fetching mhs biodata: ", err)
+		log.Println("ERROR [MhsBiodataHandler - FetchMhsBiodataByNim] Error while fetching mhs biodata: ", err)
 		parseError := errors.ParseError(err)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
