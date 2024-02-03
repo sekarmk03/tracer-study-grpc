@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/errors"
@@ -32,17 +33,25 @@ func NewAuthHandler(config config.Config, mhsService service.MhsBiodataServiceUs
 func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
 	mhs, err := ah.mhsSvc.FetchMhsBiodataByNimFromSiakApi(req.GetNim())
 	if err != nil {
+		if mhs == nil {
+			log.Println("[AuthHandler - Login] Mhs resource not found")
+			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
+		}
+		log.Println("[AuthHandler - Login] ERROR While fetching mhs biodata: ", err)
 		parseError := errors.ParseError(err)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	if mhs == nil {
+		log.Println("[AuthHandler - Login] Mhs resource not found")
 		return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 	}
 
+	// generate token with role 2
 	token, err := ah.jwtManager.GenerateToken(mhs.NIM, 2)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "token failed to generate")
+		log.Println("[AuthHandler - Login] ERROR While generating token: ", err)
+		return nil, status.Errorf(codes.Internal, "token failed to generate: %v", err)
 	}
 
 	return &pb.LoginResponse{

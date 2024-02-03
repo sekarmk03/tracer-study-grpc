@@ -37,7 +37,7 @@ func NewPKTSService(cfg config.Config, pktsRepository repository.PKTSRepositoryU
 func (svc *PKTSService) FindAll(ctx context.Context, req any) ([]*entity.PKTS, error) {
 	res, err := svc.pktsRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("[PKTSService - FindAll] Error while find all pkts: ", err)
+		log.Println("[PKTSService - FindAll] ERROR While find all pkts: ", err)
 		return nil, err
 	}
 
@@ -47,7 +47,7 @@ func (svc *PKTSService) FindAll(ctx context.Context, req any) ([]*entity.PKTS, e
 func (svc *PKTSService) FindByNim(ctx context.Context, nim string) (*entity.PKTS, error) {
 	res, err := svc.pktsRepository.FindByNim(ctx, nim)
 	if err != nil {
-		log.Println("[PKTSService - FindByNim] Error while find pkts by nim: ", err)
+		log.Println("[PKTSService - FindByNim] ERROR While find pkts by nim: ", err)
 		return nil, err
 	}
 
@@ -148,7 +148,7 @@ func (svc *PKTSService) Create(ctx context.Context, nim, kodeprodi, thnSidang st
 
 	res, err := svc.pktsRepository.Create(ctx, reqEntity)
 	if err != nil {
-		log.Println("[PKTSService - Create] Error while create pkts: ", err)
+		log.Println("[PKTSService - Create] ERROR While create pkts: ", err)
 		return nil, err
 	}
 
@@ -246,7 +246,7 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 
 	res, err := svc.pktsRepository.Update(ctx, nim, updateMap)
 	if err != nil {
-		log.Println("[PKTSService - Update] Error while update pkts: ", err)
+		log.Println("[PKTSService - Update] ERROR While update pkts: ", err)
 		return nil, err
 	}
 
@@ -256,7 +256,7 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 func (svc *PKTSService) FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error) {
 	res, err := svc.pktsRepository.FindByAtasan(ctx, namaA, hpA, emailA)
 	if err != nil {
-		log.Println("[PKTSService - FindByAtasan] Error while find pkts by atasan: ", err)
+		log.Println("[PKTSService - FindByAtasan] ERROR While find pkts by atasan: ", err)
 		return nil, err
 	}
 

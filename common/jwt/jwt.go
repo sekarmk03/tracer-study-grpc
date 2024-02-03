@@ -1,10 +1,12 @@
 package jwt
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type JWT struct {
@@ -45,36 +47,37 @@ func (j *JWT) Verify(accessToken string) (*CustomClaims, error) {
 		func(token *jwt.Token) (interface{}, error) {
 			_, ok := token.Method.(*jwt.SigningMethodHMAC)
 			if !ok {
-				return nil, fmt.Errorf("unexpected signing method")
+				log.Println("[JWT - Verify] ERROR Unexpected signing method")
+				return nil, status.Errorf(codes.Internal, "unexpected signing method")
 			}
 			return []byte(j.secretKey), nil
 		},
 	)
 
 	if err != nil {
-		return nil, fmt.Errorf("invalid token: %w", err)
+		log.Println("[JWT - Verify] ERROR While parsing token: ", err)
+		return nil, status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
 	}
 
 	claims, ok := token.Claims.(*CustomClaims)
 	if !ok {
-		return nil, fmt.Errorf("invalid token claims")
+		log.Println("[JWT - Verify] ERROR Invalid token claims")
+		return nil, status.Error(codes.Unauthenticated, "invalid token claims")
 	}
 
 	if err := claims.Valid(); err != nil {
-		return nil, fmt.Errorf("invalid token: %w", err)
+		log.Println("[JWT - Verify] ERROR Invalid token: ", err)
+		return nil, status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
 	}
 
 	return claims, nil
 }
 
 func (c *CustomClaims) Valid() error {
-	// You need to implement your own validation logic here.
-	// For example, you can check if the token has expired.
+	// check if the token has expired.
 	if time.Now().Unix() > c.StandardClaims.ExpiresAt {
-		return fmt.Errorf("token has expired")
+		return status.Error(codes.Unauthenticated, "token has expired")
 	}
-
-	// Add additional validation checks as needed.
 
 	return nil
 }

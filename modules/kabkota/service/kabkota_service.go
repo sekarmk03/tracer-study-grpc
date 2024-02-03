@@ -27,7 +27,7 @@ func NewKabKotaService(cfg config.Config, kabkotaRepository repository.KabKotaRe
 func (svc *KabKotaService) FindAll(ctx context.Context, req any) ([]*entity.KabKota, error) {
 	res, err := svc.kabkotaRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("[KabKotaService - FindAll] Error while find all kabkota: ", err)
+		log.Println("[KabKotaService - FindAll] ERROR While find all kabkota: ", err)
 		return nil, err
 	}
 

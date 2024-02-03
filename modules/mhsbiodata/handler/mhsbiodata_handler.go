@@ -38,7 +38,7 @@ func (mbh *MhsBiodataHandler) FetchMhsBiodataByNim(ctx context.Context, req *pb.
 			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 		}
 
-		log.Println("[MhsBiodataHandler - FetchMhsBiodataByNim] Error while fetching mhs biodata: ", err)
+		log.Println("[MhsBiodataHandler - FetchMhsBiodataByNim] ERROR While fetching mhs biodata: ", err)
 		parseError := errors.ParseError(err)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}

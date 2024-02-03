@@ -13,6 +13,8 @@ import (
 	"tracer-study-grpc/server/interceptor"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const (
@@ -57,7 +59,7 @@ func (g *Grpc) Run() error {
 	var err error
 	g.listener, err = net.Listen(connProtocol, fmt.Sprintf(":%s", g.Port))
 	if err != nil {
-		return err
+		return status.Errorf(codes.Internal, "ERROR Failed to listen on port %s: %v", g.Port, err)
 	}
 
 	go g.serve()
