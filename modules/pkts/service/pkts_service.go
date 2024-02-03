@@ -2,12 +2,16 @@ package service
 
 import (
 	"context"
+	// "database/sql"
+	// "errors"
 	"log"
 	"time"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/utils"
 	"tracer-study-grpc/modules/pkts/entity"
 	"tracer-study-grpc/modules/pkts/repository"
+	// "google.golang.org/grpc/codes"
+	// "google.golang.org/grpc/status"
 )
 
 type PKTSService struct {

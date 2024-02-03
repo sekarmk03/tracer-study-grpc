@@ -3,14 +3,25 @@ package service
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"io"
+	"log"
 	"net/http"
+	"time"
 	"tracer-study-grpc/common/config"
+
+	// "tracer-study-grpc/common/errors"
 	"tracer-study-grpc/modules/mhsbiodata/entity"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	// "google.golang.org/grpc/codes"
+	// "google.golang.org/grpc/status"
+)
+
+const (
+	apiMaxRetries = 3
+	sleepTime = 500 * time.Millisecond
 )
 
 type MhsBiodataService struct {
@@ -31,43 +42,73 @@ func (svc *MhsBiodataService) FetchMhsBiodataByNimFromSiakApi(nim string) (*enti
 	payload := map[string]string{"nim": nim}
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
-		return nil, err
+		log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while marshalling payload: ", err)
+		if _, isUnsupportedTypeError := err.(*json.UnsupportedTypeError); isUnsupportedTypeError {
+			return nil, status.Errorf(codes.InvalidArgument, "invalid payload: unsupported data type")
+		}
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	apiUrl := svc.cfg.SIAK_API.URL
 	apiKey := svc.cfg.SIAK_API.KEY
-	reqHttp, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(payloadBytes))
-	if err != nil {
-		return nil, err
+
+	for attempt := 1; attempt <= apiMaxRetries; attempt++ {
+		reqHttp, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(payloadBytes))
+		if err != nil {
+			log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while creating HTTP request: ", err)
+			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+		}
+
+		reqHttp.Header.Set("Api-Key", apiKey)
+		reqHttp.Header.Set("Content-Type", "application/json")
+
+		client := &http.Client{}
+		resp, err := client.Do(reqHttp)
+		if err != nil {
+			log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while sending HTTP request: ", err)
+
+			if attempt == apiMaxRetries {
+				log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error maximum retries reached: ", err)
+				return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+			}
+
+			time.Sleep(sleepTime)
+			continue
+		}
+
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] HTTP request failed with status code: ", resp.StatusCode)
+
+			if attempt == apiMaxRetries {
+				log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error maximum retries reached: ", resp.StatusCode, resp.Body)
+				return nil, status.Errorf(codes.Internal, "internal server error: HTTP request failed with status code: %d", resp.StatusCode)
+			}
+
+			time.Sleep(sleepTime)
+			continue
+		}
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while reading HTTP response body: ", err)
+			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+		}
+
+		var apiResponse []entity.MhsBiodata
+		if err := json.Unmarshal(body, &apiResponse); err != nil {
+			log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while unmarshalling HTTP response body: ", err)
+			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+		}
+
+		if len(apiResponse) == 0 {
+			log.Println("[MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error resource not found: nim ", nim)
+			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
+		}
+
+		return &apiResponse[0], nil
 	}
 
-	reqHttp.Header.Set("Api-Key", apiKey)
-	reqHttp.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(reqHttp)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("HTTP request failed with status code: %d", resp.StatusCode)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var apiResponse []entity.MhsBiodata
-	if err := json.Unmarshal(body, &apiResponse); err != nil {
-		return nil, err
-	}
-
-	if len(apiResponse) == 0 {
-		return nil, status.Errorf(codes.NotFound, "resource not found")
-	}
-
-	return &apiResponse[0], nil
+	return nil, status.Errorf(codes.Internal, "internal server error: maximum retries reached without success")
 }

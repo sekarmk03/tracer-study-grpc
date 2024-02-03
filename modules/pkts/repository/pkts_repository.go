@@ -2,10 +2,13 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"time"
 	"tracer-study-grpc/modules/pkts/entity"
 
 	"go.opencensus.io/trace"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"gorm.io/gorm"
 )
@@ -44,12 +47,15 @@ func (p *PKTSRepository) FindByNim(ctx context.Context, nim string) (*entity.PKT
 	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - FindByNim")
 	defer span.End()
 
-	var pkt entity.PKTS
-	if err := p.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&pkt).Error; err != nil {
-		return nil, err
+	var pkts entity.PKTS
+	if err := p.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&pkts).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, status.Errorf(codes.NotFound, "record not found for nim: %s", nim)
+		}
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
-	return &pkt, nil
+	return &pkts, nil
 }
 
 func (p *PKTSRepository) Create(ctx context.Context, req *entity.PKTS) (*entity.PKTS, error) {
@@ -93,6 +99,10 @@ func (p *PKTSRepository) FindByAtasan(ctx context.Context, namaA, hpA, emailA st
 		Or("LOWER(nama_atasan) LIKE LOWER(?)", "%"+namaA+"%").
 		Pluck("nim", &nims).
 		Error; err != nil {
+		// if errors.Is(err, sql.ErrNoRows) {
+		// 	return nil, status.Error(codes.NotFound, "record not found")
+		// }
+		// return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 		return nil, err
 	}
 

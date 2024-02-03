@@ -4,10 +4,13 @@ import (
 	"context"
 	"net/http"
 	"tracer-study-grpc/common/config"
+	"tracer-study-grpc/common/errors"
 	mhsbSvc "tracer-study-grpc/modules/mhsbiodata/service"
 	"tracer-study-grpc/modules/responden/entity"
 	resSvc "tracer-study-grpc/modules/responden/service"
 	"tracer-study-grpc/pb"
+
+	"google.golang.org/grpc/status"
 )
 
 type RespondenHandler struct {
@@ -28,7 +31,13 @@ func NewRespondenHandler(config config.Config, respondenService resSvc.Responden
 func (rh *RespondenHandler) GetAllResponden(ctx context.Context, req *pb.EmptyRespondenRequest) (*pb.GetAllRespondenResponse, error) {
 	responden, err := rh.respondenSvc.FindAll(ctx, req)
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		// return nil, status.Errorf(parseError.Code, parseError.Message)
+		return &pb.GetAllRespondenResponse{
+			Code:    uint32(parseError.Code),
+			Message: parseError.Message,
+			Data:    nil,
+		}, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	var respondenArr []*pb.Responden
@@ -47,7 +56,13 @@ func (rh *RespondenHandler) GetAllResponden(ctx context.Context, req *pb.EmptyRe
 func (rh *RespondenHandler) GetRespondenByNim(ctx context.Context, req *pb.GetRespondenByNimRequest) (*pb.GetRespondenByNimResponse, error) {
 	responden, err := rh.respondenSvc.FindByNim(ctx, req.GetNim())
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		// return nil, status.Errorf(parseError.Code, parseError.Message)
+		return &pb.GetRespondenByNimResponse{
+			Code:    uint32(parseError.Code),
+			Message: parseError.Message,
+			Data:    nil,
+		}, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	respondenProto := entity.ConvertEntityToProto(responden)
@@ -62,7 +77,13 @@ func (rh *RespondenHandler) GetRespondenByNim(ctx context.Context, req *pb.GetRe
 func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb.UpdateRespondenFromSiakRequest) (*pb.UpdateRespondenResponse, error) {
 	mhsbiodata, err := rh.mhsbiodataSvc.FetchMhsBiodataByNimFromSiakApi(req.GetNim())
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		// return nil, status.Errorf(parseError.Code, parseError.Message)
+		return &pb.UpdateRespondenResponse{
+			Code:    uint32(parseError.Code),
+			Message: parseError.Message,
+			Data:    nil,
+		}, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	convertEntity := &entity.Responden{
@@ -83,7 +104,13 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 
 	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), convertEntity)
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		// return nil, status.Errorf(parseError.Code, parseError.Message)
+		return &pb.UpdateRespondenResponse{
+			Code:    uint32(parseError.Code),
+			Message: parseError.Message,
+			Data:    nil,
+		}, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	respondenProto := entity.ConvertEntityToProto(responden)
@@ -99,7 +126,13 @@ func (rh *RespondenHandler) CreateResponden(ctx context.Context, req *pb.CreateR
 	responden, err := rh.respondenSvc.Create(ctx, req.GetNim(), req.GetSemester(), req.GetType(), req.GetNama(), req.GetKodeprodi(), req.GetJk(), req.GetTglWisuda(), req.GetTglSidang(), req.GetThnSidang())
 
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		// return nil, status.Errorf(parseError.Code, parseError.Message)
+		return &pb.CreateRespondenResponse{
+			Code:    uint32(parseError.Code),
+			Message: parseError.Message,
+			Data:    nil,
+		}, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	respondenProto := entity.ConvertEntityToProto(responden)
@@ -121,7 +154,13 @@ func (rh *RespondenHandler) UpdateResponden(ctx context.Context, req *pb.Respond
 
 	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), respDataUpdate)
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		// return nil, status.Errorf(parseError.Code, parseError.Message)
+		return &pb.UpdateRespondenResponse{
+			Code:    uint32(parseError.Code),
+			Message: parseError.Message,
+			Data:    nil,
+		}, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	respondenProto := entity.ConvertEntityToProto(responden)
@@ -136,7 +175,13 @@ func (rh *RespondenHandler) UpdateResponden(ctx context.Context, req *pb.Respond
 func (rh *RespondenHandler) GetRespondenByNimList(ctx context.Context, req *pb.GetRespondenByNimListRequest) (*pb.GetAllRespondenResponse, error) {
 	responden, err := rh.respondenSvc.FindByNimList(ctx, req.GetNims())
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		// return nil, status.Errorf(parseError.Code, parseError.Message)
+		return &pb.GetAllRespondenResponse{
+			Code:    uint32(parseError.Code),
+			Message: parseError.Message,
+			Data: nil,
+		}, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	var respondenArr []*pb.Responden

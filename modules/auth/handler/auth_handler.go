@@ -4,9 +4,14 @@ import (
 	"context"
 	"net/http"
 	"tracer-study-grpc/common/config"
+	"tracer-study-grpc/common/errors"
 	commonJwt "tracer-study-grpc/common/jwt"
+
 	"tracer-study-grpc/modules/mhsbiodata/service"
 	"tracer-study-grpc/pb"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type AuthHandler struct {
@@ -27,24 +32,17 @@ func NewAuthHandler(config config.Config, mhsService service.MhsBiodataServiceUs
 func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
 	mhs, err := ah.mhsSvc.FetchMhsBiodataByNimFromSiakApi(req.GetNim())
 	if err != nil {
-		return nil, err
+		parseError := errors.ParseError(err)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	if mhs == nil {
-		return &pb.LoginResponse{
-			Code:    uint32(http.StatusNotFound),
-			Message: "mahasiswa tidak ditemukan",
-			Token:   "",
-		}, nil
+		return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 	}
 
 	token, err := ah.jwtManager.GenerateToken(mhs.NIM, 2)
 	if err != nil {
-		return &pb.LoginResponse{
-			Code:    uint32(http.StatusInternalServerError),
-			Message: "token failed to generate",
-			Token:   "",
-		}, nil
+		return nil, status.Errorf(codes.Internal, "token failed to generate")
 	}
 
 	return &pb.LoginResponse{

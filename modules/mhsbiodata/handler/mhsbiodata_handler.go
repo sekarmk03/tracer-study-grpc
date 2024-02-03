@@ -2,11 +2,16 @@ package handler
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"tracer-study-grpc/common/config"
+	"tracer-study-grpc/common/errors"
 	"tracer-study-grpc/modules/mhsbiodata/entity"
 	"tracer-study-grpc/modules/mhsbiodata/service"
 	"tracer-study-grpc/pb"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type MhsBiodataHandler struct {
@@ -28,17 +33,21 @@ func (mbh *MhsBiodataHandler) FetchMhsBiodataByNim(ctx context.Context, req *pb.
 	var apiResponse *entity.MhsBiodata
 	apiResponse, err := mbh.mhsbiodataSvc.FetchMhsBiodataByNimFromSiakApi(nim)
 	if err != nil {
-		return nil, err
+		if apiResponse == nil {
+			log.Println("[MhsBiodataHandler - FetchMhsBiodataByNim] Mhs resource not found")
+			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
+		}
+
+		log.Println("[MhsBiodataHandler - FetchMhsBiodataByNim] Error while fetching mhs biodata: ", err)
+		parseError := errors.ParseError(err)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
 	var mhsBiodata = entity.ConvertEntityToProto(apiResponse)
 
-	code := uint32(http.StatusOK)
-	message := "get mhs biodata success"
-
 	return &pb.MhsBiodataResponse{
-		Code:    code,
-		Message: message,
+		Code:    uint32(http.StatusOK),
+		Message: "get mhs biodata success",
 		Data:    mhsBiodata,
 	}, nil
 }
