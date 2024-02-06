@@ -2,9 +2,12 @@ package repository
 
 import (
 	"context"
+	"log"
 	"tracer-study-grpc/modules/prodi/entity"
 
 	"go.opencensus.io/trace"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 )
 
@@ -29,7 +32,8 @@ func (p *ProdiRepository) FindAll(ctx context.Context, req any) ([]*entity.Prodi
 
 	var prodi []*entity.Prodi
 	if err := p.db.Debug().WithContext(ctxSpan).Find(&prodi).Error; err != nil {
-		return nil, err
+		log.Println("ERROR [ProdiRepository-FindAll] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	return prodi, nil

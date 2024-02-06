@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/errors"
@@ -29,6 +30,7 @@ func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *pb.EmptyKabKot
 	kabkota, err := kh.kabkotaSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
+		log.Println("ERROR [KabKotaHandler - GetAllKabKota] Error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -38,12 +40,9 @@ func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *pb.EmptyKabKot
 		kabkotaArr = append(kabkotaArr, kabkotaProto)
 	}
 
-	code := uint32(http.StatusOK)
-	message := "get all kabkota success"
-
 	return &pb.GetAllKabKotaResponse{
-		Code:    code,
-		Message: message,
+		Code:    uint32(http.StatusOK),
+		Message: "get all kabkota success",
 		Data:    kabkotaArr,
 	}, nil
 }

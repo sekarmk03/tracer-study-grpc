@@ -2,9 +2,12 @@ package repository
 
 import (
 	"context"
+	"log"
 	"tracer-study-grpc/modules/kabkota/entity"
 
 	"go.opencensus.io/trace"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +31,8 @@ func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*entity.Kab
 
 	var kabkota []*entity.KabKota
 	if err := k.db.Debug().WithContext(ctxSpan).Find(&kabkota).Error; err != nil {
-		return nil, err
+		log.Println("ERROR [KabKotaRepository - FindAll] Internal error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	return kabkota, nil
