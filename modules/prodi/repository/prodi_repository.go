@@ -32,7 +32,7 @@ func (p *ProdiRepository) FindAll(ctx context.Context, req any) ([]*entity.Prodi
 
 	var prodi []*entity.Prodi
 	if err := p.db.Debug().WithContext(ctxSpan).Find(&prodi).Error; err != nil {
-		log.Println("ERROR [ProdiRepository-FindAll] Internal server error:", err)
+		log.Println("ERROR: [ProdiRepository-FindAll] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 

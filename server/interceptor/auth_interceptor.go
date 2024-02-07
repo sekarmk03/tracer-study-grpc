@@ -26,7 +26,7 @@ func NewAuthInterceptor(jwtManager *commonJwt.JWT, accessibleRoles map[string][]
 
 func (a *AuthInterceptor) Unary() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-		log.Println("INFO [Auth Interceptor - Unary Server Interceptor] Method:", info.FullMethod)
+		log.Println("INFO [Auth Interceptor-Unary Server Interceptor] Method:", info.FullMethod)
 
 		if err := a.authorize(ctx, info.FullMethod); err != nil {
 			return nil, err
@@ -44,20 +44,20 @@ func (a *AuthInterceptor) authorize(ctx context.Context, method string) error {
 
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		log.Println("ERROR [Auth Interceptor - Authorize] Metadata is not provided")
+		log.Println("ERROR: [Auth Interceptor-Authorize] Metadata is not provided")
 		return status.Errorf(codes.Unauthenticated, "metadata is not provided")
 	}
 
 	values := md["authorization"]
 	if len(values) == 0 {
-		log.Println("ERROR [Auth Interceptor - Authorize] Authorization token is not provided")
+		log.Println("ERROR: [Auth Interceptor-Authorize] Authorization token is not provided")
 		return status.Errorf(codes.Unauthenticated, "authorization token is not provided")
 	}
 
 	accessToken := values[0]
 	claims, err := a.jwtManager.Verify(accessToken)
 	if err != nil {
-		log.Println("ERROR [Auth Interceptor - Authorize] Access token is invalid:", err)
+		log.Println("ERROR: [Auth Interceptor-Authorize] Access token is invalid:", err)
 		return status.Errorf(codes.Unauthenticated, "access token is invalid: %v", err)
 	}
 
@@ -67,6 +67,6 @@ func (a *AuthInterceptor) authorize(ctx context.Context, method string) error {
 		}
 	}
 
-	log.Println("ERROR [Auth Interceptor - Authorize] No permission to access this RPC")
-	return status.Errorf(codes.PermissionDenied, "No permission to access this RPC")
+	log.Println("ERROR: [Auth Interceptor-Authorize] No permission to access this RPC")
+	return status.Errorf(codes.PermissionDenied, "no permission to access this RPC")
 }

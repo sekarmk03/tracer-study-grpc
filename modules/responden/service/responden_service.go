@@ -35,7 +35,7 @@ func NewRespondenService(cfg config.Config, respondenRepository repository.Respo
 func (svc *RespondenService) FindAll(ctx context.Context, req any) ([]*entity.Responden, error) {
 	res, err := svc.respondenRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("[RespondenService - FindAll] ERROR While find all responden: ", err)
+		log.Println("ERROR: [RespondenService - FindAll] Error while find all responden: ", err)
 		return nil, err
 	}
 
@@ -45,7 +45,7 @@ func (svc *RespondenService) FindAll(ctx context.Context, req any) ([]*entity.Re
 func (svc *RespondenService) FindByNim(ctx context.Context, nim string) (*entity.Responden, error) {
 	res, err := svc.respondenRepository.FindByNim(ctx, nim)
 	if err != nil {
-		log.Println("[RespondenService - FindByNim] ERROR While find responden by nim: ", err)
+		log.Println("ERROR: [RespondenService - FindByNim] Error while find responden by nim: ", err)
 		return nil, err
 	}
 
@@ -82,7 +82,7 @@ func (svc *RespondenService) Update(ctx context.Context, nim string, fields *ent
 
 	res, err := svc.respondenRepository.Update(ctx, nim, updateMap)
 	if err != nil {
-		log.Println("[RespondenService - Update] ERROR While update responden: ", err)
+		log.Println("ERROR: [RespondenService - Update] Error while update responden: ", err)
 		return nil, err
 	}
 
@@ -117,7 +117,7 @@ func (svc *RespondenService) Create(ctx context.Context, nim string, semester, t
 
 	res, err := svc.respondenRepository.Create(ctx, reqEntity)
 	if err != nil {
-		log.Println("[RespondenService - Create] ERROR While create responden: ", err)
+		log.Println("ERROR: [RespondenService - Create] Error while create responden: ", err)
 		return nil, err
 	}
 
@@ -127,7 +127,7 @@ func (svc *RespondenService) Create(ctx context.Context, nim string, semester, t
 func (svc *RespondenService) FindByNimList(ctx context.Context, nimList []string) ([]*entity.Responden, error) {
 	res, err := svc.respondenRepository.FindByNimList(ctx, nimList)
 	if err != nil {
-		log.Println("[RespondenService - FindByNimList] ERROR While find responden by nim list: ", err)
+		log.Println("ERROR: [RespondenService - FindByNimList] Error while find responden by nim list: ", err)
 		return nil, err
 	}
 

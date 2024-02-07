@@ -31,7 +31,7 @@ func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*entity.Kab
 
 	var kabkota []*entity.KabKota
 	if err := k.db.Debug().WithContext(ctxSpan).Find(&kabkota).Error; err != nil {
-		log.Println("ERROR [KabKotaRepository - FindAll] Internal error:", err)
+		log.Println("ERROR: [KabKotaRepository-FindAll] Internal error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 

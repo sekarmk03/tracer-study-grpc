@@ -59,7 +59,7 @@ func (g *Grpc) Run() error {
 	var err error
 	g.listener, err = net.Listen(connProtocol, fmt.Sprintf(":%s", g.Port))
 	if err != nil {
-		return status.Errorf(codes.Internal, "ERROR Failed to listen on port %s: %v", g.Port, err)
+		return status.Errorf(codes.Internal, "ERROR: Failed to listen on port %s: %v", g.Port, err)
 	}
 
 	go g.serve()

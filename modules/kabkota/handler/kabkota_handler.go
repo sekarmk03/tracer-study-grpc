@@ -30,7 +30,7 @@ func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *pb.EmptyKabKot
 	kabkota, err := kh.kabkotaSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR [KabKotaHandler - GetAllKabKota] Error:", parseError.Message)
+		log.Println("ERROR: [KabKotaHandler-GetAllKabKota] Error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 

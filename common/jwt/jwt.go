@@ -48,7 +48,7 @@ func (j *JWT) Verify(accessToken string) (*CustomClaims, error) {
 		func(token *jwt.Token) (interface{}, error) {
 			_, ok := token.Method.(*jwt.SigningMethodHMAC)
 			if !ok {
-				log.Println("ERROR [JWT - Verify] Unexpected signing method")
+				log.Println("ERROR: [JWT-Verify] Unexpected signing method")
 				return nil, fmt.Errorf("unexpected signing method")
 			}
 			return []byte(j.secretKey), nil
@@ -56,20 +56,20 @@ func (j *JWT) Verify(accessToken string) (*CustomClaims, error) {
 	)
 
 	if err != nil {
-		log.Println("ERROR [JWT - Verify] Error while parsing token:", err)
+		log.Println("ERROR: [JWT-Verify] Error while parsing token:", err)
 		// return nil, status.Errorf(codes.Unauthenticated, "invalid token: %v", err)
 		return nil, err
 	}
 
 	claims, ok := token.Claims.(*CustomClaims)
 	if !ok {
-		log.Println("ERROR [JWT - Verify] Invalid token claims")
+		log.Println("ERROR: [JWT-Verify] Invalid token claims")
 		// return nil, status.Error(codes.Unauthenticated, "invalid token claims")
 		return nil, fmt.Errorf("invalid token claims")
 	}
 
 	if err := claims.Valid(); err != nil {
-		log.Println("ERROR [JWT - Verify] Invalid token:", err)
+		log.Println("ERROR: [JWT-Verify] Invalid token:", err)
 		return nil, err
 	}
 
