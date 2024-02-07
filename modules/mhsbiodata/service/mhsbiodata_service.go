@@ -43,7 +43,7 @@ func (svc *MhsBiodataService) FetchMhsBiodataByNimFromSiakApi(nim string) (*enti
 	payload := map[string]string{"nim": nim}
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
-		log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while marshalling payload: ", err)
+		log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while marshalling payload:", err)
 		if _, isUnsupportedTypeError := err.(*json.UnsupportedTypeError); isUnsupportedTypeError {
 			return nil, status.Errorf(codes.InvalidArgument, "invalid payload: unsupported data type")
 		}
@@ -56,7 +56,7 @@ func (svc *MhsBiodataService) FetchMhsBiodataByNimFromSiakApi(nim string) (*enti
 	for attempt := 1; attempt <= apiMaxRetries; attempt++ {
 		reqHttp, err := http.NewRequest("POST", apiUrl, bytes.NewBuffer(payloadBytes))
 		if err != nil {
-			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while creating HTTP request: ", err)
+			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while creating HTTP request:", err)
 			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 		}
 
@@ -66,10 +66,10 @@ func (svc *MhsBiodataService) FetchMhsBiodataByNimFromSiakApi(nim string) (*enti
 		client := &http.Client{}
 		resp, err := client.Do(reqHttp)
 		if err != nil {
-			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while sending HTTP request: ", err)
+			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while sending HTTP request:", err)
 
 			if attempt == apiMaxRetries {
-				log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Maximum retries reached: ", err)
+				log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Maximum retries reached:", err)
 				return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 			}
 
@@ -80,10 +80,10 @@ func (svc *MhsBiodataService) FetchMhsBiodataByNimFromSiakApi(nim string) (*enti
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
-			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] HTTP request failed with status code: ", resp.StatusCode)
+			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] HTTP request failed with status code:", resp.StatusCode)
 
 			if attempt == apiMaxRetries {
-				log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Maximum retries reached: ", resp.StatusCode, resp.Body)
+				log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Maximum retries reached:", resp.StatusCode, resp.Body)
 				return nil, status.Errorf(codes.Internal, "internal server error: HTTP request failed with status code: %d", resp.StatusCode)
 			}
 
@@ -93,18 +93,18 @@ func (svc *MhsBiodataService) FetchMhsBiodataByNimFromSiakApi(nim string) (*enti
 
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
-			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while reading HTTP response body: ", err)
+			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while reading HTTP response body:", err)
 			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 		}
 
 		var apiResponse []entity.MhsBiodata
 		if err := json.Unmarshal(body, &apiResponse); err != nil {
-			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while unmarshalling HTTP response body: ", err)
+			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Error while unmarshalling HTTP response body:", err)
 			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 		}
 
 		if len(apiResponse) == 0 {
-			log.Println("ERROR [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Resource not found: nim ", nim)
+			log.Println("WARNING [MhsBiodataService - FetchMhsBiodataByNimFromSiakApi] Resource not found: nim", nim)
 			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 		}
 

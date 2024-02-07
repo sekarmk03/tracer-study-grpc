@@ -37,7 +37,7 @@ func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Log
 			log.Println("WARNING [AuthHandler - Login] Mhs resource not found")
 			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 		}
-		log.Println("ERROR [AuthHandler - Login] Error while fetching mhs biodata: ", err)
+		log.Println("ERROR [AuthHandler - Login] Error while fetching mhs biodata:", err)
 		parseError := errors.ParseError(err)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
@@ -50,7 +50,7 @@ func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Log
 	// generate token with role 2
 	token, err := ah.jwtManager.GenerateToken(mhs.NIM, 2)
 	if err != nil {
-		log.Println("ERROR [AuthHandler - Login] Error while generating token: ", err)
+		log.Println("ERROR [AuthHandler - Login] Error while generating token:", err)
 		return nil, status.Errorf(codes.Internal, "token failed to generate: %v", err)
 	}
 
