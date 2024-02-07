@@ -2,10 +2,14 @@ package repository
 
 import (
 	"context"
+	"errors"
+	"log"
 	"time"
 	"tracer-study-grpc/modules/responden/entity"
 
 	"go.opencensus.io/trace"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 )
 
@@ -33,7 +37,8 @@ func (r *RespondenRepository) FindAll(ctx context.Context, req any) ([]*entity.R
 
 	var responden []*entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Order("created_at desc").Limit(10).Find(&responden).Error; err != nil {
-		return nil, err
+		log.Println("ERROR: [RespondenRepository-FindAll] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	return responden, nil
@@ -43,12 +48,17 @@ func (r *RespondenRepository) FindByNim(ctx context.Context, nim string) (*entit
 	ctxSpan, span := trace.StartSpan(ctx, "RespondenRepository - FindByNim")
 	defer span.End()
 
-	var responden entity.Responden
+	var responden *entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&responden).Error; err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Println("WARNING: [RespondenRepository-FindByNim] Record not found for nim", nim)
+			return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
+		}
+		log.Println("ERROR: [RespondenRepository-FindByNim] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
-	return &responden, nil
+	return responden, nil
 }
 
 func (r *RespondenRepository) Update(ctx context.Context, nim string, updatedFields map[string]interface{}) (*entity.Responden, error) {
@@ -57,13 +67,19 @@ func (r *RespondenRepository) Update(ctx context.Context, nim string, updatedFie
 
 	var responden entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&responden).Error; err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Println("WARNING: [RespondenRepository-Update] Record not found for nim", nim)
+			return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
+		}
+		log.Println("ERROR: [RespondenRepository-Update] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	updatedFields["updated_at"] = time.Now()
 	updatedFields["updated_by"] = "system"
 	if err := r.db.Debug().WithContext(ctxSpan).Model(&responden).Updates(updatedFields).Error; err != nil {
-		return nil, err
+		log.Println("ERROR: [RespondenRepository-Update] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	return &responden, nil
@@ -74,7 +90,12 @@ func (r *RespondenRepository) Create(ctx context.Context, req *entity.Responden)
 	defer span.End()
 
 	if err := r.db.Debug().WithContext(ctxSpan).Create(&req).Error; err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			log.Println("ERROR: [RespondenRepository-Create] Duplicated key:", err)
+			return nil, status.Errorf(codes.AlreadyExists, "duplicated key %v", err)
+		}
+		log.Println("ERROR: [RespondenRepository-Create] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	return req, nil
@@ -86,7 +107,8 @@ func (r *RespondenRepository) FindByNimList(ctx context.Context, nimList []strin
 
 	var responden []*entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Where("nim IN (?)", nimList).Find(&responden).Error; err != nil {
-		return nil, err
+		log.Println("ERROR: [RespondenRepository-FindByNimList] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
 	return responden, nil
