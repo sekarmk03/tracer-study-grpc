@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/errors"
@@ -29,6 +30,7 @@ func (ph *ProvinsiHandler) GetAllProvinsi(ctx context.Context, req *pb.EmptyProv
 	provinsi, err := ph.provinsiSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProvinsiHandler-GetAllProvinsi] Error while get all provinsi: ", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -38,12 +40,9 @@ func (ph *ProvinsiHandler) GetAllProvinsi(ctx context.Context, req *pb.EmptyProv
 		provinsiArr = append(provinsiArr, provinsiProto)
 	}
 
-	code := uint32(http.StatusOK)
-	message := "get all provinsi success"
-
 	return &pb.GetAllProvinsiResponse{
-		Code:    code,
-		Message: message,
+		Code:    uint32(http.StatusOK),
+		Message: "get all provinsi success",
 		Data:    provinsiArr,
 	}, nil
 }

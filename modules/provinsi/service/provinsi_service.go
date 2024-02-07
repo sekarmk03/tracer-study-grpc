@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"tracer-study-grpc/common/config"
+	"tracer-study-grpc/common/errors"
 	"tracer-study-grpc/modules/provinsi/entity"
 	"tracer-study-grpc/modules/provinsi/repository"
 )
@@ -27,7 +28,8 @@ func NewProvinsiService(cfg config.Config, provinsiRepository repository.Provins
 func (svc *ProvinsiService) FindAll(ctx context.Context, req any) ([]*entity.Provinsi, error) {
 	res, err := svc.provinsiRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("ERROR: [ProvinsiService - FindAll] Error while find all provinsi: ", err)
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProvinsiService-FindAll] Error while find all provinsi: ", parseError.Message)
 		return nil, err
 	}
 
