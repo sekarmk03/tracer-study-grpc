@@ -28,7 +28,7 @@ func NewProdiService(cfg config.Config, prodiRepository repository.ProdiReposito
 func (svc *ProdiService) FindAll(ctx context.Context, req any) ([]*entity.Prodi, error) {
 	res, err := svc.prodiRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("ERROR: [ProdiService - FindAll] Error while find all prodi: ", err)
+		log.Println("ERROR: [ProdiService-FindAll] Error while find all prodi: ", err)
 		return nil, err
 	}
 
@@ -38,7 +38,7 @@ func (svc *ProdiService) FindAll(ctx context.Context, req any) ([]*entity.Prodi,
 func (svc *ProdiService) FindAllFakultas(ctx context.Context, req any) ([]*entity.Fakultas, error) {
 	res, err := svc.prodiRepository.FindAllFakultas(ctx, req)
 	if err != nil {
-		log.Println("ERROR: [ProdiService - FindAllFakultas] Error while find all fakultas: ", err)
+		log.Println("ERROR: [ProdiService-FindAllFakultas] Error while find all fakultas: ", err)
 		return nil, err
 	}
 

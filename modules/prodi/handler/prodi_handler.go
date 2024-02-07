@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"tracer-study-grpc/common/config"
 
@@ -30,6 +31,7 @@ func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *pb.EmptyRequest) (
 	prodi, err := ph.prodiSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProdiHandler-GetAllProdi] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -40,12 +42,9 @@ func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *pb.EmptyRequest) (
 		prodiArr = append(prodiArr, prodiProto)
 	}
 
-	code := uint32(http.StatusOK)
-	message := "get all prodi success"
-
 	return &pb.GetAllProdiResponse{
-		Code:    code,
-		Message: message,
+		Code:    uint32(http.StatusOK),
+		Message: "get all prodi success",
 		Data:    prodiArr,
 	}, nil
 }
@@ -54,6 +53,7 @@ func (ph *ProdiHandler) GetAllFakultas(ctx context.Context, req *pb.EmptyRequest
 	fakultas, err := ph.prodiSvc.FindAllFakultas(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProdiHandler-GetAllFakultas] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -64,12 +64,9 @@ func (ph *ProdiHandler) GetAllFakultas(ctx context.Context, req *pb.EmptyRequest
 		fakultasArr = append(fakultasArr, fakultasProto)
 	}
 
-	code := uint32(http.StatusOK)
-	message := "get all fakultas success"
-
 	return &pb.GetAllFakultasResponse{
-		Code:    code,
-		Message: message,
+		Code:    uint32(http.StatusOK),
+		Message: "get all fakultas success",
 		Data:    fakultasArr,
 	}, nil
 }

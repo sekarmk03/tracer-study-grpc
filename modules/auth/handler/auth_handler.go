@@ -37,8 +37,8 @@ func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Log
 			log.Println("WARNING: [AuthHandler-Login] Mhs resource not found")
 			return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 		}
-		log.Println("ERROR: [AuthHandler-Login] Error while fetching mhs biodata:", err)
 		parseError := errors.ParseError(err)
+		log.Println("ERROR: [AuthHandler-Login] Error while fetching mhs biodata:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
