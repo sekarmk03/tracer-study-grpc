@@ -75,7 +75,7 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
-	convertEntity := &entity.Responden{
+	convertedProto := &entity.Responden{
 		Ipk:        mhsbiodata.IPK,
 		Kodedikti:  mhsbiodata.KODEPSTD,
 		Jenjang:    mhsbiodata.JENJANG,
@@ -91,7 +91,7 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 		Lamastd:    mhsbiodata.LAMASTD,
 	}
 
-	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), convertEntity)
+	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), convertedProto)
 	if err != nil {
 		parseError := errors.ParseError(err)
 		log.Println("ERROR: [RespondenHandler-UpdateRespondenFromSiak] Error while update responden from siak:", parseError.Message)

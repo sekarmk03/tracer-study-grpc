@@ -65,7 +65,7 @@ func (r *RespondenRepository) Update(ctx context.Context, nim string, updatedFie
 	ctxSpan, span := trace.StartSpan(ctx, "RespondenRepository - Update")
 	defer span.End()
 
-	var responden entity.Responden
+	var responden *entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&responden).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			log.Println("WARNING: [RespondenRepository-Update] Record not found for nim", nim)
@@ -82,7 +82,7 @@ func (r *RespondenRepository) Update(ctx context.Context, nim string, updatedFie
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
-	return &responden, nil
+	return responden, nil
 }
 
 func (r *RespondenRepository) Create(ctx context.Context, req *entity.Responden) (*entity.Responden, error) {

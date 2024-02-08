@@ -17,6 +17,7 @@ import (
 	prodiModules "tracer-study-grpc/modules/prodi"
 	provinsiModules "tracer-study-grpc/modules/provinsi"
 	respondenModules "tracer-study-grpc/modules/responden"
+	userstudyModules "tracer-study-grpc/modules/userstudy"
 
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
@@ -25,7 +26,6 @@ import (
 func main() {
 	cfg, cerr := config.NewConfig(".env")
 	checkError(cerr)
-	// errUtils.ConvertToRestError(cerr)
 
 	splash(cfg)
 
@@ -56,6 +56,7 @@ func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, j
 	respondenModules.InitGrpc(server, cfg, db, grpcConn)
 	pktsModules.InitGrpc(server, cfg, db, grpcConn)
 	authModules.InitGrpc(server, cfg, jwtManager, grpcConn)
+	userstudyModules.InitGrpc(server, cfg, db, grpcConn)
 }
 
 func checkError(err error) {

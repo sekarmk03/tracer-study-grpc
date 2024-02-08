@@ -85,7 +85,8 @@ func (svc *RespondenService) Update(ctx context.Context, nim string, fields *ent
 
 	res, err := svc.respondenRepository.Update(ctx, nim, updateMap)
 	if err != nil {
-		log.Println("ERROR: [RespondenService-Update] Error while update responden: ", err)
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [RespondenService-Update] Error while update responden: ", parseError.Message)
 		return nil, err
 	}
 
