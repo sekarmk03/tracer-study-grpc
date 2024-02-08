@@ -11,6 +11,7 @@ import (
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type ProvinsiHandler struct {
@@ -26,7 +27,7 @@ func NewProvinsiHandler(config config.Config, provinsiService service.ProvinsiSe
 	}
 }
 
-func (ph *ProvinsiHandler) GetAllProvinsi(ctx context.Context, req *pb.EmptyProvinsiRequest) (*pb.GetAllProvinsiResponse, error) {
+func (ph *ProvinsiHandler) GetAllProvinsi(ctx context.Context, req *emptypb.Empty) (*pb.GetAllProvinsiResponse, error) {
 	provinsi, err := ph.provinsiSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)

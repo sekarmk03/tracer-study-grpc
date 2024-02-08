@@ -4,6 +4,7 @@ package tracer_study_grpc;
 option go_package = "./;pb";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message Responden {
     uint32 id = 1;
@@ -39,8 +40,6 @@ message Responden {
     google.protobuf.Timestamp updated_at = 31;
     google.protobuf.Timestamp deleted_at = 32;
 }
-
-message EmptyRespondenRequest {}
 
 message GetAllRespondenResponse {
     uint32 code = 1;
@@ -106,7 +105,7 @@ message GetRespondenByNimListRequest {
 }
 
 service RespondenService {
-    rpc GetAllResponden(EmptyRespondenRequest) returns (GetAllRespondenResponse) {};
+    rpc GetAllResponden(google.protobuf.Empty) returns (GetAllRespondenResponse) {};
     rpc GetRespondenByNim(GetRespondenByNimRequest) returns (GetRespondenByNimResponse) {};
     rpc UpdateRespondenFromSiak(UpdateRespondenFromSiakRequest) returns (UpdateRespondenResponse) {};
     rpc CreateResponden(CreateRespondenRequest) returns (CreateRespondenResponse) {};

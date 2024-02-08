@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -26,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KabKotaServiceClient interface {
-	GetAllKabKota(ctx context.Context, in *EmptyKabKotaRequest, opts ...grpc.CallOption) (*GetAllKabKotaResponse, error)
+	GetAllKabKota(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllKabKotaResponse, error)
 }
 
 type kabKotaServiceClient struct {
@@ -37,7 +38,7 @@ func NewKabKotaServiceClient(cc grpc.ClientConnInterface) KabKotaServiceClient {
 	return &kabKotaServiceClient{cc}
 }
 
-func (c *kabKotaServiceClient) GetAllKabKota(ctx context.Context, in *EmptyKabKotaRequest, opts ...grpc.CallOption) (*GetAllKabKotaResponse, error) {
+func (c *kabKotaServiceClient) GetAllKabKota(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllKabKotaResponse, error) {
 	out := new(GetAllKabKotaResponse)
 	err := c.cc.Invoke(ctx, KabKotaService_GetAllKabKota_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -50,7 +51,7 @@ func (c *kabKotaServiceClient) GetAllKabKota(ctx context.Context, in *EmptyKabKo
 // All implementations must embed UnimplementedKabKotaServiceServer
 // for forward compatibility
 type KabKotaServiceServer interface {
-	GetAllKabKota(context.Context, *EmptyKabKotaRequest) (*GetAllKabKotaResponse, error)
+	GetAllKabKota(context.Context, *emptypb.Empty) (*GetAllKabKotaResponse, error)
 	mustEmbedUnimplementedKabKotaServiceServer()
 }
 
@@ -58,7 +59,7 @@ type KabKotaServiceServer interface {
 type UnimplementedKabKotaServiceServer struct {
 }
 
-func (UnimplementedKabKotaServiceServer) GetAllKabKota(context.Context, *EmptyKabKotaRequest) (*GetAllKabKotaResponse, error) {
+func (UnimplementedKabKotaServiceServer) GetAllKabKota(context.Context, *emptypb.Empty) (*GetAllKabKotaResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllKabKota not implemented")
 }
 func (UnimplementedKabKotaServiceServer) mustEmbedUnimplementedKabKotaServiceServer() {}
@@ -75,7 +76,7 @@ func RegisterKabKotaServiceServer(s grpc.ServiceRegistrar, srv KabKotaServiceSer
 }
 
 func _KabKotaService_GetAllKabKota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyKabKotaRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -87,7 +88,7 @@ func _KabKotaService_GetAllKabKota_Handler(srv interface{}, ctx context.Context,
 		FullMethod: KabKotaService_GetAllKabKota_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(KabKotaServiceServer).GetAllKabKota(ctx, req.(*EmptyKabKotaRequest))
+		return srv.(KabKotaServiceServer).GetAllKabKota(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

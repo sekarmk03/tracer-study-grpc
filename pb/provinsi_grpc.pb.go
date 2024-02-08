@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -26,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProvinsiServiceClient interface {
-	GetAllProvinsi(ctx context.Context, in *EmptyProvinsiRequest, opts ...grpc.CallOption) (*GetAllProvinsiResponse, error)
+	GetAllProvinsi(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllProvinsiResponse, error)
 }
 
 type provinsiServiceClient struct {
@@ -37,7 +38,7 @@ func NewProvinsiServiceClient(cc grpc.ClientConnInterface) ProvinsiServiceClient
 	return &provinsiServiceClient{cc}
 }
 
-func (c *provinsiServiceClient) GetAllProvinsi(ctx context.Context, in *EmptyProvinsiRequest, opts ...grpc.CallOption) (*GetAllProvinsiResponse, error) {
+func (c *provinsiServiceClient) GetAllProvinsi(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllProvinsiResponse, error) {
 	out := new(GetAllProvinsiResponse)
 	err := c.cc.Invoke(ctx, ProvinsiService_GetAllProvinsi_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -50,7 +51,7 @@ func (c *provinsiServiceClient) GetAllProvinsi(ctx context.Context, in *EmptyPro
 // All implementations must embed UnimplementedProvinsiServiceServer
 // for forward compatibility
 type ProvinsiServiceServer interface {
-	GetAllProvinsi(context.Context, *EmptyProvinsiRequest) (*GetAllProvinsiResponse, error)
+	GetAllProvinsi(context.Context, *emptypb.Empty) (*GetAllProvinsiResponse, error)
 	mustEmbedUnimplementedProvinsiServiceServer()
 }
 
@@ -58,7 +59,7 @@ type ProvinsiServiceServer interface {
 type UnimplementedProvinsiServiceServer struct {
 }
 
-func (UnimplementedProvinsiServiceServer) GetAllProvinsi(context.Context, *EmptyProvinsiRequest) (*GetAllProvinsiResponse, error) {
+func (UnimplementedProvinsiServiceServer) GetAllProvinsi(context.Context, *emptypb.Empty) (*GetAllProvinsiResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllProvinsi not implemented")
 }
 func (UnimplementedProvinsiServiceServer) mustEmbedUnimplementedProvinsiServiceServer() {}
@@ -75,7 +76,7 @@ func RegisterProvinsiServiceServer(s grpc.ServiceRegistrar, srv ProvinsiServiceS
 }
 
 func _ProvinsiService_GetAllProvinsi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyProvinsiRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -87,7 +88,7 @@ func _ProvinsiService_GetAllProvinsi_Handler(srv interface{}, ctx context.Contex
 		FullMethod: ProvinsiService_GetAllProvinsi_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProvinsiServiceServer).GetAllProvinsi(ctx, req.(*EmptyProvinsiRequest))
+		return srv.(ProvinsiServiceServer).GetAllProvinsi(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

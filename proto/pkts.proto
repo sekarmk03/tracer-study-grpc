@@ -4,6 +4,7 @@ package tracer_study_grpc;
 option go_package = "./;pb";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message PKTS {
     uint32 id = 1;
@@ -100,8 +101,6 @@ message PKTS {
     google.protobuf.Timestamp deleted_at = 92;
 }
 
-message EmptyPKTSRequest {}
-
 message GetAllPKTSResponse {
     uint32 code = 1;
     string message = 2;
@@ -131,7 +130,7 @@ message GetNimByDataAtasanResponse {
 }
 
 service PKTSService {
-    rpc GetAllPKTS(EmptyPKTSRequest) returns (GetAllPKTSResponse);
+    rpc GetAllPKTS(google.protobuf.Empty) returns (GetAllPKTSResponse);
     rpc GetPKTSByNim(GetPKTSByNimRequest) returns (GetPKTSResponse);
     rpc CreatePKTS(PKTS) returns (GetPKTSResponse);
     rpc UpdatePKTS(PKTS) returns (GetPKTSResponse);

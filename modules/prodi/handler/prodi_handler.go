@@ -12,6 +12,7 @@ import (
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type ProdiHandler struct {
@@ -27,7 +28,7 @@ func NewProdiHandler(config config.Config, prodiService service.ProdiServiceUseC
 	}
 }
 
-func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *pb.EmptyRequest) (*pb.GetAllProdiResponse, error) {
+func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *emptypb.Empty) (*pb.GetAllProdiResponse, error) {
 	prodi, err := ph.prodiSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
@@ -49,7 +50,7 @@ func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *pb.EmptyRequest) (
 	}, nil
 }
 
-func (ph *ProdiHandler) GetAllFakultas(ctx context.Context, req *pb.EmptyRequest) (*pb.GetAllFakultasResponse, error) {
+func (ph *ProdiHandler) GetAllFakultas(ctx context.Context, req *emptypb.Empty) (*pb.GetAllFakultasResponse, error) {
 	fakultas, err := ph.prodiSvc.FindAllFakultas(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)

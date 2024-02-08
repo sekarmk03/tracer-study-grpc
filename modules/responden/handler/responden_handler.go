@@ -12,6 +12,7 @@ import (
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type RespondenHandler struct {
@@ -29,7 +30,7 @@ func NewRespondenHandler(config config.Config, respondenService resSvc.Responden
 	}
 }
 
-func (rh *RespondenHandler) GetAllResponden(ctx context.Context, req *pb.EmptyRespondenRequest) (*pb.GetAllRespondenResponse, error) {
+func (rh *RespondenHandler) GetAllResponden(ctx context.Context, req *emptypb.Empty) (*pb.GetAllRespondenResponse, error) {
 	responden, err := rh.respondenSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)

@@ -12,6 +12,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type PKTSHandler struct {
@@ -27,7 +28,7 @@ func NewPKTSHandler(config config.Config, pktsService service.PKTSServiceUseCase
 	}
 }
 
-func (ph *PKTSHandler) GetAllPKTS(ctx context.Context, req *pb.EmptyPKTSRequest) (*pb.GetAllPKTSResponse, error) {
+func (ph *PKTSHandler) GetAllPKTS(ctx context.Context, req *emptypb.Empty) (*pb.GetAllPKTSResponse, error) {
 	pkts, err := ph.PKTSSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)

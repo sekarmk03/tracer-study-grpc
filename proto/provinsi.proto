@@ -4,6 +4,7 @@ package tracer_study_grpc;
 option go_package = "./;pb";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message Provinsi {
     string id_wil = 1;
@@ -14,8 +15,6 @@ message Provinsi {
     google.protobuf.Timestamp deleted_at = 6;
 }
 
-message EmptyProvinsiRequest {}
-
 message GetAllProvinsiResponse {
     uint32 code = 1;
     string message = 2;
@@ -23,5 +22,5 @@ message GetAllProvinsiResponse {
 }
 
 service ProvinsiService {
-    rpc GetAllProvinsi(EmptyProvinsiRequest) returns (GetAllProvinsiResponse) {};
+    rpc GetAllProvinsi(google.protobuf.Empty) returns (GetAllProvinsiResponse) {};
 }

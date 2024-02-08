@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -27,8 +28,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProdiServiceClient interface {
-	GetAllProdi(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllProdiResponse, error)
-	GetAllFakultas(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllFakultasResponse, error)
+	GetAllProdi(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllProdiResponse, error)
+	GetAllFakultas(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllFakultasResponse, error)
 }
 
 type prodiServiceClient struct {
@@ -39,7 +40,7 @@ func NewProdiServiceClient(cc grpc.ClientConnInterface) ProdiServiceClient {
 	return &prodiServiceClient{cc}
 }
 
-func (c *prodiServiceClient) GetAllProdi(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllProdiResponse, error) {
+func (c *prodiServiceClient) GetAllProdi(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllProdiResponse, error) {
 	out := new(GetAllProdiResponse)
 	err := c.cc.Invoke(ctx, ProdiService_GetAllProdi_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -48,7 +49,7 @@ func (c *prodiServiceClient) GetAllProdi(ctx context.Context, in *EmptyRequest, 
 	return out, nil
 }
 
-func (c *prodiServiceClient) GetAllFakultas(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetAllFakultasResponse, error) {
+func (c *prodiServiceClient) GetAllFakultas(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllFakultasResponse, error) {
 	out := new(GetAllFakultasResponse)
 	err := c.cc.Invoke(ctx, ProdiService_GetAllFakultas_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -61,8 +62,8 @@ func (c *prodiServiceClient) GetAllFakultas(ctx context.Context, in *EmptyReques
 // All implementations must embed UnimplementedProdiServiceServer
 // for forward compatibility
 type ProdiServiceServer interface {
-	GetAllProdi(context.Context, *EmptyRequest) (*GetAllProdiResponse, error)
-	GetAllFakultas(context.Context, *EmptyRequest) (*GetAllFakultasResponse, error)
+	GetAllProdi(context.Context, *emptypb.Empty) (*GetAllProdiResponse, error)
+	GetAllFakultas(context.Context, *emptypb.Empty) (*GetAllFakultasResponse, error)
 	mustEmbedUnimplementedProdiServiceServer()
 }
 
@@ -70,10 +71,10 @@ type ProdiServiceServer interface {
 type UnimplementedProdiServiceServer struct {
 }
 
-func (UnimplementedProdiServiceServer) GetAllProdi(context.Context, *EmptyRequest) (*GetAllProdiResponse, error) {
+func (UnimplementedProdiServiceServer) GetAllProdi(context.Context, *emptypb.Empty) (*GetAllProdiResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllProdi not implemented")
 }
-func (UnimplementedProdiServiceServer) GetAllFakultas(context.Context, *EmptyRequest) (*GetAllFakultasResponse, error) {
+func (UnimplementedProdiServiceServer) GetAllFakultas(context.Context, *emptypb.Empty) (*GetAllFakultasResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllFakultas not implemented")
 }
 func (UnimplementedProdiServiceServer) mustEmbedUnimplementedProdiServiceServer() {}
@@ -90,7 +91,7 @@ func RegisterProdiServiceServer(s grpc.ServiceRegistrar, srv ProdiServiceServer)
 }
 
 func _ProdiService_GetAllProdi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -102,13 +103,13 @@ func _ProdiService_GetAllProdi_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: ProdiService_GetAllProdi_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProdiServiceServer).GetAllProdi(ctx, req.(*EmptyRequest))
+		return srv.(ProdiServiceServer).GetAllProdi(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ProdiService_GetAllFakultas_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -120,7 +121,7 @@ func _ProdiService_GetAllFakultas_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: ProdiService_GetAllFakultas_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProdiServiceServer).GetAllFakultas(ctx, req.(*EmptyRequest))
+		return srv.(ProdiServiceServer).GetAllFakultas(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

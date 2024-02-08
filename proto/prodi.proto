@@ -4,6 +4,7 @@ package tracer_study_grpc;
 option go_package = "./;pb";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message Prodi {
     string kode = 1;
@@ -17,8 +18,6 @@ message Prodi {
     google.protobuf.Timestamp updated_at = 9;
     google.protobuf.Timestamp deleted_at = 10;
 }
-
-message EmptyRequest {}
 
 message GetAllProdiResponse {
     uint32 code = 1;
@@ -38,10 +37,9 @@ message GetAllFakultasResponse {
     uint32 code = 1;
     string message = 2;
     repeated Fakultas data = 3;
-
 }
 
 service ProdiService {
-    rpc GetAllProdi(EmptyRequest) returns (GetAllProdiResponse) {};
-    rpc GetAllFakultas(EmptyRequest) returns (GetAllFakultasResponse) {};
+    rpc GetAllProdi(google.protobuf.Empty) returns (GetAllProdiResponse) {};
+    rpc GetAllFakultas(google.protobuf.Empty) returns (GetAllFakultasResponse) {};
 }

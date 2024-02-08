@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -30,7 +31,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PKTSServiceClient interface {
-	GetAllPKTS(ctx context.Context, in *EmptyPKTSRequest, opts ...grpc.CallOption) (*GetAllPKTSResponse, error)
+	GetAllPKTS(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllPKTSResponse, error)
 	GetPKTSByNim(ctx context.Context, in *GetPKTSByNimRequest, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	CreatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	UpdatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
@@ -45,7 +46,7 @@ func NewPKTSServiceClient(cc grpc.ClientConnInterface) PKTSServiceClient {
 	return &pKTSServiceClient{cc}
 }
 
-func (c *pKTSServiceClient) GetAllPKTS(ctx context.Context, in *EmptyPKTSRequest, opts ...grpc.CallOption) (*GetAllPKTSResponse, error) {
+func (c *pKTSServiceClient) GetAllPKTS(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllPKTSResponse, error) {
 	out := new(GetAllPKTSResponse)
 	err := c.cc.Invoke(ctx, PKTSService_GetAllPKTS_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -94,7 +95,7 @@ func (c *pKTSServiceClient) GetNimByDataAtasan(ctx context.Context, in *GetNimBy
 // All implementations must embed UnimplementedPKTSServiceServer
 // for forward compatibility
 type PKTSServiceServer interface {
-	GetAllPKTS(context.Context, *EmptyPKTSRequest) (*GetAllPKTSResponse, error)
+	GetAllPKTS(context.Context, *emptypb.Empty) (*GetAllPKTSResponse, error)
 	GetPKTSByNim(context.Context, *GetPKTSByNimRequest) (*GetPKTSResponse, error)
 	CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
@@ -106,7 +107,7 @@ type PKTSServiceServer interface {
 type UnimplementedPKTSServiceServer struct {
 }
 
-func (UnimplementedPKTSServiceServer) GetAllPKTS(context.Context, *EmptyPKTSRequest) (*GetAllPKTSResponse, error) {
+func (UnimplementedPKTSServiceServer) GetAllPKTS(context.Context, *emptypb.Empty) (*GetAllPKTSResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllPKTS not implemented")
 }
 func (UnimplementedPKTSServiceServer) GetPKTSByNim(context.Context, *GetPKTSByNimRequest) (*GetPKTSResponse, error) {
@@ -135,7 +136,7 @@ func RegisterPKTSServiceServer(s grpc.ServiceRegistrar, srv PKTSServiceServer) {
 }
 
 func _PKTSService_GetAllPKTS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyPKTSRequest)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -147,7 +148,7 @@ func _PKTSService_GetAllPKTS_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: PKTSService_GetAllPKTS_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PKTSServiceServer).GetAllPKTS(ctx, req.(*EmptyPKTSRequest))
+		return srv.(PKTSServiceServer).GetAllPKTS(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

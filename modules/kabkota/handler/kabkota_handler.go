@@ -11,6 +11,7 @@ import (
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type KabKotaHandler struct {
@@ -26,7 +27,7 @@ func NewKabKotaHandler(config config.Config, kabkotaService service.KabKotaServi
 	}
 }
 
-func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *pb.EmptyKabKotaRequest) (*pb.GetAllKabKotaResponse, error) {
+func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *emptypb.Empty) (*pb.GetAllKabKotaResponse, error) {
 	kabkota, err := kh.kabkotaSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
