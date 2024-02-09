@@ -7,9 +7,10 @@ import (
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc"
+	"gorm.io/gorm"
 )
 
-func InitGrpc(server *grpc.Server, cfg config.Config, jwtManager *commonJwt.JWT, grpcConn *grpc.ClientConn) {
-	auth := builder.BuildAuthHandler(cfg, jwtManager, grpcConn)
+func InitGrpc(server *grpc.Server, cfg config.Config, db *gorm.DB, jwtManager *commonJwt.JWT, grpcConn *grpc.ClientConn) {
+	auth := builder.BuildAuthHandler(cfg, db, jwtManager, grpcConn)
 	pb.RegisterAuthServiceServer(server, auth)
 }

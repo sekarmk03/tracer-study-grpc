@@ -8,6 +8,12 @@ message LoginRequest {
     string tgl_sidang = 2;
 }
 
+message LoginUserStudyRequest {
+    string email_atasan = 1;
+    string hp_atasan = 2;
+    string nama_atasan = 3;
+}
+
 message LoginResponse {
     uint32 code = 1;
     string message = 2;
@@ -16,4 +22,5 @@ message LoginResponse {
 
 service AuthService {
     rpc Login(LoginRequest) returns (LoginResponse);
+    rpc LoginUserStudy(LoginUserStudyRequest) returns (LoginResponse);
 }

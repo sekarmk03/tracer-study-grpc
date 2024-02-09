@@ -8,7 +8,8 @@ import (
 	"tracer-study-grpc/common/errors"
 	commonJwt "tracer-study-grpc/common/jwt"
 
-	"tracer-study-grpc/modules/mhsbiodata/service"
+	mhsSvc "tracer-study-grpc/modules/mhsbiodata/service"
+	pktsSvc "tracer-study-grpc/modules/pkts/service"
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc/codes"
@@ -18,14 +19,16 @@ import (
 type AuthHandler struct {
 	pb.UnimplementedAuthServiceServer
 	config     config.Config
-	mhsSvc     service.MhsBiodataServiceUseCase
+	mhsSvc     mhsSvc.MhsBiodataServiceUseCase
+	pktsSvc    pktsSvc.PKTSServiceUseCase
 	jwtManager *commonJwt.JWT
 }
 
-func NewAuthHandler(config config.Config, mhsService service.MhsBiodataServiceUseCase, jwtManager *commonJwt.JWT) *AuthHandler {
+func NewAuthHandler(config config.Config, mhsService mhsSvc.MhsBiodataServiceUseCase, pktsService pktsSvc.PKTSServiceUseCase, jwtManager *commonJwt.JWT) *AuthHandler {
 	return &AuthHandler{
 		config:     config,
 		mhsSvc:     mhsService,
+		pktsSvc: pktsService,
 		jwtManager: jwtManager,
 	}
 }
@@ -57,6 +60,37 @@ func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Log
 	return &pb.LoginResponse{
 		Code:    uint32(http.StatusOK),
 		Message: "login success",
+		Token:   token,
+	}, nil
+}
+
+func (ah *AuthHandler) LoginUserStudy(ctx context.Context, req *pb.LoginUserStudyRequest) (*pb.LoginResponse, error) {
+	user, err := ah.pktsSvc.FindByAtasan(ctx, req.GetNamaAtasan(), req.GetHpAtasan(), req.GetEmailAtasan())
+	if err != nil {
+		if user == nil {
+			log.Println("WARNING: [AuthHandler-LoginUserStudy] User resource not found")
+			return nil, status.Errorf(codes.NotFound, "user resource not found")
+		}
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [AuthHandler-LoginUserStudy] Error while fetching user:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	if user == nil {
+		log.Println("WARNING: [AuthHandler-LoginUserStudy] User resource not found")
+		return nil, status.Errorf(codes.NotFound, "user resource not found")
+	}
+
+	// generate token with role 2
+	token, err := ah.jwtManager.GenerateToken(req.GetEmailAtasan(), 1)
+	if err != nil {
+		log.Println("ERROR: [AuthHandler-LoginUserStudy] Error while generating token:", err)
+		return nil, status.Errorf(codes.Internal, "token failed to generate: %v", err)
+	}
+
+	return &pb.LoginResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "login user study success",
 		Token:   token,
 	}, nil
 }

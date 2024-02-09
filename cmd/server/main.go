@@ -55,7 +55,7 @@ func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, j
 	mhsbiodataModules.InitGrpc(server, cfg, db, grpcConn)
 	respondenModules.InitGrpc(server, cfg, db, grpcConn)
 	pktsModules.InitGrpc(server, cfg, db, grpcConn)
-	authModules.InitGrpc(server, cfg, jwtManager, grpcConn)
+	authModules.InitGrpc(server, cfg, db, jwtManager, grpcConn)
 	userstudyModules.InitGrpc(server, cfg, db, grpcConn)
 }
 
