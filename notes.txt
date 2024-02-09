@@ -1,0 +1,13 @@
+todo
+- remove find by id check in update repository, modify service
+- login user study
+- authorization for all methods
+- save token jwt in redis
+- complete crud method all modules
+- separate each module
+- data pipeline service
+- design new database
+- refactor code based on new database
+- copy-ing data from old database to new database
+- add rest service
+- simulate microservices with docker

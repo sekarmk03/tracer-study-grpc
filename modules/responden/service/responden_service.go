@@ -58,6 +58,13 @@ func (svc *RespondenService) FindByNim(ctx context.Context, nim string) (*entity
 }
 
 func (svc *RespondenService) Update(ctx context.Context, nim string, fields *entity.Responden) (*entity.Responden, error) {
+	responden, err := svc.respondenRepository.FindByNim(ctx, nim)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [RespondenService-Update] Error while find responden by nim:", parseError.Message)
+		return nil, err
+	}
+
 	updateMap := map[string]interface{}{
 		"updated_at":    time.Now(),
 		"status_update": "1",
@@ -83,7 +90,7 @@ func (svc *RespondenService) Update(ctx context.Context, nim string, fields *ent
 	utils.AddItemToMap(updateMap, "nik", fields.Nik)
 	utils.AddItemToMap(updateMap, "npwp", fields.Npwp)
 
-	res, err := svc.respondenRepository.Update(ctx, nim, updateMap)
+	res, err := svc.respondenRepository.Update(ctx, responden, updateMap)
 	if err != nil {
 		parseError := errors.ParseError(err)
 		log.Println("ERROR: [RespondenService-Update] Error while update responden: ", parseError.Message)

@@ -155,6 +155,13 @@ func (svc *PKTSService) Create(ctx context.Context, nim, kodeprodi, thnSidang st
 }
 
 func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.PKTS) (*entity.PKTS, error) {
+	pkts, err := svc.pktsRepository.FindByNim(ctx, nim)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [PKTSService-Update] Error while find pkts by nim:", parseError.Message)
+		return nil, err
+	}
+
 	updateMap := make(map[string]interface{})
 
 	utils.AddItemToMap(updateMap, "f8", fields.F8)
@@ -243,7 +250,7 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 
 	log.Print(updateMap)
 
-	res, err := svc.pktsRepository.Update(ctx, nim, updateMap)
+	res, err := svc.pktsRepository.Update(ctx, pkts, updateMap)
 	if err != nil {
 		log.Println("ERROR: [PKTSService - Update] Error while update pkts:", err)
 		return nil, err

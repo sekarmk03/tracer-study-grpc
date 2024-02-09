@@ -28,7 +28,7 @@ type PKTSRepositoryUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.PKTS, error)
 	FindByNim(ctx context.Context, nim string) (*entity.PKTS, error)
 	Create(ctx context.Context, req *entity.PKTS) (*entity.PKTS, error)
-	Update(ctx context.Context, nim string, updatedFields map[string]interface{}) (*entity.PKTS, error)
+	Update(ctx context.Context, pkts *entity.PKTS, updatedFields map[string]interface{}) (*entity.PKTS, error)
 	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
 }
 
@@ -78,19 +78,19 @@ func (p *PKTSRepository) Create(ctx context.Context, req *entity.PKTS) (*entity.
 	return req, nil
 }
 
-func (p *PKTSRepository) Update(ctx context.Context, nim string, updatedFields map[string]interface{}) (*entity.PKTS, error) {
+func (p *PKTSRepository) Update(ctx context.Context, pkts *entity.PKTS, updatedFields map[string]interface{}) (*entity.PKTS, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - Update")
 	defer span.End()
 
-	var pkts entity.PKTS
-	if err := p.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&pkts).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Println("ERROR: [PKTSRepository-Update] Record not found for nim:", nim)
-			return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
-		}
-		log.Println("ERROR: [PKTSRepository-Update] Internal server error:", err)
-		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
-	}
+	// var pkts *entity.PKTS
+	// if err := p.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&pkts).Error; err != nil {
+	// 	if errors.Is(err, gorm.ErrRecordNotFound) {
+	// 		log.Println("ERROR: [PKTSRepository-Update] Record not found for nim:", nim)
+	// 		return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
+	// 	}
+	// 	log.Println("ERROR: [PKTSRepository-Update] Internal server error:", err)
+	// 	return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+	// }
 
 	updatedFields["updated_at"] = time.Now()
 	if err := p.db.Debug().WithContext(ctxSpan).Model(&pkts).Updates(updatedFields).Error; err != nil {
@@ -102,7 +102,7 @@ func (p *PKTSRepository) Update(ctx context.Context, nim string, updatedFields m
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
-	return &pkts, nil
+	return pkts, nil
 }
 
 func (p *PKTSRepository) FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error) {
