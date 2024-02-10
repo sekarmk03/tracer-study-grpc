@@ -10,6 +10,7 @@ import (
 	"time"
 
 	commonJwt "tracer-study-grpc/common/jwt"
+	roles "tracer-study-grpc/common/authorization"
 	"tracer-study-grpc/server/interceptor"
 
 	"google.golang.org/grpc"
@@ -47,7 +48,8 @@ func NewGrpcServer(port string, jwtManager *commonJwt.JWT) *Grpc {
 	// options := grpc_middleware.WithUnaryServerChain()
 	// add option unary interceptor
 	// jwtManager := commonJwt.NewJWT(secretKey, tokenDuration)
-	authInterceptor := interceptor.NewAuthInterceptor(jwtManager, accessibleRoles())
+	// authInterceptor := interceptor.NewAuthInterceptor(jwtManager, accessibleRoles())
+	authInterceptor := interceptor.NewAuthInterceptor(jwtManager, roles.GetAccessibleRoles())
 	options := []grpc.ServerOption{
 		grpc.UnaryInterceptor(authInterceptor.Unary()),
 	}
@@ -93,9 +95,13 @@ func (g *Grpc) AwaitTermination() error {
 // 	return options
 // }
 
-func accessibleRoles() map[string][]uint32 {
-	const prodiService = "/tracer_study_grpc.ProdiService/"
-	return map[string][]uint32{
-		prodiService + "GetAllProdi": {1},
-	}
-}
+// func accessibleRoles() map[string][]uint32 {
+// 	const prodiService = "/tracer_study_grpc.ProdiService/"
+// 	// 1 = admin
+// 	// 2 = user
+// 	return map[string][]uint32{
+// 		prodiService + "GetAllProdi": {1, 2},
+// 		prodiService + "GetProdiByKodeprodi": {1, 2},
+// 		prodiService + "CreateProdi": {1},
+// 	}
+// }

@@ -50,8 +50,8 @@ func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Log
 		return nil, status.Errorf(codes.NotFound, "mhs resource not found")
 	}
 
-	// generate token with role 2
-	token, err := ah.jwtManager.GenerateToken(mhs.NIM, 2)
+	// generate token with role 6 = alumni
+	token, err := ah.jwtManager.GenerateToken(mhs.NIM, 6)
 	if err != nil {
 		log.Println("ERROR: [AuthHandler-Login] Error while generating token:", err)
 		return nil, status.Errorf(codes.Internal, "token failed to generate: %v", err)
@@ -81,8 +81,8 @@ func (ah *AuthHandler) LoginUserStudy(ctx context.Context, req *pb.LoginUserStud
 		return nil, status.Errorf(codes.NotFound, "user resource not found")
 	}
 
-	// generate token with role 2
-	token, err := ah.jwtManager.GenerateToken(req.GetEmailAtasan(), 1)
+	// generate token with role 7 = user study
+	token, err := ah.jwtManager.GenerateToken(req.GetEmailAtasan(), 7)
 	if err != nil {
 		log.Println("ERROR: [AuthHandler-LoginUserStudy] Error while generating token:", err)
 		return nil, status.Errorf(codes.Internal, "token failed to generate: %v", err)

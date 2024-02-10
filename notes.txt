@@ -1,6 +1,6 @@
 todo
 - remove find by id check in update repository, modify service ✅
-- login user study
+- login user study responden ✅
 - authorization for all methods
 - role management table
 - save token jwt in redis
