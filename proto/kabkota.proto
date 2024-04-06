@@ -25,7 +25,7 @@ message GetKabKotaByIdWilRequest {
     string id_wil = 1;
 }
 
-message GetKabKotaByIdWilResponse {
+message GetKabKotaResponse {
     uint32 code = 1;
     string message = 2;
     KabKota data = 3;
@@ -33,8 +33,8 @@ message GetKabKotaByIdWilResponse {
 
 service KabKotaService {
     rpc GetAllKabKota(google.protobuf.Empty) returns (GetAllKabKotaResponse) {};
-    rpc GetKabKotaByIdWil(GetKabKotaByIdWilRequest) returns (GetKabKotaByIdWilResponse) {};
-    rpc CreateKabKota(KabKota) returns (GetKabKotaByIdWilResponse) {};
-    rpc UpdateKabKota(KabKota) returns (GetKabKotaByIdWilResponse) {};
-    rpc DeleteKabKota(GetKabKotaByIdWilRequest) returns (GetKabKotaByIdWilResponse) {};
+    rpc GetKabKotaByIdWil(GetKabKotaByIdWilRequest) returns (GetKabKotaResponse) {};
+    rpc CreateKabKota(KabKota) returns (GetKabKotaResponse) {};
+    rpc UpdateKabKota(KabKota) returns (GetKabKotaResponse) {};
+    rpc DeleteKabKota(GetKabKotaByIdWilRequest) returns (GetKabKotaResponse) {};
 }

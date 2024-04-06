@@ -25,6 +25,7 @@ func NewKabKotaRepository(db *gorm.DB) *KabKotaRepository {
 type KabKotaRepositoryUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.KabKota, error)
 	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
+	Create(ctx context.Context, req *entity.KabKota) (*entity.KabKota, error)
 }
 
 func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*entity.KabKota, error) {
@@ -55,4 +56,20 @@ func (k *KabKotaRepository) FindByIdWil(ctx context.Context, idWil string) (*ent
 	}
 
 	return &kabkota, nil
+}
+
+func (k *KabKotaRepository) Create(ctx context.Context, req *entity.KabKota) (*entity.KabKota, error) {
+	ctxSpan, span := trace.StartSpan(ctx, "KabKotaRepository - Create")
+	defer span.End()
+
+	if err := k.db.Debug().WithContext(ctxSpan).Create(&req).Error; err != nil {
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			log.Println("ERROR: [KabKotaRepository-Create] Duplicated key:", err)
+			return nil, status.Errorf(codes.AlreadyExists, "duplicated key: %v", err)
+		}
+		log.Println("ERROR: [KabKotaRepository-Create] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+	}
+
+	return req, nil
 }

@@ -49,7 +49,7 @@ func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *emptypb.Empty)
 	}, nil
 }
 
-func (kh *KabKotaHandler) GetKabKotaByIdWil(ctx context.Context, req *pb.GetKabKotaByIdWilRequest) (*pb.GetKabKotaByIdWilResponse, error) {
+func (kh *KabKotaHandler) GetKabKotaByIdWil(ctx context.Context, req *pb.GetKabKotaByIdWilRequest) (*pb.GetKabKotaResponse, error) {
 	kabkota, err := kh.kabkotaSvc.FindByIdWil(ctx, req.IdWil)
 	if err != nil {
 		if kabkota == nil {
@@ -63,9 +63,27 @@ func (kh *KabKotaHandler) GetKabKotaByIdWil(ctx context.Context, req *pb.GetKabK
 
 	kabkotaProto := entity.ConvertEntityToProto(kabkota)
 
-	return &pb.GetKabKotaByIdWilResponse{
-		Code:   uint32(http.StatusOK),
+	return &pb.GetKabKotaResponse{
+		Code:    uint32(http.StatusOK),
 		Message: "get kabkota by idWil success",
-		Data:   kabkotaProto,
+		Data:    kabkotaProto,
+	}, nil
+}
+
+func (kh *KabKotaHandler) CreateKabKota(ctx context.Context, req *pb.KabKota) (*pb.GetKabKotaResponse, error) {
+	kabkota, err := kh.kabkotaSvc.Create(ctx, req.GetIdWil(), req.GetNama(), req.GetIdIndukWilayah())
+
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [KabKotaHandler-CreateKabKota] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	kabkotaProto := entity.ConvertEntityToProto(kabkota)
+
+	return &pb.GetKabKotaResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "create kabkota success",
+		Data:    kabkotaProto,
 	}, nil
 }

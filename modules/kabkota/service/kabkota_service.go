@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"log"
+	"time"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/errors"
 	"tracer-study-grpc/modules/kabkota/entity"
@@ -17,6 +18,7 @@ type KabKotaService struct {
 type KabKotaServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.KabKota, error)
 	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
+	Create(ctx context.Context, idWil, nama, idIndukWilayah string) (*entity.KabKota, error)
 }
 
 func NewKabKotaService(cfg config.Config, kabkotaRepository repository.KabKotaRepositoryUseCase) *KabKotaService {
@@ -41,6 +43,24 @@ func (svc *KabKotaService) FindByIdWil(ctx context.Context, idWil string) (*enti
 	if err != nil {
 		parseError := errors.ParseError(err)
 		log.Println("ERROR: [KabKotaService-FindByIdWil] Error while find KabKota by IdWil:", parseError.Message)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *KabKotaService) Create(ctx context.Context, idWil, nama, idIndukWilayah string) (*entity.KabKota, error) {
+	kabkota := &entity.KabKota{
+		IdWil:          idWil,
+		Nama:           nama,
+		IdIndukWilayah: idIndukWilayah,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	res, err := svc.kabkotaRepository.Create(ctx, kabkota)
+	if err != nil {
+		log.Println("ERROR: [KabKotaService-Create] Error while create KabKota:", err)
 		return nil, err
 	}
 

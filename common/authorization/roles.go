@@ -27,6 +27,7 @@ var roles = AccessibleRoles{
 	"/" + BasePath + "." + KabKotaSvc + "/": {
 		"GetAllKabKota": {1, 2, 3, 4, 5, 6, 7},
 		"GetKabKotaByIdWil": {1, 2, 3, 4, 5, 6, 7},
+		"CreateKabKota":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
 	},
 	"/" + BasePath + "." + MhsBiodataSvc + "/": {
 		"FetchMhsBiodataByNim": {1, 2, 3, 4, 5, 6, 7},
