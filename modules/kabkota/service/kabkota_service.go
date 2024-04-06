@@ -21,6 +21,7 @@ type KabKotaServiceUseCase interface {
 	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
 	Create(ctx context.Context, idWil, nama, idIndukWilayah string) (*entity.KabKota, error)
 	Update(ctx context.Context, idWil string, fields *entity.KabKota) (*entity.KabKota, error)
+	Delete(ctx context.Context, idWil string) error
 }
 
 func NewKabKotaService(cfg config.Config, kabkotaRepository repository.KabKotaRepositoryUseCase) *KabKotaService {
@@ -91,4 +92,15 @@ func (svc *KabKotaService) Update(ctx context.Context, idWil string, fields *ent
 	}
 
 	return res, nil
+}
+
+func (svc *KabKotaService) Delete(ctx context.Context, idWil string) error {
+	err := svc.kabkotaRepository.Delete(ctx, idWil)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [KabKotaService-Delete] Error while delete KabKota:", parseError.Message)
+		return err
+	}
+
+	return nil
 }

@@ -35,7 +35,7 @@ type KabKotaServiceClient interface {
 	GetKabKotaByIdWil(ctx context.Context, in *GetKabKotaByIdWilRequest, opts ...grpc.CallOption) (*GetKabKotaResponse, error)
 	CreateKabKota(ctx context.Context, in *KabKota, opts ...grpc.CallOption) (*GetKabKotaResponse, error)
 	UpdateKabKota(ctx context.Context, in *KabKota, opts ...grpc.CallOption) (*GetKabKotaResponse, error)
-	DeleteKabKota(ctx context.Context, in *GetKabKotaByIdWilRequest, opts ...grpc.CallOption) (*GetKabKotaResponse, error)
+	DeleteKabKota(ctx context.Context, in *GetKabKotaByIdWilRequest, opts ...grpc.CallOption) (*DeleteKabKotaResponse, error)
 }
 
 type kabKotaServiceClient struct {
@@ -82,8 +82,8 @@ func (c *kabKotaServiceClient) UpdateKabKota(ctx context.Context, in *KabKota, o
 	return out, nil
 }
 
-func (c *kabKotaServiceClient) DeleteKabKota(ctx context.Context, in *GetKabKotaByIdWilRequest, opts ...grpc.CallOption) (*GetKabKotaResponse, error) {
-	out := new(GetKabKotaResponse)
+func (c *kabKotaServiceClient) DeleteKabKota(ctx context.Context, in *GetKabKotaByIdWilRequest, opts ...grpc.CallOption) (*DeleteKabKotaResponse, error) {
+	out := new(DeleteKabKotaResponse)
 	err := c.cc.Invoke(ctx, KabKotaService_DeleteKabKota_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -99,7 +99,7 @@ type KabKotaServiceServer interface {
 	GetKabKotaByIdWil(context.Context, *GetKabKotaByIdWilRequest) (*GetKabKotaResponse, error)
 	CreateKabKota(context.Context, *KabKota) (*GetKabKotaResponse, error)
 	UpdateKabKota(context.Context, *KabKota) (*GetKabKotaResponse, error)
-	DeleteKabKota(context.Context, *GetKabKotaByIdWilRequest) (*GetKabKotaResponse, error)
+	DeleteKabKota(context.Context, *GetKabKotaByIdWilRequest) (*DeleteKabKotaResponse, error)
 	mustEmbedUnimplementedKabKotaServiceServer()
 }
 
@@ -119,7 +119,7 @@ func (UnimplementedKabKotaServiceServer) CreateKabKota(context.Context, *KabKota
 func (UnimplementedKabKotaServiceServer) UpdateKabKota(context.Context, *KabKota) (*GetKabKotaResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateKabKota not implemented")
 }
-func (UnimplementedKabKotaServiceServer) DeleteKabKota(context.Context, *GetKabKotaByIdWilRequest) (*GetKabKotaResponse, error) {
+func (UnimplementedKabKotaServiceServer) DeleteKabKota(context.Context, *GetKabKotaByIdWilRequest) (*DeleteKabKotaResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteKabKota not implemented")
 }
 func (UnimplementedKabKotaServiceServer) mustEmbedUnimplementedKabKotaServiceServer() {}

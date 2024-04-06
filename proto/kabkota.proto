@@ -31,10 +31,15 @@ message GetKabKotaResponse {
     KabKota data = 3;
 }
 
+message DeleteKabKotaResponse {
+    uint32 code = 1;
+    string message = 2;
+}
+
 service KabKotaService {
     rpc GetAllKabKota(google.protobuf.Empty) returns (GetAllKabKotaResponse) {};
     rpc GetKabKotaByIdWil(GetKabKotaByIdWilRequest) returns (GetKabKotaResponse) {};
     rpc CreateKabKota(KabKota) returns (GetKabKotaResponse) {};
     rpc UpdateKabKota(KabKota) returns (GetKabKotaResponse) {};
-    rpc DeleteKabKota(GetKabKotaByIdWilRequest) returns (GetKabKotaResponse) {};
+    rpc DeleteKabKota(GetKabKotaByIdWilRequest) returns (DeleteKabKotaResponse) {};
 }

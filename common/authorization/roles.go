@@ -29,6 +29,7 @@ var roles = AccessibleRoles{
 		"GetKabKotaByIdWil": {1, 2, 3, 4, 5, 6, 7},
 		"CreateKabKota":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
 		"UpdateKabKota":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
+		"DeleteKabKota":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
 	},
 	"/" + BasePath + "." + MhsBiodataSvc + "/": {
 		"FetchMhsBiodataByNim": {1, 2, 3, 4, 5, 6, 7},

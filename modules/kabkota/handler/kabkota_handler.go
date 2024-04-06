@@ -110,3 +110,17 @@ func (kh *KabKotaHandler) UpdateKabKota(ctx context.Context, req *pb.KabKota) (*
 		Data:    kabkotaProto,
 	}, nil
 }
+
+func (kh *KabKotaHandler) DeleteKabKota(ctx context.Context, req *pb.GetKabKotaByIdWilRequest) (*pb.DeleteKabKotaResponse, error) {
+	err := kh.kabkotaSvc.Delete(ctx, req.GetIdWil())
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [KabKotaHandler-DeleteKabKota] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	return &pb.DeleteKabKotaResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "delete kabkota success",
+	}, nil
+}
