@@ -248,8 +248,6 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 	utils.AddItemToMap(updateMap, "email_atasan", fields.EmailAtasan)
 	utils.AddItemToMap(updateMap, "tinggal_selama_kuliah", fields.TinggalSelamaKuliah)
 
-	log.Print(updateMap)
-
 	res, err := svc.pktsRepository.Update(ctx, pkts, updateMap)
 	if err != nil {
 		log.Println("ERROR: [PKTSService - Update] Error while update pkts:", err)

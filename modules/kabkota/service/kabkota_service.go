@@ -6,6 +6,7 @@ import (
 	"time"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/errors"
+	"tracer-study-grpc/common/utils"
 	"tracer-study-grpc/modules/kabkota/entity"
 	"tracer-study-grpc/modules/kabkota/repository"
 )
@@ -19,6 +20,7 @@ type KabKotaServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.KabKota, error)
 	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
 	Create(ctx context.Context, idWil, nama, idIndukWilayah string) (*entity.KabKota, error)
+	Update(ctx context.Context, idWil string, fields *entity.KabKota) (*entity.KabKota, error)
 }
 
 func NewKabKotaService(cfg config.Config, kabkotaRepository repository.KabKotaRepositoryUseCase) *KabKotaService {
@@ -54,13 +56,37 @@ func (svc *KabKotaService) Create(ctx context.Context, idWil, nama, idIndukWilay
 		IdWil:          idWil,
 		Nama:           nama,
 		IdIndukWilayah: idIndukWilayah,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt:      time.Now(),
+		UpdatedAt:      time.Now(),
 	}
 
 	res, err := svc.kabkotaRepository.Create(ctx, kabkota)
 	if err != nil {
 		log.Println("ERROR: [KabKotaService-Create] Error while create KabKota:", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *KabKotaService) Update(ctx context.Context, idWil string, fields *entity.KabKota) (*entity.KabKota, error) {
+	kabkota, err := svc.kabkotaRepository.FindByIdWil(ctx, idWil)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [KabKotaService-Update] Error while find KabKota by IdWil:", parseError.Message)
+		return nil, err
+	}
+
+	updateMap := make(map[string]interface{})
+
+	utils.AddItemToMap(updateMap, "nama", fields.Nama)
+	utils.AddItemToMap(updateMap, "id_induk_wilayah", fields.IdIndukWilayah)
+
+	log.Print(kabkota)
+
+	res, err := svc.kabkotaRepository.Update(ctx, kabkota, updateMap)
+	if err != nil {
+		log.Println("ERROR: [KabKotaService-Update] Error while update KabKota:", err)
 		return nil, err
 	}
 

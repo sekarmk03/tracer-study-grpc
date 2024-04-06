@@ -87,3 +87,26 @@ func (kh *KabKotaHandler) CreateKabKota(ctx context.Context, req *pb.KabKota) (*
 		Data:    kabkotaProto,
 	}, nil
 }
+
+func (kh *KabKotaHandler) UpdateKabKota(ctx context.Context, req *pb.KabKota) (*pb.GetKabKotaResponse, error) {
+	kabkotaDataUpdate := &entity.KabKota{
+		Nama:           req.GetNama(),
+		IdIndukWilayah: req.GetIdIndukWilayah(),
+	}
+
+	kabkota, err := kh.kabkotaSvc.Update(ctx, req.GetIdWil(), kabkotaDataUpdate)
+
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [KabKotaHandler-UpdateKabKota] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	kabkotaProto := entity.ConvertEntityToProto(kabkota)
+
+	return &pb.GetKabKotaResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "update kabkota success",
+		Data:    kabkotaProto,
+	}, nil
+}

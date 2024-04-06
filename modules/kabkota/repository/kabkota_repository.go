@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"time"
 	"tracer-study-grpc/modules/kabkota/entity"
 
 	"go.opencensus.io/trace"
@@ -26,6 +27,7 @@ type KabKotaRepositoryUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.KabKota, error)
 	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
 	Create(ctx context.Context, req *entity.KabKota) (*entity.KabKota, error)
+	Update(ctx context.Context, kabkota *entity.KabKota, updatedFields map[string]interface{}) (*entity.KabKota, error)
 }
 
 func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*entity.KabKota, error) {
@@ -72,4 +74,21 @@ func (k *KabKotaRepository) Create(ctx context.Context, req *entity.KabKota) (*e
 	}
 
 	return req, nil
+}
+
+func (k *KabKotaRepository) Update(ctx context.Context, kabkota *entity.KabKota, updatedFields map[string]interface{}) (*entity.KabKota, error) {
+	ctxSpan, span := trace.StartSpan(ctx, "KabKotaRepository - Update")
+	defer span.End()
+
+	updatedFields["updated_at"] = time.Now()
+	if err := k.db.Debug().WithContext(ctxSpan).Model(&kabkota).Where("id_wil", kabkota.IdWil).Updates(updatedFields).Error; err != nil {
+		if errors.Is(err, gorm.ErrInvalidValue) {
+			log.Println("ERROR: [KabKotaRepository-Update] Invalid value:", err)
+			return nil, status.Errorf(codes.InvalidArgument, "invalid value: %v", err)
+		}
+		log.Println("ERROR: [KabKotaRepository-Update] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+	}
+
+	return kabkota, nil
 }
