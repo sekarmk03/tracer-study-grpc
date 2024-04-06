@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"tracer-study-grpc/common/config"
+	"tracer-study-grpc/common/errors"
 	"tracer-study-grpc/modules/kabkota/entity"
 	"tracer-study-grpc/modules/kabkota/repository"
 )
@@ -15,6 +16,7 @@ type KabKotaService struct {
 
 type KabKotaServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.KabKota, error)
+	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
 }
 
 func NewKabKotaService(cfg config.Config, kabkotaRepository repository.KabKotaRepositoryUseCase) *KabKotaService {
@@ -28,6 +30,17 @@ func (svc *KabKotaService) FindAll(ctx context.Context, req any) ([]*entity.KabK
 	res, err := svc.kabkotaRepository.FindAll(ctx, req)
 	if err != nil {
 		log.Println("ERROR: [KabKotaService-FindAll] Error while find all kabkota:", err)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *KabKotaService) FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error) {
+	res, err := svc.kabkotaRepository.FindByIdWil(ctx, idWil)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [KabKotaService-FindByIdWil] Error while find KabKota by IdWil:", parseError.Message)
 		return nil, err
 	}
 

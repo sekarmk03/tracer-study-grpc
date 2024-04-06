@@ -1,14 +1,18 @@
 todo
 - remove find by id check in update repository, modify service ✅
 - login user study responden ✅
-- authorization for all methods
+- authorization for all methods ✅
+- design new database (setelah semua selesai pake db yg sekarang)
 - role management table
-- save token jwt in redis
-- complete crud method all modules
-- separate each module
-- data pipeline service
-- design new database
 - refactor code based on new database
 - copy-ing data from old database to new database
-- add rest service
+- data pipeline service
+- modify login cek alumni (nunggu api dri pa aceng) (0)
+- complete crud method all modules (1)
+- add grpc clients (2)
+- add rest service (3)
+- save token jwt in redis (4)
+- send email userstudy service (5)
+- implement sso service (6)
+- separate each module
 - simulate microservices with docker
