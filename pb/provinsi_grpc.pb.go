@@ -20,7 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ProvinsiService_GetAllProvinsi_FullMethodName = "/tracer_study_grpc.ProvinsiService/GetAllProvinsi"
+	ProvinsiService_GetAllProvinsi_FullMethodName     = "/tracer_study_grpc.ProvinsiService/GetAllProvinsi"
+	ProvinsiService_GetProvinsiByIdWil_FullMethodName = "/tracer_study_grpc.ProvinsiService/GetProvinsiByIdWil"
+	ProvinsiService_CreateProvinsi_FullMethodName     = "/tracer_study_grpc.ProvinsiService/CreateProvinsi"
+	ProvinsiService_UpdateProvinsi_FullMethodName     = "/tracer_study_grpc.ProvinsiService/UpdateProvinsi"
+	ProvinsiService_DeleteProvinsi_FullMethodName     = "/tracer_study_grpc.ProvinsiService/DeleteProvinsi"
 )
 
 // ProvinsiServiceClient is the client API for ProvinsiService service.
@@ -28,6 +32,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProvinsiServiceClient interface {
 	GetAllProvinsi(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllProvinsiResponse, error)
+	GetProvinsiByIdWil(ctx context.Context, in *GetProvinsiByIdWilRequest, opts ...grpc.CallOption) (*GetProvinsiResponse, error)
+	CreateProvinsi(ctx context.Context, in *Provinsi, opts ...grpc.CallOption) (*GetProvinsiResponse, error)
+	UpdateProvinsi(ctx context.Context, in *Provinsi, opts ...grpc.CallOption) (*GetProvinsiResponse, error)
+	DeleteProvinsi(ctx context.Context, in *GetProvinsiByIdWilRequest, opts ...grpc.CallOption) (*DeleteProvinsiResponse, error)
 }
 
 type provinsiServiceClient struct {
@@ -47,11 +55,51 @@ func (c *provinsiServiceClient) GetAllProvinsi(ctx context.Context, in *emptypb.
 	return out, nil
 }
 
+func (c *provinsiServiceClient) GetProvinsiByIdWil(ctx context.Context, in *GetProvinsiByIdWilRequest, opts ...grpc.CallOption) (*GetProvinsiResponse, error) {
+	out := new(GetProvinsiResponse)
+	err := c.cc.Invoke(ctx, ProvinsiService_GetProvinsiByIdWil_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *provinsiServiceClient) CreateProvinsi(ctx context.Context, in *Provinsi, opts ...grpc.CallOption) (*GetProvinsiResponse, error) {
+	out := new(GetProvinsiResponse)
+	err := c.cc.Invoke(ctx, ProvinsiService_CreateProvinsi_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *provinsiServiceClient) UpdateProvinsi(ctx context.Context, in *Provinsi, opts ...grpc.CallOption) (*GetProvinsiResponse, error) {
+	out := new(GetProvinsiResponse)
+	err := c.cc.Invoke(ctx, ProvinsiService_UpdateProvinsi_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *provinsiServiceClient) DeleteProvinsi(ctx context.Context, in *GetProvinsiByIdWilRequest, opts ...grpc.CallOption) (*DeleteProvinsiResponse, error) {
+	out := new(DeleteProvinsiResponse)
+	err := c.cc.Invoke(ctx, ProvinsiService_DeleteProvinsi_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProvinsiServiceServer is the server API for ProvinsiService service.
 // All implementations must embed UnimplementedProvinsiServiceServer
 // for forward compatibility
 type ProvinsiServiceServer interface {
 	GetAllProvinsi(context.Context, *emptypb.Empty) (*GetAllProvinsiResponse, error)
+	GetProvinsiByIdWil(context.Context, *GetProvinsiByIdWilRequest) (*GetProvinsiResponse, error)
+	CreateProvinsi(context.Context, *Provinsi) (*GetProvinsiResponse, error)
+	UpdateProvinsi(context.Context, *Provinsi) (*GetProvinsiResponse, error)
+	DeleteProvinsi(context.Context, *GetProvinsiByIdWilRequest) (*DeleteProvinsiResponse, error)
 	mustEmbedUnimplementedProvinsiServiceServer()
 }
 
@@ -61,6 +109,18 @@ type UnimplementedProvinsiServiceServer struct {
 
 func (UnimplementedProvinsiServiceServer) GetAllProvinsi(context.Context, *emptypb.Empty) (*GetAllProvinsiResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllProvinsi not implemented")
+}
+func (UnimplementedProvinsiServiceServer) GetProvinsiByIdWil(context.Context, *GetProvinsiByIdWilRequest) (*GetProvinsiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProvinsiByIdWil not implemented")
+}
+func (UnimplementedProvinsiServiceServer) CreateProvinsi(context.Context, *Provinsi) (*GetProvinsiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProvinsi not implemented")
+}
+func (UnimplementedProvinsiServiceServer) UpdateProvinsi(context.Context, *Provinsi) (*GetProvinsiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProvinsi not implemented")
+}
+func (UnimplementedProvinsiServiceServer) DeleteProvinsi(context.Context, *GetProvinsiByIdWilRequest) (*DeleteProvinsiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProvinsi not implemented")
 }
 func (UnimplementedProvinsiServiceServer) mustEmbedUnimplementedProvinsiServiceServer() {}
 
@@ -93,6 +153,78 @@ func _ProvinsiService_GetAllProvinsi_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProvinsiService_GetProvinsiByIdWil_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProvinsiByIdWilRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProvinsiServiceServer).GetProvinsiByIdWil(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProvinsiService_GetProvinsiByIdWil_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProvinsiServiceServer).GetProvinsiByIdWil(ctx, req.(*GetProvinsiByIdWilRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProvinsiService_CreateProvinsi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Provinsi)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProvinsiServiceServer).CreateProvinsi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProvinsiService_CreateProvinsi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProvinsiServiceServer).CreateProvinsi(ctx, req.(*Provinsi))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProvinsiService_UpdateProvinsi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Provinsi)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProvinsiServiceServer).UpdateProvinsi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProvinsiService_UpdateProvinsi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProvinsiServiceServer).UpdateProvinsi(ctx, req.(*Provinsi))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProvinsiService_DeleteProvinsi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProvinsiByIdWilRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProvinsiServiceServer).DeleteProvinsi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProvinsiService_DeleteProvinsi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProvinsiServiceServer).DeleteProvinsi(ctx, req.(*GetProvinsiByIdWilRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProvinsiService_ServiceDesc is the grpc.ServiceDesc for ProvinsiService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -103,6 +235,22 @@ var ProvinsiService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllProvinsi",
 			Handler:    _ProvinsiService_GetAllProvinsi_Handler,
+		},
+		{
+			MethodName: "GetProvinsiByIdWil",
+			Handler:    _ProvinsiService_GetProvinsiByIdWil_Handler,
+		},
+		{
+			MethodName: "CreateProvinsi",
+			Handler:    _ProvinsiService_CreateProvinsi_Handler,
+		},
+		{
+			MethodName: "UpdateProvinsi",
+			Handler:    _ProvinsiService_UpdateProvinsi_Handler,
+		},
+		{
+			MethodName: "DeleteProvinsi",
+			Handler:    _ProvinsiService_DeleteProvinsi_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

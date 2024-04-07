@@ -21,6 +21,25 @@ message GetAllProvinsiResponse {
     repeated Provinsi data = 3;
 }
 
+message GetProvinsiByIdWilRequest {
+    string id_wil = 1;
+}
+
+message GetProvinsiResponse {
+    uint32 code = 1;
+    string message = 2;
+    Provinsi data = 3;
+}
+
+message DeleteProvinsiResponse {
+    uint32 code = 1;
+    string message = 2;
+}
+
 service ProvinsiService {
     rpc GetAllProvinsi(google.protobuf.Empty) returns (GetAllProvinsiResponse) {};
+    rpc GetProvinsiByIdWil(GetProvinsiByIdWilRequest) returns (GetProvinsiResponse) {};
+    rpc CreateProvinsi(Provinsi) returns (GetProvinsiResponse) {};
+    rpc UpdateProvinsi(Provinsi) returns (GetProvinsiResponse) {};
+    rpc DeleteProvinsi(GetProvinsiByIdWilRequest) returns (DeleteProvinsiResponse) {};
 }

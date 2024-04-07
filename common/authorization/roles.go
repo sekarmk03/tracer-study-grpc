@@ -46,6 +46,10 @@ var roles = AccessibleRoles{
 	},
 	"/" + BasePath + "." + ProvinsiSvc + "/": {
 		"GetAllProvinsi": {1, 2, 3, 4, 5, 6, 7},
+		"GetProvinsiByIdWil": {1, 2, 3, 4, 5, 6, 7},
+		"CreateProvinsi":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
+		"UpdateProvinsi":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
+		"DeleteProvinsi":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
 	},
 	"/" + BasePath + "." + RespondenSvc + "/": {
 		"GetAllResponden":         {1, 2, 3, 4, 5, 6, 7},

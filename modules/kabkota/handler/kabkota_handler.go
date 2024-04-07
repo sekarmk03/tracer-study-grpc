@@ -50,10 +50,10 @@ func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *emptypb.Empty)
 }
 
 func (kh *KabKotaHandler) GetKabKotaByIdWil(ctx context.Context, req *pb.GetKabKotaByIdWilRequest) (*pb.GetKabKotaResponse, error) {
-	kabkota, err := kh.kabkotaSvc.FindByIdWil(ctx, req.IdWil)
+	kabkota, err := kh.kabkotaSvc.FindByIdWil(ctx, req.GetIdWil())
 	if err != nil {
 		if kabkota == nil {
-			log.Println("WARNING: [KabKotaHandler-GetKabKotaByIdWil] Resource kabkota not found for idWil:", req.IdWil)
+			log.Println("WARNING: [KabKotaHandler-GetKabKotaByIdWil] Resource kabkota not found for idWil:", req.GetIdWil())
 			return nil, status.Errorf(codes.NotFound, "kabkota not found")
 		}
 		parseError := errors.ParseError(err)

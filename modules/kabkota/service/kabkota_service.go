@@ -83,8 +83,6 @@ func (svc *KabKotaService) Update(ctx context.Context, idWil string, fields *ent
 	utils.AddItemToMap(updateMap, "nama", fields.Nama)
 	utils.AddItemToMap(updateMap, "id_induk_wilayah", fields.IdIndukWilayah)
 
-	log.Print(kabkota)
-
 	res, err := svc.kabkotaRepository.Update(ctx, kabkota, updateMap)
 	if err != nil {
 		log.Println("ERROR: [KabKotaService-Update] Error while update KabKota:", err)
