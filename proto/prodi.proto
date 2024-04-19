@@ -39,7 +39,26 @@ message GetAllFakultasResponse {
     repeated Fakultas data = 3;
 }
 
+message GetProdiByKodeRequest {
+    string kode = 1;
+}
+
+message GetProdiResponse {
+    uint32 code = 1;
+    string message = 2;
+    Prodi data = 3;
+}
+
+message DeleteProdiResponse {
+    uint32 code = 1;
+    string message = 2;
+}
+
 service ProdiService {
     rpc GetAllProdi(google.protobuf.Empty) returns (GetAllProdiResponse) {};
     rpc GetAllFakultas(google.protobuf.Empty) returns (GetAllFakultasResponse) {};
+    rpc GetProdiByKode(GetProdiByKodeRequest) returns (GetProdiResponse) {};
+    rpc CreateProdi(Prodi) returns (GetProdiResponse) {};
+    rpc UpdateProdi(Prodi) returns (GetProdiResponse) {};
+    rpc DeleteProdi(GetProdiByKodeRequest) returns (DeleteProdiResponse) {};
 }

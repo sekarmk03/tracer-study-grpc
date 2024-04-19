@@ -43,6 +43,11 @@ var roles = AccessibleRoles{
 	},
 	"/" + BasePath + "." + ProdiSvc + "/": {
 		"GetAllProdi": {1, 2, 3, 4, 5, 6, 7},
+		"GetAllFakultas": {1, 2, 3, 4, 5, 6, 7},
+		"GetProdiByKode": {1, 2, 3, 4, 5, 6, 7},
+		"CreateProdi":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
+		"UpdateProdi":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
+		"DeleteProdi":     {1, 2, 3, 4, 5, 6, 7}, // should be only 1, 2
 	},
 	"/" + BasePath + "." + ProvinsiSvc + "/": {
 		"GetAllProvinsi": {1, 2, 3, 4, 5, 6, 7},

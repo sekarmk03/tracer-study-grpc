@@ -22,6 +22,10 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	ProdiService_GetAllProdi_FullMethodName    = "/tracer_study_grpc.ProdiService/GetAllProdi"
 	ProdiService_GetAllFakultas_FullMethodName = "/tracer_study_grpc.ProdiService/GetAllFakultas"
+	ProdiService_GetProdiByKode_FullMethodName = "/tracer_study_grpc.ProdiService/GetProdiByKode"
+	ProdiService_CreateProdi_FullMethodName    = "/tracer_study_grpc.ProdiService/CreateProdi"
+	ProdiService_UpdateProdi_FullMethodName    = "/tracer_study_grpc.ProdiService/UpdateProdi"
+	ProdiService_DeleteProdi_FullMethodName    = "/tracer_study_grpc.ProdiService/DeleteProdi"
 )
 
 // ProdiServiceClient is the client API for ProdiService service.
@@ -30,6 +34,10 @@ const (
 type ProdiServiceClient interface {
 	GetAllProdi(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllProdiResponse, error)
 	GetAllFakultas(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAllFakultasResponse, error)
+	GetProdiByKode(ctx context.Context, in *GetProdiByKodeRequest, opts ...grpc.CallOption) (*GetProdiResponse, error)
+	CreateProdi(ctx context.Context, in *Prodi, opts ...grpc.CallOption) (*GetProdiResponse, error)
+	UpdateProdi(ctx context.Context, in *Prodi, opts ...grpc.CallOption) (*GetProdiResponse, error)
+	DeleteProdi(ctx context.Context, in *GetProdiByKodeRequest, opts ...grpc.CallOption) (*DeleteProdiResponse, error)
 }
 
 type prodiServiceClient struct {
@@ -58,12 +66,52 @@ func (c *prodiServiceClient) GetAllFakultas(ctx context.Context, in *emptypb.Emp
 	return out, nil
 }
 
+func (c *prodiServiceClient) GetProdiByKode(ctx context.Context, in *GetProdiByKodeRequest, opts ...grpc.CallOption) (*GetProdiResponse, error) {
+	out := new(GetProdiResponse)
+	err := c.cc.Invoke(ctx, ProdiService_GetProdiByKode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *prodiServiceClient) CreateProdi(ctx context.Context, in *Prodi, opts ...grpc.CallOption) (*GetProdiResponse, error) {
+	out := new(GetProdiResponse)
+	err := c.cc.Invoke(ctx, ProdiService_CreateProdi_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *prodiServiceClient) UpdateProdi(ctx context.Context, in *Prodi, opts ...grpc.CallOption) (*GetProdiResponse, error) {
+	out := new(GetProdiResponse)
+	err := c.cc.Invoke(ctx, ProdiService_UpdateProdi_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *prodiServiceClient) DeleteProdi(ctx context.Context, in *GetProdiByKodeRequest, opts ...grpc.CallOption) (*DeleteProdiResponse, error) {
+	out := new(DeleteProdiResponse)
+	err := c.cc.Invoke(ctx, ProdiService_DeleteProdi_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProdiServiceServer is the server API for ProdiService service.
 // All implementations must embed UnimplementedProdiServiceServer
 // for forward compatibility
 type ProdiServiceServer interface {
 	GetAllProdi(context.Context, *emptypb.Empty) (*GetAllProdiResponse, error)
 	GetAllFakultas(context.Context, *emptypb.Empty) (*GetAllFakultasResponse, error)
+	GetProdiByKode(context.Context, *GetProdiByKodeRequest) (*GetProdiResponse, error)
+	CreateProdi(context.Context, *Prodi) (*GetProdiResponse, error)
+	UpdateProdi(context.Context, *Prodi) (*GetProdiResponse, error)
+	DeleteProdi(context.Context, *GetProdiByKodeRequest) (*DeleteProdiResponse, error)
 	mustEmbedUnimplementedProdiServiceServer()
 }
 
@@ -76,6 +124,18 @@ func (UnimplementedProdiServiceServer) GetAllProdi(context.Context, *emptypb.Emp
 }
 func (UnimplementedProdiServiceServer) GetAllFakultas(context.Context, *emptypb.Empty) (*GetAllFakultasResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllFakultas not implemented")
+}
+func (UnimplementedProdiServiceServer) GetProdiByKode(context.Context, *GetProdiByKodeRequest) (*GetProdiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProdiByKode not implemented")
+}
+func (UnimplementedProdiServiceServer) CreateProdi(context.Context, *Prodi) (*GetProdiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProdi not implemented")
+}
+func (UnimplementedProdiServiceServer) UpdateProdi(context.Context, *Prodi) (*GetProdiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProdi not implemented")
+}
+func (UnimplementedProdiServiceServer) DeleteProdi(context.Context, *GetProdiByKodeRequest) (*DeleteProdiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProdi not implemented")
 }
 func (UnimplementedProdiServiceServer) mustEmbedUnimplementedProdiServiceServer() {}
 
@@ -126,6 +186,78 @@ func _ProdiService_GetAllFakultas_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProdiService_GetProdiByKode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProdiByKodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdiServiceServer).GetProdiByKode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProdiService_GetProdiByKode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdiServiceServer).GetProdiByKode(ctx, req.(*GetProdiByKodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProdiService_CreateProdi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Prodi)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdiServiceServer).CreateProdi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProdiService_CreateProdi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdiServiceServer).CreateProdi(ctx, req.(*Prodi))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProdiService_UpdateProdi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Prodi)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdiServiceServer).UpdateProdi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProdiService_UpdateProdi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdiServiceServer).UpdateProdi(ctx, req.(*Prodi))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProdiService_DeleteProdi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProdiByKodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdiServiceServer).DeleteProdi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProdiService_DeleteProdi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdiServiceServer).DeleteProdi(ctx, req.(*GetProdiByKodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProdiService_ServiceDesc is the grpc.ServiceDesc for ProdiService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -140,6 +272,22 @@ var ProdiService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllFakultas",
 			Handler:    _ProdiService_GetAllFakultas_Handler,
+		},
+		{
+			MethodName: "GetProdiByKode",
+			Handler:    _ProdiService_GetProdiByKode_Handler,
+		},
+		{
+			MethodName: "CreateProdi",
+			Handler:    _ProdiService_CreateProdi_Handler,
+		},
+		{
+			MethodName: "UpdateProdi",
+			Handler:    _ProdiService_UpdateProdi_Handler,
+		},
+		{
+			MethodName: "DeleteProdi",
+			Handler:    _ProdiService_DeleteProdi_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

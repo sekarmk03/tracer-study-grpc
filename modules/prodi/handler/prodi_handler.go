@@ -71,3 +71,83 @@ func (ph *ProdiHandler) GetAllFakultas(ctx context.Context, req *emptypb.Empty) 
 		Data:    fakultasArr,
 	}, nil
 }
+
+func (ph *ProdiHandler) GetProdiByKode(ctx context.Context, req *pb.GetProdiByKodeRequest) (*pb.GetProdiResponse, error) {
+	prodi, err := ph.prodiSvc.FindProdiByKode(ctx, req.GetKode())
+	if err != nil {
+		if prodi == nil {
+			log.Println("WARNING: [ProdiHandler-GetProdiByKode] Resource prodi not found for kode:", req.GetKode())
+			return nil, status.Errorf(status.Code(err), "prodi not found")
+		}
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProdiHandler-GetProdiByKode] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	prodiProto := entity.ConvertEntityProdiToProto(prodi)
+
+	return &pb.GetProdiResponse{
+		Code: uint32(http.StatusOK),
+		Message: "get prodi by kode success",
+		Data: prodiProto,
+	}, nil
+}
+
+func (ph *ProdiHandler) CreateProdi(ctx context.Context, req *pb.Prodi) (*pb.GetProdiResponse, error) {
+	prodi, err := ph.prodiSvc.Create(ctx, req.GetKode(), req.GetKodeDikti(), req.GetKodeFak(), req.GetKodeIntegrasi(), req.GetNama(), req.GetJenjang(), req.GetNamaFak())
+
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProdiHandler-CreateProdi] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	prodiProto := entity.ConvertEntityProdiToProto(prodi)
+
+	return &pb.GetProdiResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "create prodi success",
+		Data:    prodiProto,
+	}, nil
+}
+
+func (ph *ProdiHandler) UpdateProdi(ctx context.Context, req *pb.Prodi) (*pb.GetProdiResponse, error) {
+	prodiDataUpdate := &entity.Prodi{
+		KodeDikti:     req.GetKodeDikti(),
+		KodeFak:       req.GetKodeFak(),
+		KodeIntegrasi: req.GetKodeIntegrasi(),
+		Nama:          req.GetNama(),
+		Jenjang:       req.GetJenjang(),
+		NamaFak:       req.GetNamaFak(),
+	}
+
+	prodi, err := ph.prodiSvc.Update(ctx, req.GetKode(), prodiDataUpdate)
+
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProdiHandler-UpdateProdi] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	prodiProto := entity.ConvertEntityProdiToProto(prodi)
+
+	return &pb.GetProdiResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "update prodi success",
+		Data:    prodiProto,
+	}, nil
+}
+
+func (ph *ProdiHandler) DeleteProdi(ctx context.Context, req *pb.GetProdiByKodeRequest) (*pb.DeleteProdiResponse, error) {
+	err := ph.prodiSvc.Delete(ctx, req.GetKode())
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [ProdiHandler-DeleteProdi] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	return &pb.DeleteProdiResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "delete prodi success",
+	}, nil
+}
