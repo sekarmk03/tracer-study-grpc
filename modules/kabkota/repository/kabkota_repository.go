@@ -5,7 +5,8 @@ import (
 	"errors"
 	"log"
 	"time"
-	"tracer-study-grpc/modules/kabkota/entity"
+	kkentity "tracer-study-grpc/modules/kabkota/entity"
+	pentity "tracer-study-grpc/modules/provinsi/entity"
 
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc/codes"
@@ -24,31 +25,41 @@ func NewKabKotaRepository(db *gorm.DB) *KabKotaRepository {
 }
 
 type KabKotaRepositoryUseCase interface {
-	FindAll(ctx context.Context, req any) ([]*entity.KabKota, error)
-	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
-	Create(ctx context.Context, req *entity.KabKota) (*entity.KabKota, error)
-	Update(ctx context.Context, kabkota *entity.KabKota, updatedFields map[string]interface{}) (*entity.KabKota, error)
+	FindAll(ctx context.Context, req any) ([]*kkentity.KabKota, error)
+	FindByIdWil(ctx context.Context, idWil string) (*kkentity.KabKota, error)
+	Create(ctx context.Context, req *kkentity.KabKota) (*kkentity.KabKota, error)
+	Update(ctx context.Context, kabkota *kkentity.KabKota, updatedFields map[string]interface{}) (*kkentity.KabKota, error)
 	Delete(ctx context.Context, idWil string) error
 }
 
-func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*entity.KabKota, error) {
+func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*kkentity.KabKota, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "KabKotaRepository - FindAll")
 	defer span.End()
 
-	var kabkota []*entity.KabKota
+	var kabkota []*kkentity.KabKota
 	if err := k.db.Debug().WithContext(ctxSpan).Find(&kabkota).Error; err != nil {
 		log.Println("ERROR: [KabKotaRepository-FindAll] Internal error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
+    for _, kk := range kabkota {
+        var provinsi pentity.Provinsi
+        if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", kk.IdIndukWilayah).First(&provinsi).Error; err != nil {
+            log.Println("ERROR: [KabKotaRepository-FindAll] Failed to fetch Provinsi data:", err)
+            return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+        }
+
+        kk.Provinsi = provinsi
+    }
+
 	return kabkota, nil
 }
 
-func (k *KabKotaRepository) FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error) {
+func (k *KabKotaRepository) FindByIdWil(ctx context.Context, idWil string) (*kkentity.KabKota, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "KabKotaRepository - FindByIdWil")
 	defer span.End()
 
-	var kabkota entity.KabKota
+	var kabkota kkentity.KabKota
 	if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", idWil).First(&kabkota).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			log.Println("WARNING: [KabKotaRepository-FindByIdWil] Record not found for idWil", idWil)
@@ -61,7 +72,7 @@ func (k *KabKotaRepository) FindByIdWil(ctx context.Context, idWil string) (*ent
 	return &kabkota, nil
 }
 
-func (k *KabKotaRepository) Create(ctx context.Context, req *entity.KabKota) (*entity.KabKota, error) {
+func (k *KabKotaRepository) Create(ctx context.Context, req *kkentity.KabKota) (*kkentity.KabKota, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "KabKotaRepository - Create")
 	defer span.End()
 
@@ -77,7 +88,7 @@ func (k *KabKotaRepository) Create(ctx context.Context, req *entity.KabKota) (*e
 	return req, nil
 }
 
-func (k *KabKotaRepository) Update(ctx context.Context, kabkota *entity.KabKota, updatedFields map[string]interface{}) (*entity.KabKota, error) {
+func (k *KabKotaRepository) Update(ctx context.Context, kabkota *kkentity.KabKota, updatedFields map[string]interface{}) (*kkentity.KabKota, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "KabKotaRepository - Update")
 	defer span.End()
 
@@ -98,7 +109,7 @@ func (k *KabKotaRepository) Delete(ctx context.Context, idWil string) error {
 	ctxSpan, span := trace.StartSpan(ctx, "KabKotaRepository - Delete")
 	defer span.End()
 
-	var kabkota entity.KabKota
+	var kabkota kkentity.KabKota
     if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", idWil).First(&kabkota).Error; err != nil {
         if errors.Is(err, gorm.ErrRecordNotFound) {
             log.Println("WARNING: [KabKotaRepository-DeleteByIdWil] Record not found for idWil", idWil)

@@ -8,7 +8,7 @@ todo
 - copy-ing data from old database to new database
 - data pipeline service
 - modify login cek alumni (nunggu api dri pa aceng) (0)
-- complete crud method all modules (1)
+- complete crud method all modules (1) kabkota✅ provinsi✅ prodi✅
 - add grpc clients (2)
 - add rest service (3)
 - save token jwt in redis (4)
@@ -16,3 +16,40 @@ todo
 - implement sso service (6)
 - separate each module
 - simulate microservices with docker
+- post article service (7)
+
+
+alumni
+- alumni✅
+- prodi✅
+
+responden
+- responden✅
+- prodi✅
+- pkts
+
+kabkota
+- kabkota✅
+- provinsi✅
+
+userstudy
+- atasan
+- survey
+- alumni
+
+services
+- auth
+  - login alumni
+  - login atasan
+  - login admin
+  - login sso
+  - role
+  - user
+- mahasiswa
+  - mhsbiodata
+  - prodi
+  - fakultas
+- survey
+  - responden
+  - pkts
+  - userstudy

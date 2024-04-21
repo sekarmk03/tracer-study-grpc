@@ -4,6 +4,8 @@ import (
 	"time"
 	"tracer-study-grpc/pb"
 
+	"tracer-study-grpc/modules/provinsi/entity"
+
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 )
@@ -13,12 +15,13 @@ const (
 )
 
 type KabKota struct {
-	IdWil          string         `json:"id_wil"`
-	Nama           string         `json:"nama"`
-	IdIndukWilayah string         `json:"id_induk_wilayah"`
-	CreatedAt      time.Time      `gorm:"type:timestamptz;not_null" json:"created_at"`
-	UpdatedAt      time.Time      `gorm:"type:timestamptz;not_null" json:"updated_at"`
-	DeletedAt      gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+	IdWil          string          `json:"id_wil"`
+	Nama           string          `json:"nama"`
+	IdIndukWilayah string          `json:"id_induk_wilayah"`
+	Provinsi       entity.Provinsi `gorm:"foreignKey:IdIndukWilayah;references:IdWil" json:"provinsi"`
+	CreatedAt      time.Time       `gorm:"type:timestamptz;not_null" json:"created_at"`
+	UpdatedAt      time.Time       `gorm:"type:timestamptz;not_null" json:"updated_at"`
+	DeletedAt      gorm.DeletedAt  `gorm:"index" json:"deleted_at"`
 }
 
 func NewKabKota(idWil, nama, idIndukWilayah string) *KabKota {
@@ -40,6 +43,7 @@ func ConvertEntityToProto(k *KabKota) *pb.KabKota {
 		IdWil:          k.IdWil,
 		Nama:           k.Nama,
 		IdIndukWilayah: k.IdIndukWilayah,
+		Provinsi:       entity.ConvertEntityToProto(&k.Provinsi),
 		CreatedAt:      timestamppb.New(k.CreatedAt),
 		UpdatedAt:      timestamppb.New(k.UpdatedAt),
 	}
