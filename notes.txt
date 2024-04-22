@@ -18,6 +18,7 @@ todo
 - simulate microservices with docker
 - post article service (7)
 
+- data PKTS dan report dibuat per tahun
 
 alumni
 - alumni✅
@@ -39,17 +40,20 @@ userstudy
 
 services
 - auth
-  - login alumni
-  - login atasan
+  - login alumni✅
+  - login atasan✅
   - login admin
   - login sso
   - role
   - user
 - mahasiswa
-  - mhsbiodata
-  - prodi
+  - mhsbiodata✅
+  - prodi✅
   - fakultas
 - survey
-  - responden
-  - pkts
-  - userstudy
+  - responden✅
+  - pkts✅
+  - userstudy✅
+- notification
+- post article
+- data pipeline

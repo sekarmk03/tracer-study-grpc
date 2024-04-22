@@ -25,6 +25,7 @@ const (
 	PKTSService_CreatePKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/CreatePKTS"
 	PKTSService_UpdatePKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/UpdatePKTS"
 	PKTSService_GetNimByDataAtasan_FullMethodName = "/tracer_study_grpc.PKTSService/GetNimByDataAtasan"
+	PKTSService_ExportPKTSReport_FullMethodName   = "/tracer_study_grpc.PKTSService/ExportPKTSReport"
 )
 
 // PKTSServiceClient is the client API for PKTSService service.
@@ -36,6 +37,7 @@ type PKTSServiceClient interface {
 	CreatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	UpdatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	GetNimByDataAtasan(ctx context.Context, in *GetNimByDataAtasanRequest, opts ...grpc.CallOption) (*GetNimByDataAtasanResponse, error)
+	ExportPKTSReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExportPKTSReportResponse, error)
 }
 
 type pKTSServiceClient struct {
@@ -91,6 +93,15 @@ func (c *pKTSServiceClient) GetNimByDataAtasan(ctx context.Context, in *GetNimBy
 	return out, nil
 }
 
+func (c *pKTSServiceClient) ExportPKTSReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExportPKTSReportResponse, error) {
+	out := new(ExportPKTSReportResponse)
+	err := c.cc.Invoke(ctx, PKTSService_ExportPKTSReport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PKTSServiceServer is the server API for PKTSService service.
 // All implementations must embed UnimplementedPKTSServiceServer
 // for forward compatibility
@@ -100,6 +111,7 @@ type PKTSServiceServer interface {
 	CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	GetNimByDataAtasan(context.Context, *GetNimByDataAtasanRequest) (*GetNimByDataAtasanResponse, error)
+	ExportPKTSReport(context.Context, *emptypb.Empty) (*ExportPKTSReportResponse, error)
 	mustEmbedUnimplementedPKTSServiceServer()
 }
 
@@ -121,6 +133,9 @@ func (UnimplementedPKTSServiceServer) UpdatePKTS(context.Context, *PKTS) (*GetPK
 }
 func (UnimplementedPKTSServiceServer) GetNimByDataAtasan(context.Context, *GetNimByDataAtasanRequest) (*GetNimByDataAtasanResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNimByDataAtasan not implemented")
+}
+func (UnimplementedPKTSServiceServer) ExportPKTSReport(context.Context, *emptypb.Empty) (*ExportPKTSReportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportPKTSReport not implemented")
 }
 func (UnimplementedPKTSServiceServer) mustEmbedUnimplementedPKTSServiceServer() {}
 
@@ -225,6 +240,24 @@ func _PKTSService_GetNimByDataAtasan_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PKTSService_ExportPKTSReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PKTSServiceServer).ExportPKTSReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PKTSService_ExportPKTSReport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PKTSServiceServer).ExportPKTSReport(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PKTSService_ServiceDesc is the grpc.ServiceDesc for PKTSService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -251,6 +284,10 @@ var PKTSService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetNimByDataAtasan",
 			Handler:    _PKTSService_GetNimByDataAtasan_Handler,
+		},
+		{
+			MethodName: "ExportPKTSReport",
+			Handler:    _PKTSService_ExportPKTSReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

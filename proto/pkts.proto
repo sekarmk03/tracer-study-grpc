@@ -129,10 +129,17 @@ message GetNimByDataAtasanResponse {
     repeated string nims = 3;
 }
 
+message ExportPKTSReportResponse {
+    uint32 code = 1;
+    string message = 2;
+    bytes data = 3;
+}
+
 service PKTSService {
     rpc GetAllPKTS(google.protobuf.Empty) returns (GetAllPKTSResponse);
     rpc GetPKTSByNim(GetPKTSByNimRequest) returns (GetPKTSResponse);
     rpc CreatePKTS(PKTS) returns (GetPKTSResponse);
     rpc UpdatePKTS(PKTS) returns (GetPKTSResponse);
     rpc GetNimByDataAtasan(GetNimByDataAtasanRequest) returns (GetNimByDataAtasanResponse);
+    rpc ExportPKTSReport(google.protobuf.Empty) returns (ExportPKTSReportResponse);
 }

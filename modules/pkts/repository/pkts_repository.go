@@ -30,6 +30,7 @@ type PKTSRepositoryUseCase interface {
 	Create(ctx context.Context, req *entity.PKTS) (*entity.PKTS, error)
 	Update(ctx context.Context, pkts *entity.PKTS, updatedFields map[string]interface{}) (*entity.PKTS, error)
 	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
+	FindAllReport(ctx context.Context, req any) ([]*entity.PKTSReport, error)
 }
 
 func (p *PKTSRepository) FindAll(ctx context.Context, req any) ([]*entity.PKTS, error) {
@@ -123,4 +124,24 @@ func (p *PKTSRepository) FindByAtasan(ctx context.Context, namaA, hpA, emailA st
 	}
 
 	return nims, nil
+}
+
+func (p *PKTSRepository) FindAllReport(ctx context.Context, req any) ([]*entity.PKTSReport, error) {
+	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - FindAll")
+    defer span.End()
+
+    var pkts []*entity.PKTSReport
+    query := `
+        SELECT pk.*, r.nama, r.jk, r.hp, r.email, r.thn_sidang, r.nik, r.npwp, pk.kodeprodi, p.nama AS nama_prodi, p.kode_dikti, p.jenjang
+        FROM pkts AS pk
+        JOIN responden AS r ON pk.nim = r.nim
+        JOIN ref_prodi AS p ON pk.kodeprodi = p.kode
+        LIMIT 10;
+    `
+    if err := p.db.Debug().WithContext(ctxSpan).Raw(query).Scan(&pkts).Error; err != nil {
+        log.Println("ERROR: [PKTSRepository-FindAll] Internal server error:", err)
+        return nil, status.Errorf(codes.Internal, "%v", err)
+    }
+
+    return pkts, nil
 }
