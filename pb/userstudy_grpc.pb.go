@@ -24,6 +24,7 @@ const (
 	UserStudyService_GetUserStudyByNim_FullMethodName = "/tracer_study_grpc.UserStudyService/GetUserStudyByNim"
 	UserStudyService_CreateUserStudy_FullMethodName   = "/tracer_study_grpc.UserStudyService/CreateUserStudy"
 	UserStudyService_UpdateUserStudy_FullMethodName   = "/tracer_study_grpc.UserStudyService/UpdateUserStudy"
+	UserStudyService_ExportUSReport_FullMethodName    = "/tracer_study_grpc.UserStudyService/ExportUSReport"
 )
 
 // UserStudyServiceClient is the client API for UserStudyService service.
@@ -34,6 +35,7 @@ type UserStudyServiceClient interface {
 	GetUserStudyByNim(ctx context.Context, in *GetUserStudyByNimRequest, opts ...grpc.CallOption) (*SingleUserStudyResponse, error)
 	CreateUserStudy(ctx context.Context, in *UserStudy, opts ...grpc.CallOption) (*SingleUserStudyResponse, error)
 	UpdateUserStudy(ctx context.Context, in *UserStudy, opts ...grpc.CallOption) (*SingleUserStudyResponse, error)
+	ExportUSReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExportUSReportResponse, error)
 }
 
 type userStudyServiceClient struct {
@@ -80,6 +82,15 @@ func (c *userStudyServiceClient) UpdateUserStudy(ctx context.Context, in *UserSt
 	return out, nil
 }
 
+func (c *userStudyServiceClient) ExportUSReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExportUSReportResponse, error) {
+	out := new(ExportUSReportResponse)
+	err := c.cc.Invoke(ctx, UserStudyService_ExportUSReport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserStudyServiceServer is the server API for UserStudyService service.
 // All implementations must embed UnimplementedUserStudyServiceServer
 // for forward compatibility
@@ -88,6 +99,7 @@ type UserStudyServiceServer interface {
 	GetUserStudyByNim(context.Context, *GetUserStudyByNimRequest) (*SingleUserStudyResponse, error)
 	CreateUserStudy(context.Context, *UserStudy) (*SingleUserStudyResponse, error)
 	UpdateUserStudy(context.Context, *UserStudy) (*SingleUserStudyResponse, error)
+	ExportUSReport(context.Context, *emptypb.Empty) (*ExportUSReportResponse, error)
 	mustEmbedUnimplementedUserStudyServiceServer()
 }
 
@@ -106,6 +118,9 @@ func (UnimplementedUserStudyServiceServer) CreateUserStudy(context.Context, *Use
 }
 func (UnimplementedUserStudyServiceServer) UpdateUserStudy(context.Context, *UserStudy) (*SingleUserStudyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserStudy not implemented")
+}
+func (UnimplementedUserStudyServiceServer) ExportUSReport(context.Context, *emptypb.Empty) (*ExportUSReportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportUSReport not implemented")
 }
 func (UnimplementedUserStudyServiceServer) mustEmbedUnimplementedUserStudyServiceServer() {}
 
@@ -192,6 +207,24 @@ func _UserStudyService_UpdateUserStudy_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserStudyService_ExportUSReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserStudyServiceServer).ExportUSReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserStudyService_ExportUSReport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserStudyServiceServer).ExportUSReport(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserStudyService_ServiceDesc is the grpc.ServiceDesc for UserStudyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -214,6 +247,10 @@ var UserStudyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUserStudy",
 			Handler:    _UserStudyService_UpdateUserStudy_Handler,
+		},
+		{
+			MethodName: "ExportUSReport",
+			Handler:    _UserStudyService_ExportUSReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -38,7 +38,7 @@ func (p *PKTSRepository) FindAll(ctx context.Context, req any) ([]*entity.PKTS, 
 	defer span.End()
 
 	var pkts []*entity.PKTS
-	if err := p.db.Debug().WithContext(ctxSpan).Order("created_at desc").Limit(10).Find(&pkts).Error; err != nil {
+	if err := p.db.Debug().WithContext(ctxSpan).Order("created_at desc").Find(&pkts).Error; err != nil {
 		log.Println("ERROR: [PKTSRepository-FindAll] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "%v", err)
 	}
@@ -135,8 +135,7 @@ func (p *PKTSRepository) FindAllReport(ctx context.Context, req any) ([]*entity.
         SELECT pk.*, r.nama, r.jk, r.hp, r.email, r.thn_sidang, r.nik, r.npwp, pk.kodeprodi, p.nama AS nama_prodi, p.kode_dikti, p.jenjang
         FROM pkts AS pk
         JOIN responden AS r ON pk.nim = r.nim
-        JOIN ref_prodi AS p ON pk.kodeprodi = p.kode
-        LIMIT 10;
+        JOIN ref_prodi AS p ON pk.kodeprodi = p.kode;
     `
     if err := p.db.Debug().WithContext(ctxSpan).Raw(query).Scan(&pkts).Error; err != nil {
         log.Println("ERROR: [PKTSRepository-FindAll] Internal server error:", err)

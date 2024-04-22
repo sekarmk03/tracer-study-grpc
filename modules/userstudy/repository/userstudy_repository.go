@@ -35,7 +35,7 @@ func (r *UserStudyRepository) FindAll(ctx context.Context, req any) ([]*entity.U
 	defer span.End()
 
 	var userStudy []*entity.UserStudy
-	if err := r.db.Debug().WithContext(ctxSpan).Order("created_at desc").Limit(10).Find(&userStudy).Error; err != nil {
+	if err := r.db.Debug().WithContext(ctxSpan).Order("created_at desc").Find(&userStudy).Error; err != nil {
 		log.Println("ERROR: [UserStudyRepository-FindAll] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
@@ -68,16 +68,6 @@ func (r *UserStudyRepository) FindByNim(ctx context.Context, nim, emailResponden
 func (r *UserStudyRepository) Update(ctx context.Context, userStudy *entity.UserStudy, updatedFields map[string]interface{}) (*entity.UserStudy, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "UserStudyRepository - Update")
 	defer span.End()
-
-	// var userStudy *entity.UserStudy
-	// if err := r.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&userStudy).Error; err != nil {
-	// 	if errors.Is(err, gorm.ErrRecordNotFound) {
-	// 		log.Println("WARNING: [UserStudyRepository-Update] Record not found for nim", nim)
-	// 		return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
-	// 	}
-	// 	log.Println("ERROR: [UserStudyRepository-Update] Internal server error:", err)
-	// 	return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
-	// }
 
 	updatedFields["updated_at"] = time.Now()
 	updatedFields["updated_by"] = "user"

@@ -116,3 +116,20 @@ func (uh *UserStudyHandler) CreateUserStudy(ctx context.Context, req *pb.UserStu
 		Data:    userStudyProto,
 	}, nil
 }
+
+func (uh *UserStudyHandler) ExportUSReport(ctx context.Context, req *emptypb.Empty) (*pb.ExportUSReportResponse, error) {
+	us, err := uh.userStudySvc.ExportUSReport(ctx, req)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [UserStudyHandler-ExportUSReport] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	usBytes := us.Bytes()
+
+	return &pb.ExportUSReportResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "export user study report success",
+		Data:    usBytes,
+	}, nil
+}

@@ -56,9 +56,16 @@ message GetUserStudyByNimRequest {
     string hp_responden = 3;
 }
 
+message ExportUSReportResponse {
+    uint32 code = 1;
+    string message = 2;
+    bytes data = 3;
+}
+
 service UserStudyService {
     rpc GetAllUserStudy(google.protobuf.Empty) returns (MultipleUserStudyResponse) {}
     rpc GetUserStudyByNim(GetUserStudyByNimRequest) returns (SingleUserStudyResponse) {}
     rpc CreateUserStudy(UserStudy) returns (SingleUserStudyResponse) {}
     rpc UpdateUserStudy(UserStudy) returns (SingleUserStudyResponse) {}
+    rpc ExportUSReport(google.protobuf.Empty) returns (ExportUSReportResponse) {}
 }
