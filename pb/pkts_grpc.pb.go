@@ -20,12 +20,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PKTSService_GetAllPKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/GetAllPKTS"
-	PKTSService_GetPKTSByNim_FullMethodName       = "/tracer_study_grpc.PKTSService/GetPKTSByNim"
-	PKTSService_CreatePKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/CreatePKTS"
-	PKTSService_UpdatePKTS_FullMethodName         = "/tracer_study_grpc.PKTSService/UpdatePKTS"
-	PKTSService_GetNimByDataAtasan_FullMethodName = "/tracer_study_grpc.PKTSService/GetNimByDataAtasan"
-	PKTSService_ExportPKTSReport_FullMethodName   = "/tracer_study_grpc.PKTSService/ExportPKTSReport"
+	PKTSService_GetAllPKTS_FullMethodName          = "/tracer_study_grpc.PKTSService/GetAllPKTS"
+	PKTSService_GetPKTSByNim_FullMethodName        = "/tracer_study_grpc.PKTSService/GetPKTSByNim"
+	PKTSService_CreatePKTS_FullMethodName          = "/tracer_study_grpc.PKTSService/CreatePKTS"
+	PKTSService_UpdatePKTS_FullMethodName          = "/tracer_study_grpc.PKTSService/UpdatePKTS"
+	PKTSService_GetNimByDataAtasan_FullMethodName  = "/tracer_study_grpc.PKTSService/GetNimByDataAtasan"
+	PKTSService_ExportPKTSReport_FullMethodName    = "/tracer_study_grpc.PKTSService/ExportPKTSReport"
+	PKTSService_GetPKTSRekapByProdi_FullMethodName = "/tracer_study_grpc.PKTSService/GetPKTSRekapByProdi"
 )
 
 // PKTSServiceClient is the client API for PKTSService service.
@@ -38,6 +39,7 @@ type PKTSServiceClient interface {
 	UpdatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	GetNimByDataAtasan(ctx context.Context, in *GetNimByDataAtasanRequest, opts ...grpc.CallOption) (*GetNimByDataAtasanResponse, error)
 	ExportPKTSReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExportPKTSReportResponse, error)
+	GetPKTSRekapByProdi(ctx context.Context, in *GetPKTSRekapByProdiRequest, opts ...grpc.CallOption) (*GetPKTSRekapByProdiResponse, error)
 }
 
 type pKTSServiceClient struct {
@@ -102,6 +104,15 @@ func (c *pKTSServiceClient) ExportPKTSReport(ctx context.Context, in *emptypb.Em
 	return out, nil
 }
 
+func (c *pKTSServiceClient) GetPKTSRekapByProdi(ctx context.Context, in *GetPKTSRekapByProdiRequest, opts ...grpc.CallOption) (*GetPKTSRekapByProdiResponse, error) {
+	out := new(GetPKTSRekapByProdiResponse)
+	err := c.cc.Invoke(ctx, PKTSService_GetPKTSRekapByProdi_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PKTSServiceServer is the server API for PKTSService service.
 // All implementations must embed UnimplementedPKTSServiceServer
 // for forward compatibility
@@ -112,6 +123,7 @@ type PKTSServiceServer interface {
 	UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	GetNimByDataAtasan(context.Context, *GetNimByDataAtasanRequest) (*GetNimByDataAtasanResponse, error)
 	ExportPKTSReport(context.Context, *emptypb.Empty) (*ExportPKTSReportResponse, error)
+	GetPKTSRekapByProdi(context.Context, *GetPKTSRekapByProdiRequest) (*GetPKTSRekapByProdiResponse, error)
 	mustEmbedUnimplementedPKTSServiceServer()
 }
 
@@ -136,6 +148,9 @@ func (UnimplementedPKTSServiceServer) GetNimByDataAtasan(context.Context, *GetNi
 }
 func (UnimplementedPKTSServiceServer) ExportPKTSReport(context.Context, *emptypb.Empty) (*ExportPKTSReportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExportPKTSReport not implemented")
+}
+func (UnimplementedPKTSServiceServer) GetPKTSRekapByProdi(context.Context, *GetPKTSRekapByProdiRequest) (*GetPKTSRekapByProdiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPKTSRekapByProdi not implemented")
 }
 func (UnimplementedPKTSServiceServer) mustEmbedUnimplementedPKTSServiceServer() {}
 
@@ -258,6 +273,24 @@ func _PKTSService_ExportPKTSReport_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PKTSService_GetPKTSRekapByProdi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPKTSRekapByProdiRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PKTSServiceServer).GetPKTSRekapByProdi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PKTSService_GetPKTSRekapByProdi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PKTSServiceServer).GetPKTSRekapByProdi(ctx, req.(*GetPKTSRekapByProdiRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PKTSService_ServiceDesc is the grpc.ServiceDesc for PKTSService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -288,6 +321,10 @@ var PKTSService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExportPKTSReport",
 			Handler:    _PKTSService_ExportPKTSReport_Handler,
+		},
+		{
+			MethodName: "GetPKTSRekapByProdi",
+			Handler:    _PKTSService_GetPKTSRekapByProdi_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

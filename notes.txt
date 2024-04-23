@@ -19,6 +19,7 @@ todo
 - post article service (7)
 
 - data PKTS dan report dibuat per tahun
+- data UMP per kabupaten dan besaran 1,2xUMP
 
 alumni
 - alumni✅

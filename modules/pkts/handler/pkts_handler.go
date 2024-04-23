@@ -229,3 +229,24 @@ func (ph *PKTSHandler) ExportPKTSReport(ctx context.Context, req *emptypb.Empty)
 		Data:    pktsBytes,
 	}, nil
 }
+
+func (ph *PKTSHandler) GetPKTSRekapByProdi(ctx context.Context, req *pb.GetPKTSRekapByProdiRequest) (*pb.GetPKTSRekapByProdiResponse, error) {
+	pktsRekap, err := ph.PKTSSvc.FindPKTSRekap(ctx, req.GetKodeprodi())
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [PKTSHandler-GetPKTSRekapByProdi] Internal server error:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	var pktsRekapArr []*pb.PKTSRekap
+	for _, p := range pktsRekap {
+		pktsRekapProto := entity.ConvertEntityPKTSRekapToProto(p)
+		pktsRekapArr = append(pktsRekapArr, pktsRekapProto)
+	}
+
+	return &pb.GetPKTSRekapByProdiResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "get pkts rekap by prodi success",
+		Data:    pktsRekapArr,
+	}, nil
+}

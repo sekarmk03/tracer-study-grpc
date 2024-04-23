@@ -101,6 +101,22 @@ message PKTS {
     google.protobuf.Timestamp deleted_at = 92;
 }
 
+message PKTSRekap {
+    string nim = 1;
+    string nama = 2;
+    uint32 f8 = 3;
+    string status = 4;
+    string email = 5;
+    string hp = 6;
+    string tgl_sidang = 7;
+    string pkts_status = 8;
+    string prov_kerja = 9;
+    string ump12 = 10;
+    string penghasilan = 11;
+    google.protobuf.Timestamp input_pkts = 12;
+    google.protobuf.Timestamp update_pkts = 13;
+}
+
 message GetAllPKTSResponse {
     uint32 code = 1;
     string message = 2;
@@ -135,6 +151,16 @@ message ExportPKTSReportResponse {
     bytes data = 3;
 }
 
+message GetPKTSRekapByProdiRequest {
+    string kodeprodi = 1;
+}
+
+message GetPKTSRekapByProdiResponse {
+    uint32 code = 1;
+    string message = 2;
+    repeated PKTSRekap data = 3;
+}
+
 service PKTSService {
     rpc GetAllPKTS(google.protobuf.Empty) returns (GetAllPKTSResponse);
     rpc GetPKTSByNim(GetPKTSByNimRequest) returns (GetPKTSResponse);
@@ -142,4 +168,5 @@ service PKTSService {
     rpc UpdatePKTS(PKTS) returns (GetPKTSResponse);
     rpc GetNimByDataAtasan(GetNimByDataAtasanRequest) returns (GetNimByDataAtasanResponse);
     rpc ExportPKTSReport(google.protobuf.Empty) returns (ExportPKTSReportResponse);
+    rpc GetPKTSRekapByProdi(GetPKTSRekapByProdiRequest) returns (GetPKTSRekapByProdiResponse);
 }

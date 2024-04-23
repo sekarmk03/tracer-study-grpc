@@ -31,6 +31,7 @@ type PKTSRepositoryUseCase interface {
 	Update(ctx context.Context, pkts *entity.PKTS, updatedFields map[string]interface{}) (*entity.PKTS, error)
 	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
 	FindAllReport(ctx context.Context, req any) ([]*entity.PKTSReport, error)
+	FindPKTSRekap(ctx context.Context, kodeprodi string) ([]*entity.PKTSRekap, error)
 }
 
 func (p *PKTSRepository) FindAll(ctx context.Context, req any) ([]*entity.PKTS, error) {
@@ -143,4 +144,41 @@ func (p *PKTSRepository) FindAllReport(ctx context.Context, req any) ([]*entity.
     }
 
     return pkts, nil
+}
+
+func (p *PKTSRepository) FindPKTSRekap(ctx context.Context, kodeprodi string) ([]*entity.PKTSRekap, error) {
+	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - FindPKTSRekap")
+	defer span.End()
+
+	var pkts []*entity.PKTSRekap
+	query := `
+		SELECT r.nim, r.nama, pk.f8, r.email, r.hp, r.tgl_sidang, p.nama AS prov_kerja, pk.f5_05 AS penghasilan, pk.created_at AS input_pkts, pk.updated_at AS update_pkts
+		FROM pkts AS pk
+		JOIN responden AS r ON pk.nim = r.nim
+		JOIN ref_provinsi AS p ON pk.f5a1 = p.id_wil
+		WHERE pk.kodeprodi = ?
+		LIMIT 10;
+	`
+	if err := p.db.Debug().WithContext(ctxSpan).Raw(query, kodeprodi).Scan(&pkts).Error; err != nil {
+		log.Println("ERROR: [PKTSRepository-FindPKTSRekap] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "%v", err)
+	}
+
+	codeToStatus := map[int]string{
+        1: "Bekerja",
+        2: "Belum Memungkinkan Bekerja",
+        3: "Wiraswasta",
+        4: "Melanjutkan Pendidikan",
+        5: "Tidak Kerja tetapi sedang mencari kerja",
+    }
+
+	for _, p := range pkts {
+		status, ok := codeToStatus[int(p.F8)]
+		if !ok {
+			status = ""
+        }
+		p.Status = status
+	}
+
+	return pkts, nil
 }

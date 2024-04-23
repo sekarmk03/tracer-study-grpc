@@ -28,6 +28,7 @@ type PKTSServiceUseCase interface {
 	Update(ctx context.Context, nim string, fields *entity.PKTS) (*entity.PKTS, error)
 	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
 	ExportPKTSReport(ctx context.Context, req any) (*bytes.Buffer, error)
+	FindPKTSRekap(ctx context.Context, kodeprodi string) ([]*entity.PKTSRekap, error)
 }
 
 func NewPKTSService(cfg config.Config, pktsRepository repository.PKTSRepositoryUseCase) *PKTSService {
@@ -505,4 +506,15 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 	}
 
 	return buff, nil
+}
+
+func (svc *PKTSService) FindPKTSRekap(ctx context.Context, kodeprodi string) ([]*entity.PKTSRekap, error) {
+	res, err := svc.pktsRepository.FindPKTSRekap(ctx, kodeprodi)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [PKTSService-FindPKTSRekap] Error while find pkts rekap:", parseError.Message)
+		return nil, err
+	}
+
+	return res, nil
 }
