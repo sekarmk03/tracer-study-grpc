@@ -42,15 +42,15 @@ func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*kkentity.K
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
-    for _, kk := range kabkota {
-        var provinsi pentity.Provinsi
-        if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", kk.IdIndukWilayah).First(&provinsi).Error; err != nil {
-            log.Println("ERROR: [KabKotaRepository-FindAll] Failed to fetch Provinsi data:", err)
-            return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
-        }
+	for _, kk := range kabkota {
+		var provinsi pentity.Provinsi
+		if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", kk.IdIndukWilayah).First(&provinsi).Error; err != nil {
+			log.Println("ERROR: [KabKotaRepository-FindAll] Failed to fetch Provinsi data:", err)
+			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
+		}
 
-        kk.Provinsi = provinsi
-    }
+		kk.Provinsi = provinsi
+	}
 
 	return kabkota, nil
 }
@@ -110,16 +110,16 @@ func (k *KabKotaRepository) Delete(ctx context.Context, idWil string) error {
 	defer span.End()
 
 	var kabkota kkentity.KabKota
-    if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", idWil).First(&kabkota).Error; err != nil {
-        if errors.Is(err, gorm.ErrRecordNotFound) {
-            log.Println("WARNING: [KabKotaRepository-DeleteByIdWil] Record not found for idWil", idWil)
-            return status.Errorf(codes.NotFound, "record not found for idWil %s", idWil)
-        }
-        log.Println("ERROR: [KabKotaRepository-DeleteByIdWil] Internal server error:", err)
-        return status.Errorf(codes.Internal, "internal server error: %v", err)
-    }
+	if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", idWil).First(&kabkota).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Println("WARNING: [KabKotaRepository-DeleteByIdWil] Record not found for idWil", idWil)
+			return status.Errorf(codes.NotFound, "record not found for idWil %s", idWil)
+		}
+		log.Println("ERROR: [KabKotaRepository-DeleteByIdWil] Internal server error:", err)
+		return status.Errorf(codes.Internal, "internal server error: %v", err)
+	}
 
-    // Delete the record
+	// Delete the record
 	if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", idWil).Delete(&kabkota).Error; err != nil {
 		log.Println("ERROR: [KabKotaRepository-DeleteByIdWil] Internal server error:", err)
 		return status.Errorf(codes.Internal, "internal server error: %v", err)
