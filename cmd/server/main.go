@@ -1,6 +1,7 @@
 package main
 
 import (
+	// "context"
 	"fmt"
 	"tracer-study-grpc/common/config"
 
@@ -19,6 +20,7 @@ import (
 	respondenModules "tracer-study-grpc/modules/responden"
 	userstudyModules "tracer-study-grpc/modules/userstudy"
 
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
 )
@@ -58,6 +60,10 @@ func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, j
 	authModules.InitGrpc(server, cfg, db, jwtManager, grpcConn)
 	userstudyModules.InitGrpc(server, cfg, db, grpcConn)
 }
+
+// func createRestServer(port string) *server.Rest {
+// 	return server.NewRest(port)
+// }
 
 func checkError(err error) {
 	if err != nil {
