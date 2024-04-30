@@ -34,7 +34,7 @@ func (rh *RespondenHandler) GetAllResponden(ctx context.Context, req *emptypb.Em
 	responden, err := rh.respondenSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenHandler-GetAllResponden] Error while get all responden:", parseError.Message)
+		log.Println("ERROR: [RespondenHandler - GetAllResponden] Error while get all responden:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -55,7 +55,7 @@ func (rh *RespondenHandler) GetRespondenByNim(ctx context.Context, req *pb.GetRe
 	responden, err := rh.respondenSvc.FindByNim(ctx, req.GetNim())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenHandler-GetRespondenByNim] Error while get responden by nim:", parseError.Message)
+		log.Println("ERROR: [RespondenHandler - GetRespondenByNim] Error while get responden by nim:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -72,7 +72,7 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 	mhsbiodata, err := rh.mhsbiodataSvc.FetchMhsBiodataByNimFromSiakApi(req.GetNim())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenHandler-UpdateRespondenFromSiak] Error while fetch mhsbiodata from siak:", parseError.Message)
+		log.Println("ERROR: RespondenHandler-UpdateRespondenFromSiak] Error while fetch mhsbiodata from siak:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -95,7 +95,7 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), convertedProto)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenHandler-UpdateRespondenFromSiak] Error while update responden from siak:", parseError.Message)
+		log.Println("ERROR: [RespondenHandler - UpdateRespondenFromSiak] Error while update responden from siak:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -113,7 +113,7 @@ func (rh *RespondenHandler) CreateResponden(ctx context.Context, req *pb.CreateR
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenHandler-CreateResponden] Error while create responden:", parseError.Message)
+		log.Println("ERROR: [RespondenHandler - CreateResponden] Error while create responden:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -137,7 +137,7 @@ func (rh *RespondenHandler) UpdateResponden(ctx context.Context, req *pb.Respond
 	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), respDataUpdate)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenHandler-UpdateResponden] Error while update responden:", parseError.Message)
+		log.Println("ERROR: [RespondenHandler - UpdateResponden] Error while update responden:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -154,7 +154,7 @@ func (rh *RespondenHandler) GetRespondenByNimList(ctx context.Context, req *pb.G
 	responden, err := rh.respondenSvc.FindByNimList(ctx, req.GetNims())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenHandler-GetRespondenByNimList] Error while get responden by nim list:", parseError.Message)
+		log.Println("ERROR: [RespondenHandler - GetRespondenByNimList] Error while get responden by nim list:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 

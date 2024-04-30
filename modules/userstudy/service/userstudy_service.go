@@ -40,7 +40,7 @@ func (svc *UserStudyService) FindAll(ctx context.Context, req any) ([]*entity.Us
 	res, err := svc.userStudyRepository.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyService-FindAll] Error while find all user study:", parseError.Message)
+		log.Println("ERROR: [UserStudyService - FindAll] Error while find all user study:", parseError.Message)
 		return nil, err
 	}
 
@@ -51,7 +51,7 @@ func (svc *UserStudyService) FindByNim(ctx context.Context, nim, emailResponden,
 	res, err := svc.userStudyRepository.FindByNim(ctx, nim, emailResponden, hpResponden)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyService-FindByNim] Error while find user study by nim:", parseError.Message)
+		log.Println("ERROR: [UserStudyService - FindByNim] Error while find user study by nim:", parseError.Message)
 		return nil, err
 	}
 
@@ -62,7 +62,7 @@ func (svc *UserStudyService) Update(ctx context.Context, nim, emailResponden, hp
 	usrStd, err := svc.userStudyRepository.FindByNim(ctx, nim, emailResponden, hpResponden)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyService-FindByNim] Error while find user study by nim:", parseError.Message)
+		log.Println("ERROR: [UserStudyService - FindByNim] Error while find user study by nim:", parseError.Message)
 		return nil, err
 	}
 
@@ -91,7 +91,7 @@ func (svc *UserStudyService) Update(ctx context.Context, nim, emailResponden, hp
 	res, err := svc.userStudyRepository.Update(ctx, usrStd, updateMap)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyService-Update] Error while update user study:", parseError.Message)
+		log.Println("ERROR: [UserStudyService - Update] Error while update user study:", parseError.Message)
 		return nil, err
 	}
 
@@ -119,7 +119,7 @@ func (svc *UserStudyService) Create(ctx context.Context, namaResponden, emailRes
 	res, err := svc.userStudyRepository.Create(ctx, reqEntity)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyService-Create] Error while create user study:", parseError.Message)
+		log.Println("ERROR: [UserStudyService - Create] Error while create user study:", parseError.Message)
 		return nil, err
 	}
 
@@ -130,7 +130,7 @@ func (svc *UserStudyService) ExportUSReport(ctx context.Context, req any) (*byte
 	rows, err := svc.userStudyRepository.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyService-FindAll] Error while find all pkts:", parseError.Message)
+		log.Println("ERROR: [UserStudyService - FindAll] Error while find all pkts:", parseError.Message)
 		return nil, err
 	}
 
@@ -138,7 +138,7 @@ func (svc *UserStudyService) ExportUSReport(ctx context.Context, req any) (*byte
 	sheetName := "Sheet1"
 	index, err := file.NewSheet(sheetName)
 	if err != nil {
-		log.Println("ERROR: [UserStudyService-ExportPKTSReport] Error while create new sheet:", err)
+		log.Println("ERROR: [UserStudyService - ExportPKTSReport] Error while create new sheet:", err)
 		return nil, err
 	}
 
@@ -198,13 +198,13 @@ func (svc *UserStudyService) ExportUSReport(ctx context.Context, req any) (*byte
 
 	excelFilePath := "us_report_" + strconv.FormatInt(time.Now().Unix(), 10) + ".xlsx"
 	if err := file.SaveAs(excelFilePath); err != nil {
-		log.Println("ERROR: [UserStudyService-ExportUSReport] Error while save excel file:", err)
+		log.Println("ERROR: [UserStudyService - ExportUSReport] Error while save excel file:", err)
 		return nil, err
 	}
 
 	buff, err := file.WriteToBuffer()
 	if err != nil {
-		log.Println("ERROR: [UserStudyService-ExportUSReport] Error while write to buffer:", err)
+		log.Println("ERROR: [UserStudyService - ExportUSReport] Error while write to buffer:", err)
 		return nil, err
 	}
 

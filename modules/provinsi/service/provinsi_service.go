@@ -35,7 +35,7 @@ func (svc *ProvinsiService) FindAll(ctx context.Context, req any) ([]*entity.Pro
 	res, err := svc.provinsiRepository.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiService-FindAll] Error while find all provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiService - FindAll] Error while find all provinsi: ", parseError.Message)
 		return nil, err
 	}
 
@@ -46,7 +46,7 @@ func (svc *ProvinsiService) FindByIdWil(ctx context.Context, idWil string) (*ent
 	res, err := svc.provinsiRepository.FindByIdWil(ctx, idWil)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiService-FindByIdWil] Error while find provinsi by IdWil: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiService - FindByIdWil] Error while find provinsi by IdWil: ", parseError.Message)
 		return nil, err
 	}
 
@@ -65,7 +65,7 @@ func (svc *ProvinsiService) Create(ctx context.Context, idWil, nama, ump12 strin
 	res, err := svc.provinsiRepository.Create(ctx, provinsi)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiService-Create] Error while create provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiService - Create] Error while create provinsi: ", parseError.Message)
 		return nil, err
 	}
 
@@ -76,7 +76,7 @@ func (svc *ProvinsiService) Update(ctx context.Context, idWil string, fields *en
 	provinsi, err := svc.provinsiRepository.FindByIdWil(ctx, idWil)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiService-Update] Error while find provinsi by IdWil: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiService - Update] Error while find provinsi by IdWil: ", parseError.Message)
 		return nil, err
 	}
 
@@ -88,7 +88,7 @@ func (svc *ProvinsiService) Update(ctx context.Context, idWil string, fields *en
 	res, err := svc.provinsiRepository.Update(ctx, provinsi, updatedMap)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiService-Update] Error while update provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiService - Update] Error while update provinsi: ", parseError.Message)
 		return nil, err
 	}
 
@@ -99,7 +99,7 @@ func (svc *ProvinsiService) Delete(ctx context.Context, idWil string) error {
 	err := svc.provinsiRepository.Delete(ctx, idWil)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiService-Delete] Error while delete provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiService - Delete] Error while delete provinsi: ", parseError.Message)
 		return err
 	}
 

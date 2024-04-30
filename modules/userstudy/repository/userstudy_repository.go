@@ -36,7 +36,7 @@ func (r *UserStudyRepository) FindAll(ctx context.Context, req any) ([]*entity.U
 
 	var userStudy []*entity.UserStudy
 	if err := r.db.Debug().WithContext(ctxSpan).Order("created_at desc").Find(&userStudy).Error; err != nil {
-		log.Println("ERROR: [UserStudyRepository-FindAll] Internal server error:", err)
+		log.Println("ERROR: [UserStudyRepository - FindAll] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -55,10 +55,10 @@ func (r *UserStudyRepository) FindByNim(ctx context.Context, nim, emailResponden
 		First(&userStudy).
 		Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Println("WARNING: [UserStudyRepository-FindByNim] Record not found for nim", nim)
+			log.Println("WARNING: [UserStudyRepository - FindByNim] Record not found for nim", nim)
 			return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
 		}
-		log.Println("ERROR: [UserStudyRepository-FindByNim] Internal server error:", err)
+		log.Println("ERROR: [UserStudyRepository - FindByNim] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -72,7 +72,7 @@ func (r *UserStudyRepository) Update(ctx context.Context, userStudy *entity.User
 	updatedFields["updated_at"] = time.Now()
 	updatedFields["updated_by"] = "user"
 	if err := r.db.Debug().WithContext(ctxSpan).Model(&userStudy).Updates(updatedFields).Error; err != nil {
-		log.Println("ERROR: [UserStudyRepository-Update] Internal server error:", err)
+		log.Println("ERROR: [UserStudyRepository - Update] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -84,7 +84,7 @@ func (r *UserStudyRepository) Create(ctx context.Context, req *entity.UserStudy)
 	defer span.End()
 
 	if err := r.db.Debug().WithContext(ctxSpan).Create(req).Error; err != nil {
-		log.Println("ERROR: [UserStudyRepository-Create] Internal server error:", err)
+		log.Println("ERROR: [UserStudyRepository - Create] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 

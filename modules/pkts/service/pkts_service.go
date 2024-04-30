@@ -42,7 +42,7 @@ func (svc *PKTSService) FindAll(ctx context.Context, req any) ([]*entity.PKTS, e
 	res, err := svc.pktsRepository.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSService-FindAll] Error while find all pkts:", parseError.Message)
+		log.Println("ERROR: [PKTSService - FindAll] Error while find all pkts:", parseError.Message)
 		return nil, err
 	}
 
@@ -53,7 +53,7 @@ func (svc *PKTSService) FindByNim(ctx context.Context, nim string) (*entity.PKTS
 	res, err := svc.pktsRepository.FindByNim(ctx, nim)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSService-FindByNim] Error while find pkts by nim:", parseError.Message)
+		log.Println("ERROR: [PKTSService - FindByNim] Error while find pkts by nim:", parseError.Message)
 		return nil, err
 	}
 
@@ -154,7 +154,7 @@ func (svc *PKTSService) Create(ctx context.Context, nim, kodeprodi, thnSidang st
 
 	res, err := svc.pktsRepository.Create(ctx, reqEntity)
 	if err != nil {
-		log.Println("ERROR: [PKTSService-Create] Error while create pkts:", err)
+		log.Println("ERROR: [PKTSService - Create] Error while create pkts:", err)
 		return nil, err
 	}
 
@@ -165,7 +165,7 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 	pkts, err := svc.pktsRepository.FindByNim(ctx, nim)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSService-Update] Error while find pkts by nim:", parseError.Message)
+		log.Println("ERROR: [PKTSService - Update] Error while find pkts by nim:", parseError.Message)
 		return nil, err
 	}
 
@@ -268,7 +268,7 @@ func (svc *PKTSService) FindByAtasan(ctx context.Context, namaA, hpA, emailA str
 	res, err := svc.pktsRepository.FindByAtasan(ctx, namaA, hpA, emailA)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSService-FindByAtasan] Error while find pkts by atasan:", parseError.Message)
+		log.Println("ERROR: [PKTSService - FindByAtasan] Error while find pkts by atasan:", parseError.Message)
 		return nil, err
 	}
 
@@ -279,7 +279,7 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 	rows, err := svc.pktsRepository.FindAllReport(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSService-FindAll] Error while find all pkts:", parseError.Message)
+		log.Println("ERROR: [PKTSService - FindAll] Error while find all pkts:", parseError.Message)
 		return nil, err
 	}
 
@@ -287,7 +287,7 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 	sheetName := "Sheet1"
 	index, err := file.NewSheet(sheetName)
 	if err != nil {
-		log.Println("ERROR: [PKTSService-ExportPKTSReport] Error while create new sheet:", err)
+		log.Println("ERROR: [PKTSService - ExportPKTSReport] Error while create new sheet:", err)
 		return nil, err
 	}
 
@@ -495,13 +495,13 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 
 	excelFilePath := "pkts_report_" + strconv.FormatInt(time.Now().Unix(), 10) + ".xlsx"
 	if err := file.SaveAs(excelFilePath); err != nil {
-		log.Println("ERROR: [PKTSService-ExportPKTSReport] Error while save excel file:", err)
+		log.Println("ERROR: [PKTSService - ExportPKTSReport] Error while save excel file:", err)
 		return nil, err
 	}
 
 	buff, err := file.WriteToBuffer()
 	if err != nil {
-		log.Println("ERROR: [PKTSService-ExportPKTSReport] Error while write to buffer:", err)
+		log.Println("ERROR: [PKTSService - ExportPKTSReport] Error while write to buffer:", err)
 		return nil, err
 	}
 
@@ -512,7 +512,7 @@ func (svc *PKTSService) FindPKTSRekap(ctx context.Context, kodeprodi string) ([]
 	res, err := svc.pktsRepository.FindPKTSRekap(ctx, kodeprodi)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSService-FindPKTSRekap] Error while find pkts rekap:", parseError.Message)
+		log.Println("ERROR: [PKTSService - FindPKTSRekap] Error while find pkts rekap:", parseError.Message)
 		return nil, err
 	}
 

@@ -40,7 +40,7 @@ func (p *PKTSRepository) FindAll(ctx context.Context, req any) ([]*entity.PKTS, 
 
 	var pkts []*entity.PKTS
 	if err := p.db.Debug().WithContext(ctxSpan).Order("created_at desc").Find(&pkts).Error; err != nil {
-		log.Println("ERROR: [PKTSRepository-FindAll] Internal server error:", err)
+		log.Println("ERROR: [PKTSRepository - FindAll] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "%v", err)
 	}
 
@@ -54,10 +54,10 @@ func (p *PKTSRepository) FindByNim(ctx context.Context, nim string) (*entity.PKT
 	var pkts entity.PKTS
 	if err := p.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&pkts).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Println("WARNING: [PKTSRepository-FindByNim] Record not found for nim", nim)
+			log.Println("WARNING: [PKTSRepository - FindByNim] Record not found for nim", nim)
 			return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
 		}
-		log.Println("ERROR: [PKTSRepository-FindByNim] Internal server error:", err)
+		log.Println("ERROR: [PKTSRepository - FindByNim] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -70,10 +70,10 @@ func (p *PKTSRepository) Create(ctx context.Context, req *entity.PKTS) (*entity.
 
 	if err := p.db.Debug().WithContext(ctxSpan).Create(&req).Error; err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {
-			log.Println("ERROR: [PKTSRepository-Create] Duplicated key:", err)
+			log.Println("ERROR: [PKTSRepository - Create] Duplicated key:", err)
 			return nil, status.Errorf(codes.AlreadyExists, "duplicated key %v", err)
 		}
-		log.Println("ERROR: [PKTSRepository-Create] Internal server error:", err)
+		log.Println("ERROR: [PKTSRepository - Create] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -87,20 +87,20 @@ func (p *PKTSRepository) Update(ctx context.Context, pkts *entity.PKTS, updatedF
 	// var pkts *entity.PKTS
 	// if err := p.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&pkts).Error; err != nil {
 	// 	if errors.Is(err, gorm.ErrRecordNotFound) {
-	// 		log.Println("ERROR: [PKTSRepository-Update] Record not found for nim:", nim)
+	// 		log.Println("ERROR: [PKTSRepository - Update] Record not found for nim:", nim)
 	// 		return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
 	// 	}
-	// 	log.Println("ERROR: [PKTSRepository-Update] Internal server error:", err)
+	// 	log.Println("ERROR: [PKTSRepository - Update] Internal server error:", err)
 	// 	return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	// }
 
 	updatedFields["updated_at"] = time.Now()
 	if err := p.db.Debug().WithContext(ctxSpan).Model(&pkts).Updates(updatedFields).Error; err != nil {
 		if errors.Is(err, gorm.ErrInvalidValue) {
-			log.Println("ERROR: [PKTSRepository-Update] Invalid value:", err)
+			log.Println("ERROR: [PKTSRepository - Update] Invalid value:", err)
 			return nil, status.Errorf(codes.InvalidArgument, "invalid value %v", err)
 		}
-		log.Println("ERROR: [PKTSRepository-Update] Internal server error:", err)
+		log.Println("ERROR: [PKTSRepository - Update] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -120,7 +120,7 @@ func (p *PKTSRepository) FindByAtasan(ctx context.Context, namaA, hpA, emailA st
 		Or("LOWER(nama_atasan) LIKE LOWER(?)", "%"+namaA+"%").
 		Pluck("nim", &nims).
 		Error; err != nil {
-		log.Println("ERROR: [PKTSRepository-FindByAtasan] Internal server error:", err)
+		log.Println("ERROR: [PKTSRepository - FindByAtasan] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -139,7 +139,7 @@ func (p *PKTSRepository) FindAllReport(ctx context.Context, req any) ([]*entity.
         JOIN ref_prodi AS p ON pk.kodeprodi = p.kode;
     `
     if err := p.db.Debug().WithContext(ctxSpan).Raw(query).Scan(&pkts).Error; err != nil {
-        log.Println("ERROR: [PKTSRepository-FindAll] Internal server error:", err)
+        log.Println("ERROR: [PKTSRepository - FindAll] Internal server error:", err)
         return nil, status.Errorf(codes.Internal, "%v", err)
     }
 
@@ -160,7 +160,7 @@ func (p *PKTSRepository) FindPKTSRekap(ctx context.Context, kodeprodi string) ([
 		LIMIT 10;
 	`
 	if err := p.db.Debug().WithContext(ctxSpan).Raw(query, kodeprodi).Scan(&pkts).Error; err != nil {
-		log.Println("ERROR: [PKTSRepository-FindPKTSRekap] Internal server error:", err)
+		log.Println("ERROR: [PKTSRepository - FindPKTSRekap] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "%v", err)
 	}
 

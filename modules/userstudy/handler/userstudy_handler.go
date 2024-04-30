@@ -31,7 +31,7 @@ func (uh *UserStudyHandler) GetAllUserStudy(ctx context.Context, req *emptypb.Em
 	userStudy, err := uh.userStudySvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyHandler-GetAllUserStudy] Error while get all user study:", parseError.Message)
+		log.Println("ERROR: [UserStudyHandler - GetAllUserStudy] Error while get all user study:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -52,7 +52,7 @@ func (uh *UserStudyHandler) GetUserStudyByNim(ctx context.Context, req *pb.GetUs
 	userStudy, err := uh.userStudySvc.FindByNim(ctx, req.GetNim(), req.GetEmailResponden(), req.GetHpResponden())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyHandler-GetUserStudyByNim] Error while get user study by nim:", parseError.Message)
+		log.Println("ERROR: [UserStudyHandler - GetUserStudyByNim] Error while get user study by nim:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -87,7 +87,7 @@ func (uh *UserStudyHandler) UpdateUserStudy(ctx context.Context, req *pb.UserStu
 	userStudy, err := uh.userStudySvc.Update(ctx, req.GetNimLulusan(), req.GetEmailResponden(), req.GetHpResponden(), convertedProto)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyHandler-UpdateUserStudy] Error while update user study:", parseError.Message)
+		log.Println("ERROR: [UserStudyHandler - UpdateUserStudy] Error while update user study:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -104,7 +104,7 @@ func (uh *UserStudyHandler) CreateUserStudy(ctx context.Context, req *pb.UserStu
 	userStudy, err := uh.userStudySvc.Create(ctx, req.GetNamaResponden(), req.GetEmailResponden(), req.GetHpResponden(), req.GetNamaInstansi(), req.GetJabatan(), req.GetAlamatInstansi(), req.GetNimLulusan(), req.GetNamaLulusan(), req.GetProdiLulusan(), req.GetTahunLulusan())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyHandler-CreateUserStudy] Error while create user study:", parseError.Message)
+		log.Println("ERROR: [UserStudyHandler - CreateUserStudy] Error while create user study:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -121,7 +121,7 @@ func (uh *UserStudyHandler) ExportUSReport(ctx context.Context, req *emptypb.Emp
 	us, err := uh.userStudySvc.ExportUSReport(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [UserStudyHandler-ExportUSReport] Internal server error:", parseError.Message)
+		log.Println("ERROR: [UserStudyHandler - ExportUSReport] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 

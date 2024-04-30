@@ -31,7 +31,7 @@ func (ph *ProvinsiHandler) GetAllProvinsi(ctx context.Context, req *emptypb.Empt
 	provinsi, err := ph.provinsiSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiHandler-GetAllProvinsi] Error while get all provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiHandler - GetAllProvinsi] Error while get all provinsi: ", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -52,11 +52,11 @@ func (ph *ProvinsiHandler) GetProvinsiByIdWil(ctx context.Context, req *pb.GetPr
 	provinsi, err := ph.provinsiSvc.FindByIdWil(ctx, req.GetIdWil())
 	if err != nil {
 		if provinsi == nil {
-			log.Println("WARNING: [ProvinsiHandler-GetProvinsiByIdWil] Resource provinsi not found for idWil:", req.GetIdWil())
+			log.Println("WARNING: [ProvinsiHandler - GetProvinsiByIdWil] Resource provinsi not found for idWil:", req.GetIdWil())
 			return nil, status.Errorf(status.Code(err), "provinsi not found")
 		}
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiHandler-GetProvinsiByIdWil] Internal server error:", parseError.Message)
+		log.Println("ERROR: [ProvinsiHandler - GetProvinsiByIdWil] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -74,7 +74,7 @@ func (ph *ProvinsiHandler) CreateProvinsi(ctx context.Context, req *pb.Provinsi)
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiHandler-CreateProvinsi] Error while create provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiHandler - CreateProvinsi] Error while create provinsi: ", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -97,7 +97,7 @@ func (ph *ProvinsiHandler) UpdateProvinsi(ctx context.Context, req *pb.Provinsi)
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiHandler-UpdateProvinsi] Error while update provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiHandler - UpdateProvinsi] Error while update provinsi: ", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -114,7 +114,7 @@ func (ph *ProvinsiHandler) DeleteProvinsi(ctx context.Context, req *pb.GetProvin
 	err := ph.provinsiSvc.Delete(ctx, req.GetIdWil())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProvinsiHandler-DeleteProvinsi] Error while delete provinsi: ", parseError.Message)
+		log.Println("ERROR: [ProvinsiHandler - DeleteProvinsi] Error while delete provinsi: ", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 

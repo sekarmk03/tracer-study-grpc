@@ -32,7 +32,7 @@ func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *emptypb.Empty) (*p
 	prodi, err := ph.prodiSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProdiHandler-GetAllProdi] Internal server error:", parseError.Message)
+		log.Println("ERROR: [ProdiHandler - GetAllProdi] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -54,7 +54,7 @@ func (ph *ProdiHandler) GetAllFakultas(ctx context.Context, req *emptypb.Empty) 
 	fakultas, err := ph.prodiSvc.FindAllFakultas(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProdiHandler-GetAllFakultas] Internal server error:", parseError.Message)
+		log.Println("ERROR: [ProdiHandler - GetAllFakultas] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -76,11 +76,11 @@ func (ph *ProdiHandler) GetProdiByKode(ctx context.Context, req *pb.GetProdiByKo
 	prodi, err := ph.prodiSvc.FindProdiByKode(ctx, req.GetKode())
 	if err != nil {
 		if prodi == nil {
-			log.Println("WARNING: [ProdiHandler-GetProdiByKode] Resource prodi not found for kode:", req.GetKode())
+			log.Println("WARNING: [ProdiHandler - GetProdiByKode] Resource prodi not found for kode:", req.GetKode())
 			return nil, status.Errorf(status.Code(err), "prodi not found")
 		}
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProdiHandler-GetProdiByKode] Internal server error:", parseError.Message)
+		log.Println("ERROR: [ProdiHandler - GetProdiByKode] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -98,7 +98,7 @@ func (ph *ProdiHandler) CreateProdi(ctx context.Context, req *pb.Prodi) (*pb.Get
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProdiHandler-CreateProdi] Internal server error:", parseError.Message)
+		log.Println("ERROR: [ProdiHandler - CreateProdi] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -125,7 +125,7 @@ func (ph *ProdiHandler) UpdateProdi(ctx context.Context, req *pb.Prodi) (*pb.Get
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProdiHandler-UpdateProdi] Internal server error:", parseError.Message)
+		log.Println("ERROR: [ProdiHandler - UpdateProdi] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -142,7 +142,7 @@ func (ph *ProdiHandler) DeleteProdi(ctx context.Context, req *pb.GetProdiByKodeR
 	err := ph.prodiSvc.Delete(ctx, req.GetKode())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProdiHandler-DeleteProdi] Internal server error:", parseError.Message)
+		log.Println("ERROR: [ProdiHandler - DeleteProdi] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 

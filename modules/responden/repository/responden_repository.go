@@ -37,7 +37,7 @@ func (r *RespondenRepository) FindAll(ctx context.Context, req any) ([]*entity.R
 
 	var responden []*entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Order("created_at desc").Find(&responden).Error; err != nil {
-		log.Println("ERROR: [RespondenRepository-FindAll] Internal server error:", err)
+		log.Println("ERROR: [RespondenRepository - FindAll] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -51,10 +51,10 @@ func (r *RespondenRepository) FindByNim(ctx context.Context, nim string) (*entit
 	var responden *entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Where("nim = ?", nim).First(&responden).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Println("WARNING: [RespondenRepository-FindByNim] Record not found for nim", nim)
+			log.Println("WARNING: [RespondenRepository - FindByNim] Record not found for nim", nim)
 			return nil, status.Errorf(codes.NotFound, "record not found for nim %s", nim)
 		}
-		log.Println("ERROR: [RespondenRepository-FindByNim] Internal server error:", err)
+		log.Println("ERROR: [RespondenRepository - FindByNim] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -78,7 +78,7 @@ func (r *RespondenRepository) Update(ctx context.Context, responden *entity.Resp
 	updatedFields["updated_at"] = time.Now()
 	updatedFields["updated_by"] = "system"
 	if err := r.db.Debug().WithContext(ctxSpan).Model(&responden).Updates(updatedFields).Error; err != nil {
-		log.Println("ERROR: [RespondenRepository-Update] Internal server error:", err)
+		log.Println("ERROR: [RespondenRepository - Update] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -91,10 +91,10 @@ func (r *RespondenRepository) Create(ctx context.Context, req *entity.Responden)
 
 	if err := r.db.Debug().WithContext(ctxSpan).Create(&req).Error; err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {
-			log.Println("ERROR: [RespondenRepository-Create] Duplicated key:", err)
+			log.Println("ERROR: [RespondenRepository - Create] Duplicated key:", err)
 			return nil, status.Errorf(codes.AlreadyExists, "duplicated key %v", err)
 		}
-		log.Println("ERROR: [RespondenRepository-Create] Internal server error:", err)
+		log.Println("ERROR: [RespondenRepository - Create] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -107,7 +107,7 @@ func (r *RespondenRepository) FindByNimList(ctx context.Context, nimList []strin
 
 	var responden []*entity.Responden
 	if err := r.db.Debug().WithContext(ctxSpan).Where("nim IN (?)", nimList).Find(&responden).Error; err != nil {
-		log.Println("ERROR: [RespondenRepository-FindByNimList] Internal server error:", err)
+		log.Println("ERROR: [RespondenRepository - FindByNimList] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 

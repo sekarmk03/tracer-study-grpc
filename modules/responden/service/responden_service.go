@@ -39,7 +39,7 @@ func (svc *RespondenService) FindAll(ctx context.Context, req any) ([]*entity.Re
 	res, err := svc.respondenRepository.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenService-FindAll] Error while find all responden:", parseError.Message)
+		log.Println("ERROR: [RespondenService - FindAll] Error while find all responden:", parseError.Message)
 		return nil, err
 	}
 
@@ -50,7 +50,7 @@ func (svc *RespondenService) FindByNim(ctx context.Context, nim string) (*entity
 	res, err := svc.respondenRepository.FindByNim(ctx, nim)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenService-FindByNim] Error while find responden by nim:", parseError.Message)
+		log.Println("ERROR: [RespondenService - FindByNim] Error while find responden by nim:", parseError.Message)
 		return nil, err
 	}
 
@@ -61,7 +61,7 @@ func (svc *RespondenService) Update(ctx context.Context, nim string, fields *ent
 	responden, err := svc.respondenRepository.FindByNim(ctx, nim)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenService-Update] Error while find responden by nim:", parseError.Message)
+		log.Println("ERROR: [RespondenService - Update] Error while find responden by nim:", parseError.Message)
 		return nil, err
 	}
 
@@ -93,7 +93,7 @@ func (svc *RespondenService) Update(ctx context.Context, nim string, fields *ent
 	res, err := svc.respondenRepository.Update(ctx, responden, updateMap)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [RespondenService-Update] Error while update responden: ", parseError.Message)
+		log.Println("ERROR: [RespondenService - Update] Error while update responden: ", parseError.Message)
 		return nil, err
 	}
 
@@ -103,7 +103,7 @@ func (svc *RespondenService) Update(ctx context.Context, nim string, fields *ent
 func (svc *RespondenService) Create(ctx context.Context, nim string, semester, tipe, nama, kodeprodi, jk, tgl_wisuda, tgl_sidang, thn_sidang string) (*entity.Responden, error) {
 	lamaStdInt, err := strconv.ParseUint(semester, 10, 32)
 	if err != nil {
-		log.Println("ERROR: [RespondenService-Create] Error while convert semester to int: ", err)
+		log.Println("ERROR: [RespondenService - Create] Error while convert semester to int: ", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 
@@ -128,7 +128,7 @@ func (svc *RespondenService) Create(ctx context.Context, nim string, semester, t
 
 	res, err := svc.respondenRepository.Create(ctx, reqEntity)
 	if err != nil {
-		log.Println("ERROR: [RespondenService-Create] Error while create responden: ", err)
+		log.Println("ERROR: [RespondenService - Create] Error while create responden: ", err)
 		return nil, err
 	}
 
@@ -138,7 +138,7 @@ func (svc *RespondenService) Create(ctx context.Context, nim string, semester, t
 func (svc *RespondenService) FindByNimList(ctx context.Context, nimList []string) ([]*entity.Responden, error) {
 	res, err := svc.respondenRepository.FindByNimList(ctx, nimList)
 	if err != nil {
-		log.Println("ERROR: [RespondenService-FindByNimList] Error while find responden by nim list: ", err)
+		log.Println("ERROR: [RespondenService - FindByNimList] Error while find responden by nim list: ", err)
 		return nil, err
 	}
 

@@ -34,7 +34,7 @@ func NewKabKotaService(cfg config.Config, kabkotaRepository repository.KabKotaRe
 func (svc *KabKotaService) FindAll(ctx context.Context, req any) ([]*entity.KabKota, error) {
 	res, err := svc.kabkotaRepository.FindAll(ctx, req)
 	if err != nil {
-		log.Println("ERROR: [KabKotaService-FindAll] Error while find all kabkota:", err)
+		log.Println("ERROR: [KabKotaService - FindAll] Error while find all kabkota:", err)
 		return nil, err
 	}
 
@@ -45,7 +45,7 @@ func (svc *KabKotaService) FindByIdWil(ctx context.Context, idWil string) (*enti
 	res, err := svc.kabkotaRepository.FindByIdWil(ctx, idWil)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaService-FindByIdWil] Error while find KabKota by IdWil:", parseError.Message)
+		log.Println("ERROR: [KabKotaService - FindByIdWil] Error while find KabKota by IdWil:", parseError.Message)
 		return nil, err
 	}
 
@@ -63,7 +63,7 @@ func (svc *KabKotaService) Create(ctx context.Context, idWil, nama, idIndukWilay
 
 	res, err := svc.kabkotaRepository.Create(ctx, kabkota)
 	if err != nil {
-		log.Println("ERROR: [KabKotaService-Create] Error while create KabKota:", err)
+		log.Println("ERROR: [KabKotaService - Create] Error while create KabKota:", err)
 		return nil, err
 	}
 
@@ -74,7 +74,7 @@ func (svc *KabKotaService) Update(ctx context.Context, idWil string, fields *ent
 	kabkota, err := svc.kabkotaRepository.FindByIdWil(ctx, idWil)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaService-Update] Error while find KabKota by IdWil:", parseError.Message)
+		log.Println("ERROR: [KabKotaService - Update] Error while find KabKota by IdWil:", parseError.Message)
 		return nil, err
 	}
 
@@ -85,7 +85,7 @@ func (svc *KabKotaService) Update(ctx context.Context, idWil string, fields *ent
 
 	res, err := svc.kabkotaRepository.Update(ctx, kabkota, updateMap)
 	if err != nil {
-		log.Println("ERROR: [KabKotaService-Update] Error while update KabKota:", err)
+		log.Println("ERROR: [KabKotaService - Update] Error while update KabKota:", err)
 		return nil, err
 	}
 
@@ -96,7 +96,7 @@ func (svc *KabKotaService) Delete(ctx context.Context, idWil string) error {
 	err := svc.kabkotaRepository.Delete(ctx, idWil)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaService-Delete] Error while delete KabKota:", parseError.Message)
+		log.Println("ERROR: [KabKotaService - Delete] Error while delete KabKota:", parseError.Message)
 		return err
 	}
 

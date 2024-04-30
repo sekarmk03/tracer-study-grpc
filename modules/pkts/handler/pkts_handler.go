@@ -32,7 +32,7 @@ func (ph *PKTSHandler) GetAllPKTS(ctx context.Context, req *emptypb.Empty) (*pb.
 	pkts, err := ph.PKTSSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSHandler-GetAllPKTS] Internal server error:", parseError.Message)
+		log.Println("ERROR: [PKTSHandler - GetAllPKTS] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -53,11 +53,11 @@ func (ph *PKTSHandler) GetPKTSByNim(ctx context.Context, req *pb.GetPKTSByNimReq
 	pkts, err := ph.PKTSSvc.FindByNim(ctx, req.Nim)
 	if err != nil {
 		if pkts == nil {
-			log.Println("WARNING: [PKTSHandler-GetPKTSByNim] Resource pkts not found for nim:", req.Nim)
+			log.Println("WARNING: [PKTSHandler - GetPKTSByNim] Resource pkts not found for nim:", req.Nim)
 			return nil, status.Errorf(codes.NotFound, "pkts not found")
 		}
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSHandler-GetPKTSByNim] Internal server error:", parseError.Message)
+		log.Println("ERROR: [PKTSHandler - GetPKTSByNim] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -77,7 +77,7 @@ func (ph *PKTSHandler) CreatePKTS(ctx context.Context, req *pb.PKTS) (*pb.GetPKT
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSHandler-CreatePKTS] Internal server error:", parseError.Message)
+		log.Println("ERROR: [PKTSHandler - CreatePKTS] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -180,7 +180,7 @@ func (ph *PKTSHandler) UpdatePKTS(ctx context.Context, req *pb.PKTS) (*pb.GetPKT
 	pkt, err := ph.PKTSSvc.Update(ctx, req.GetNim(), pktsDataUpdate)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSHandler-UpdatePKTS] Internal server error:", parseError.Message)
+		log.Println("ERROR: [PKTSHandler - UpdatePKTS] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -197,7 +197,7 @@ func (ph *PKTSHandler) GetNimByDataAtasan(ctx context.Context, req *pb.GetNimByD
 	nims, err := ph.PKTSSvc.FindByAtasan(ctx, req.NamaAtasan, req.HpAtasan, req.EmailAtasan)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSHandler-GetNimByDataAtasan] Internal server error:", parseError.Message)
+		log.Println("ERROR: [PKTSHandler - GetNimByDataAtasan] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -217,7 +217,7 @@ func (ph *PKTSHandler) ExportPKTSReport(ctx context.Context, req *emptypb.Empty)
 	pkts, err := ph.PKTSSvc.ExportPKTSReport(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSHandler-ExportPKTSReport] Internal server error:", parseError.Message)
+		log.Println("ERROR: [PKTSHandler - ExportPKTSReport] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -234,7 +234,7 @@ func (ph *PKTSHandler) GetPKTSRekapByProdi(ctx context.Context, req *pb.GetPKTSR
 	pktsRekap, err := ph.PKTSSvc.FindPKTSRekap(ctx, req.GetKodeprodi())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [PKTSHandler-GetPKTSRekapByProdi] Internal server error:", parseError.Message)
+		log.Println("ERROR: [PKTSHandler - GetPKTSRekapByProdi] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 

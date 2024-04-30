@@ -55,7 +55,7 @@ func NewConfig(env string) (*Config, error) {
 
 	var config Config
 	if err := envdecode.Decode(&config); err != nil {
-		return nil, errors.Wrap(err, "[NewConfig] ERROR Decoding env")
+		return nil, errors.Wrap(err, "ERROR: [NewConfig] Error while decoding env")
 	}
 
 	return &config, nil

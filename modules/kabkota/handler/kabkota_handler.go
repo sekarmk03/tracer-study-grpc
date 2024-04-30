@@ -32,7 +32,7 @@ func (kh *KabKotaHandler) GetAllKabKota(ctx context.Context, req *emptypb.Empty)
 	kabkota, err := kh.kabkotaSvc.FindAll(ctx, req)
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaHandler-GetAllKabKota] Error:", parseError.Message)
+		log.Println("ERROR: [KabKotaHandler - GetAllKabKota] Error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -53,11 +53,11 @@ func (kh *KabKotaHandler) GetKabKotaByIdWil(ctx context.Context, req *pb.GetKabK
 	kabkota, err := kh.kabkotaSvc.FindByIdWil(ctx, req.GetIdWil())
 	if err != nil {
 		if kabkota == nil {
-			log.Println("WARNING: [KabKotaHandler-GetKabKotaByIdWil] Resource kabkota not found for idWil:", req.GetIdWil())
+			log.Println("WARNING: [KabKotaHandler - GetKabKotaByIdWil] Resource kabkota not found for idWil:", req.GetIdWil())
 			return nil, status.Errorf(codes.NotFound, "kabkota not found")
 		}
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaHandler-GetKabKotaByIdWil] Internal server error:", parseError.Message)
+		log.Println("ERROR: [KabKotaHandler - GetKabKotaByIdWil] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -75,7 +75,7 @@ func (kh *KabKotaHandler) CreateKabKota(ctx context.Context, req *pb.KabKota) (*
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaHandler-CreateKabKota] Internal server error:", parseError.Message)
+		log.Println("ERROR: [KabKotaHandler - CreateKabKota] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -98,7 +98,7 @@ func (kh *KabKotaHandler) UpdateKabKota(ctx context.Context, req *pb.KabKota) (*
 
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaHandler-UpdateKabKota] Internal server error:", parseError.Message)
+		log.Println("ERROR: [KabKotaHandler - UpdateKabKota] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
@@ -115,7 +115,7 @@ func (kh *KabKotaHandler) DeleteKabKota(ctx context.Context, req *pb.GetKabKotaB
 	err := kh.kabkotaSvc.Delete(ctx, req.GetIdWil())
 	if err != nil {
 		parseError := errors.ParseError(err)
-		log.Println("ERROR: [KabKotaHandler-DeleteKabKota] Internal server error:", parseError.Message)
+		log.Println("ERROR: [KabKotaHandler - DeleteKabKota] Internal server error:", parseError.Message)
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
