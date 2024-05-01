@@ -19,6 +19,7 @@ message MhsBiodata {
     string JLRMASUK = 13;
     string THNMASUK = 14;
     string LAMASTD = 15;
+    string TGLSIDANG = 16;
 }
 
 message MhsBiodataRequest {

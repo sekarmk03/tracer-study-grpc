@@ -17,9 +17,8 @@ type ProdiService struct {
 
 type ProdiServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.Prodi, error)
-	FindAllFakultas(ctx context.Context, req any) ([]*entity.Fakultas, error)
 	FindProdiByKode(ctx context.Context, kode string) (*entity.Prodi, error)
-	Create(ctx context.Context, kode, kodeDikti, kodeFak, kodeIntegrasi, nama, jenjang, namaFak string) (*entity.Prodi, error)
+	Create(ctx context.Context, kode, kodeDikti, kodeFakultas, kodeIntegrasi, nama, jenjang string) (*entity.Prodi, error)
 	Update(ctx context.Context, kode string, fields *entity.Prodi) (*entity.Prodi, error)
 	Delete(ctx context.Context, kode string) error
 }
@@ -41,16 +40,6 @@ func (svc *ProdiService) FindAll(ctx context.Context, req any) ([]*entity.Prodi,
 	return res, nil
 }
 
-func (svc *ProdiService) FindAllFakultas(ctx context.Context, req any) ([]*entity.Fakultas, error) {
-	res, err := svc.prodiRepository.FindAllFakultas(ctx, req)
-	if err != nil {
-		log.Println("ERROR: [ProdiService - FindAllFakultas] Error while find all fakultas: ", err)
-		return nil, err
-	}
-
-	return res, nil
-}
-
 func (svc *ProdiService) FindProdiByKode(ctx context.Context, kode string) (*entity.Prodi, error) {
 	res, err := svc.prodiRepository.FindProdiByKode(ctx, kode)
 	if err != nil {
@@ -62,15 +51,14 @@ func (svc *ProdiService) FindProdiByKode(ctx context.Context, kode string) (*ent
 	return res, nil
 }
 
-func (svc *ProdiService) Create(ctx context.Context, kode, kodeDikti, kodeFak, kodeIntegrasi, nama, jenjang, namaFak string) (*entity.Prodi, error) {
+func (svc *ProdiService) Create(ctx context.Context, kode, kodeDikti, kodeFakultas, kodeIntegrasi, nama, jenjang string) (*entity.Prodi, error) {
 	prodi := &entity.Prodi{
-		Kode: kode,
-		KodeDikti: kodeDikti,
-		KodeFak: kodeFak,
+		Kode:          kode,
+		KodeDikti:     kodeDikti,
 		KodeIntegrasi: kodeIntegrasi,
-		Nama: nama,
-		Jenjang: jenjang,
-		NamaFak: namaFak,
+		Nama:          nama,
+		Jenjang:       jenjang,
+		KodeFakultas:  kodeFakultas,
 	}
 
 	res, err := svc.prodiRepository.Create(ctx, prodi)
@@ -94,11 +82,10 @@ func (svc *ProdiService) Update(ctx context.Context, kode string, fields *entity
 	updatedMap := make(map[string]interface{})
 
 	utils.AddItemToMap(updatedMap, "kode_dikti", fields.KodeDikti)
-	utils.AddItemToMap(updatedMap, "kode_fak", fields.KodeFak)
 	utils.AddItemToMap(updatedMap, "kode_integrasi", fields.KodeIntegrasi)
 	utils.AddItemToMap(updatedMap, "nama", fields.Nama)
 	utils.AddItemToMap(updatedMap, "jenjang", fields.Jenjang)
-	utils.AddItemToMap(updatedMap, "nama_fak", fields.NamaFak)
+	utils.AddItemToMap(updatedMap, "kode_fakultas", fields.KodeFakultas)
 
 	res, err := svc.prodiRepository.Update(ctx, prodi, updatedMap)
 	if err != nil {

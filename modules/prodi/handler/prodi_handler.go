@@ -39,7 +39,7 @@ func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *emptypb.Empty) (*p
 	var prodiArr []*pb.Prodi
 	for _, p := range prodi {
 		// convert each p to pb.Prodi
-		prodiProto := entity.ConvertEntityProdiToProto(p)
+		prodiProto := entity.ConvertEntityToProto(p)
 		prodiArr = append(prodiArr, prodiProto)
 	}
 
@@ -47,28 +47,6 @@ func (ph *ProdiHandler) GetAllProdi(ctx context.Context, req *emptypb.Empty) (*p
 		Code:    uint32(http.StatusOK),
 		Message: "get all prodi success",
 		Data:    prodiArr,
-	}, nil
-}
-
-func (ph *ProdiHandler) GetAllFakultas(ctx context.Context, req *emptypb.Empty) (*pb.GetAllFakultasResponse, error) {
-	fakultas, err := ph.prodiSvc.FindAllFakultas(ctx, req)
-	if err != nil {
-		parseError := errors.ParseError(err)
-		log.Println("ERROR: [ProdiHandler - GetAllFakultas] Internal server error:", parseError.Message)
-		return nil, status.Errorf(parseError.Code, parseError.Message)
-	}
-
-	var fakultasArr []*pb.Fakultas
-	for _, f := range fakultas {
-		// convert each f to pb.Fakultas
-		fakultasProto := entity.ConvertEntityFakultasToProto(f)
-		fakultasArr = append(fakultasArr, fakultasProto)
-	}
-
-	return &pb.GetAllFakultasResponse{
-		Code:    uint32(http.StatusOK),
-		Message: "get all fakultas success",
-		Data:    fakultasArr,
 	}, nil
 }
 
@@ -84,17 +62,17 @@ func (ph *ProdiHandler) GetProdiByKode(ctx context.Context, req *pb.GetProdiByKo
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
-	prodiProto := entity.ConvertEntityProdiToProto(prodi)
+	prodiProto := entity.ConvertEntityToProto(prodi)
 
 	return &pb.GetProdiResponse{
-		Code: uint32(http.StatusOK),
+		Code:    uint32(http.StatusOK),
 		Message: "get prodi by kode success",
-		Data: prodiProto,
+		Data:    prodiProto,
 	}, nil
 }
 
 func (ph *ProdiHandler) CreateProdi(ctx context.Context, req *pb.Prodi) (*pb.GetProdiResponse, error) {
-	prodi, err := ph.prodiSvc.Create(ctx, req.GetKode(), req.GetKodeDikti(), req.GetKodeFak(), req.GetKodeIntegrasi(), req.GetNama(), req.GetJenjang(), req.GetNamaFak())
+	prodi, err := ph.prodiSvc.Create(ctx, req.GetKode(), req.GetKodeDikti(), req.GetKodeFakultas(), req.GetKodeIntegrasi(), req.GetNama(), req.GetJenjang())
 
 	if err != nil {
 		parseError := errors.ParseError(err)
@@ -102,7 +80,7 @@ func (ph *ProdiHandler) CreateProdi(ctx context.Context, req *pb.Prodi) (*pb.Get
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
-	prodiProto := entity.ConvertEntityProdiToProto(prodi)
+	prodiProto := entity.ConvertEntityToProto(prodi)
 
 	return &pb.GetProdiResponse{
 		Code:    uint32(http.StatusOK),
@@ -114,11 +92,10 @@ func (ph *ProdiHandler) CreateProdi(ctx context.Context, req *pb.Prodi) (*pb.Get
 func (ph *ProdiHandler) UpdateProdi(ctx context.Context, req *pb.Prodi) (*pb.GetProdiResponse, error) {
 	prodiDataUpdate := &entity.Prodi{
 		KodeDikti:     req.GetKodeDikti(),
-		KodeFak:       req.GetKodeFak(),
 		KodeIntegrasi: req.GetKodeIntegrasi(),
 		Nama:          req.GetNama(),
 		Jenjang:       req.GetJenjang(),
-		NamaFak:       req.GetNamaFak(),
+		KodeFakultas:  req.GetKodeFakultas(),
 	}
 
 	prodi, err := ph.prodiSvc.Update(ctx, req.GetKode(), prodiDataUpdate)
@@ -129,7 +106,7 @@ func (ph *ProdiHandler) UpdateProdi(ctx context.Context, req *pb.Prodi) (*pb.Get
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
-	prodiProto := entity.ConvertEntityProdiToProto(prodi)
+	prodiProto := entity.ConvertEntityToProto(prodi)
 
 	return &pb.GetProdiResponse{
 		Code:    uint32(http.StatusOK),
