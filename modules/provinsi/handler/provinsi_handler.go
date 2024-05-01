@@ -70,7 +70,7 @@ func (ph *ProvinsiHandler) GetProvinsiByIdWil(ctx context.Context, req *pb.GetPr
 }
 
 func (ph *ProvinsiHandler) CreateProvinsi(ctx context.Context, req *pb.Provinsi) (*pb.GetProvinsiResponse, error) {
-	provinsi, err := ph.provinsiSvc.Create(ctx, req.GetIdWil(), req.GetNama(), req.GetUmp12())
+	provinsi, err := ph.provinsiSvc.Create(ctx, req.GetIdWil(), req.GetNama(), req.GetUmp())
 
 	if err != nil {
 		parseError := errors.ParseError(err)
@@ -90,7 +90,7 @@ func (ph *ProvinsiHandler) CreateProvinsi(ctx context.Context, req *pb.Provinsi)
 func (ph *ProvinsiHandler) UpdateProvinsi(ctx context.Context, req *pb.Provinsi) (*pb.GetProvinsiResponse, error) {
 	provinsiDataUpdate := &entity.Provinsi{
 		Nama:  req.GetNama(),
-		UMP12: req.GetUmp12(),
+		Ump: req.GetUmp(),
 	}
 
 	provinsi, err := ph.provinsiSvc.Update(ctx, req.GetIdWil(), provinsiDataUpdate)

@@ -19,7 +19,7 @@ type ProvinsiService struct {
 type ProvinsiServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.Provinsi, error)
 	FindByIdWil(ctx context.Context, idWil string) (*entity.Provinsi, error)
-	Create(ctx context.Context, idWil, nama, ump12 string) (*entity.Provinsi, error)
+	Create(ctx context.Context, idWil, nama string, ump uint64) (*entity.Provinsi, error)
 	Update(ctx context.Context, idWil string, fields *entity.Provinsi) (*entity.Provinsi, error)
 	Delete(ctx context.Context, idWil string) error
 }
@@ -53,13 +53,13 @@ func (svc *ProvinsiService) FindByIdWil(ctx context.Context, idWil string) (*ent
 	return res, nil
 }
 
-func (svc *ProvinsiService) Create(ctx context.Context, idWil, nama, ump12 string) (*entity.Provinsi, error) {
+func (svc *ProvinsiService) Create(ctx context.Context, idWil, nama string, ump uint64) (*entity.Provinsi, error) {
 	provinsi := &entity.Provinsi{
-		IdWil:          idWil,
-		Nama:           nama,
-		UMP12: 		ump12,
-		CreatedAt: 	time.Now(),
-		UpdatedAt: 	time.Now(),
+		IdWil:     idWil,
+		Nama:      nama,
+		Ump:       ump,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	res, err := svc.provinsiRepository.Create(ctx, provinsi)
@@ -83,7 +83,7 @@ func (svc *ProvinsiService) Update(ctx context.Context, idWil string, fields *en
 	updatedMap := make(map[string]interface{})
 
 	utils.AddItemToMap(updatedMap, "nama", fields.Nama)
-	utils.AddItemToMap(updatedMap, "ump12", fields.UMP12)
+	utils.AddItemToMap(updatedMap, "ump", fields.Ump)
 
 	res, err := svc.provinsiRepository.Update(ctx, provinsi, updatedMap)
 	if err != nil {

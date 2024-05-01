@@ -25,8 +25,9 @@ type KabKota struct {
 	DeletedAt  gorm.DeletedAt  `gorm:"index" json:"deleted_at"`
 }
 
-func NewKabKota(idWil, nama, idIndukWil string) *KabKota {
+func NewKabKota(id uint32, idWil, nama, idIndukWil string) *KabKota {
 	return &KabKota{
+		Id:         id,
 		IdWil:      idWil,
 		Nama:       nama,
 		IdIndukWil: idIndukWil,
@@ -41,6 +42,7 @@ func (k *KabKota) TableName() string {
 
 func ConvertEntityToProto(k *KabKota) *pb.KabKota {
 	return &pb.KabKota{
+		Id:         k.Id,
 		IdWil:      k.IdWil,
 		Nama:       k.Nama,
 		IdIndukWil: k.IdIndukWil,
