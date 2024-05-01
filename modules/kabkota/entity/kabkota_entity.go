@@ -15,22 +15,23 @@ const (
 )
 
 type KabKota struct {
-	IdWil          string          `json:"id_wil"`
-	Nama           string          `json:"nama"`
-	IdIndukWilayah string          `json:"id_induk_wilayah"`
-	Provinsi       entity.Provinsi `gorm:"foreignKey:IdIndukWilayah;references:IdWil" json:"provinsi"`
-	CreatedAt      time.Time       `gorm:"type:timestamptz;not_null" json:"created_at"`
-	UpdatedAt      time.Time       `gorm:"type:timestamptz;not_null" json:"updated_at"`
-	DeletedAt      gorm.DeletedAt  `gorm:"index" json:"deleted_at"`
+	Id         uint32          `json:"id"`
+	IdWil      string          `json:"id_wil"`
+	Nama       string          `json:"nama"`
+	IdIndukWil string          `json:"id_induk_wil"`
+	Provinsi   entity.Provinsi `gorm:"foreignKey:IdIndukWil;references:IdWil" json:"provinsi"`
+	CreatedAt  time.Time       `gorm:"type:timestamptz;not_null" json:"created_at"`
+	UpdatedAt  time.Time       `gorm:"type:timestamptz;not_null" json:"updated_at"`
+	DeletedAt  gorm.DeletedAt  `gorm:"index" json:"deleted_at"`
 }
 
-func NewKabKota(idWil, nama, idIndukWilayah string) *KabKota {
+func NewKabKota(idWil, nama, idIndukWil string) *KabKota {
 	return &KabKota{
-		IdWil:          idWil,
-		Nama:           nama,
-		IdIndukWilayah: idIndukWilayah,
-		CreatedAt:      time.Now(),
-		UpdatedAt:      time.Now(),
+		IdWil:      idWil,
+		Nama:       nama,
+		IdIndukWil: idIndukWil,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
 	}
 }
 
@@ -40,11 +41,11 @@ func (k *KabKota) TableName() string {
 
 func ConvertEntityToProto(k *KabKota) *pb.KabKota {
 	return &pb.KabKota{
-		IdWil:          k.IdWil,
-		Nama:           k.Nama,
-		IdIndukWilayah: k.IdIndukWilayah,
-		Provinsi:       entity.ConvertEntityToProto(&k.Provinsi),
-		CreatedAt:      timestamppb.New(k.CreatedAt),
-		UpdatedAt:      timestamppb.New(k.UpdatedAt),
+		IdWil:      k.IdWil,
+		Nama:       k.Nama,
+		IdIndukWil: k.IdIndukWil,
+		Provinsi:   entity.ConvertEntityToProto(&k.Provinsi),
+		CreatedAt:  timestamppb.New(k.CreatedAt),
+		UpdatedAt:  timestamppb.New(k.UpdatedAt),
 	}
 }
