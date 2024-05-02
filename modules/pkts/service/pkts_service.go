@@ -24,7 +24,7 @@ type PKTSService struct {
 type PKTSServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.PKTS, error)
 	FindByNim(ctx context.Context, nim string) (*entity.PKTS, error)
-	Create(ctx context.Context, nim, kodeprodi, thnSidang string, f8, f5_04 uint32, f5_02, f5_06, f5_05, f5a1, f5a2 string, f11_01 uint32, f11_02, f5b string, f5c, f5d, f18a uint32, f18b, f18c, f18d string, f12_01 uint32, f12_02 string, f14, f15, f1761, f1762, f1763, f1764, f1765, f1766, f1767, f1768, f1769, f1770, f1771, f1772, f1773, f1774, f21, f22, f23, f24, f25, f26, f27, f301 uint32, f302 string, f303 uint32, f4_01, f4_02, f4_03, f4_04, f4_05, f4_06, f4_07, f4_08, f4_09, f4_10, f4_11, f4_12, f4_13, f4_14, f4_15, f4_16 string, f6, f7, f7a, f10_01 uint32, f10_02, f16_01, f16_02, f16_03, f16_04, f16_05, f16_06, f16_07, f16_08, f16_09, f16_10, f16_11, f16_12, f16_13, f16_14, namaAtasan, hpAtasan, emailAtasan, tinggalSelamaKuliah string) (*entity.PKTS, error)
+	Create(ctx context.Context, nim, kodeProdi, tahunSidang string) (*entity.PKTS, error)
 	Update(ctx context.Context, nim string, fields *entity.PKTS) (*entity.PKTS, error)
 	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
 	ExportPKTSReport(ctx context.Context, req any) (*bytes.Buffer, error)
@@ -60,94 +60,11 @@ func (svc *PKTSService) FindByNim(ctx context.Context, nim string) (*entity.PKTS
 	return res, nil
 }
 
-func (svc *PKTSService) Create(ctx context.Context, nim, kodeprodi, thnSidang string, f8, f5_04 uint32, f5_02, f5_06, f5_05, f5a1, f5a2 string, f11_01 uint32, f11_02, f5b string, f5c, f5d, f18a uint32, f18b, f18c, f18d string, f12_01 uint32, f12_02 string, f14, f15, f1761, f1762, f1763, f1764, f1765, f1766, f1767, f1768, f1769, f1770, f1771, f1772, f1773, f1774, f21, f22, f23, f24, f25, f26, f27, f301 uint32, f302 string, f303 uint32, f4_01, f4_02, f4_03, f4_04, f4_05, f4_06, f4_07, f4_08, f4_09, f4_10, f4_11, f4_12, f4_13, f4_14, f4_15, f4_16 string, f6, f7, f7a, f10_01 uint32, f10_02, f16_01, f16_02, f16_03, f16_04, f16_05, f16_06, f16_07, f16_08, f16_09, f16_10, f16_11, f16_12, f16_13, f16_14, namaAtasan, hpAtasan, emailAtasan, tinggalSelamaKuliah string) (*entity.PKTS, error) {
+func (svc *PKTSService) Create(ctx context.Context, nim, kodeProdi, tahunSidang string) (*entity.PKTS, error) {
 	reqEntity := &entity.PKTS{
 		Nim:                 nim,
-		Kodeprodi:           kodeprodi,
-		ThnSidang:           thnSidang,
-		F8:                  f8,
-		F5_04:               f5_04,
-		F5_02:               f5_02,
-		F5_06:               f5_06,
-		F5_05:               f5_05,
-		F5a1:                f5a1,
-		F5a2:                f5a2,
-		F11_01:              f11_01,
-		F11_02:              f11_02,
-		F5b:                 f5b,
-		F5c:                 f5c,
-		F5d:                 f5d,
-		F18a:                f18a,
-		F18b:                f18b,
-		F18c:                f18c,
-		F18d:                f18d,
-		F12_01:              f12_01,
-		F12_02:              f12_02,
-		F14:                 f14,
-		F15:                 f15,
-		F1761:               f1761,
-		F1762:               f1762,
-		F1763:               f1763,
-		F1764:               f1764,
-		F1765:               f1765,
-		F1766:               f1766,
-		F1767:               f1767,
-		F1768:               f1768,
-		F1769:               f1769,
-		F1770:               f1770,
-		F1771:               f1771,
-		F1772:               f1772,
-		F1773:               f1773,
-		F1774:               f1774,
-		F21:                 f21,
-		F22:                 f22,
-		F23:                 f23,
-		F24:                 f24,
-		F25:                 f25,
-		F26:                 f26,
-		F27:                 f27,
-		F301:                f301,
-		F302:                f302,
-		F303:                f303,
-		F4_01:               f4_01,
-		F4_02:               f4_02,
-		F4_03:               f4_03,
-		F4_04:               f4_04,
-		F4_05:               f4_05,
-		F4_06:               f4_06,
-		F4_07:               f4_07,
-		F4_08:               f4_08,
-		F4_09:               f4_09,
-		F4_10:               f4_10,
-		F4_11:               f4_11,
-		F4_12:               f4_12,
-		F4_13:               f4_13,
-		F4_14:               f4_14,
-		F4_15:               f4_15,
-		F4_16:               f4_16,
-		F6:                  f6,
-		F7:                  f7,
-		F7a:                 f7a,
-		F10_01:              f10_01,
-		F10_02:              f10_02,
-		F16_01:              f16_01,
-		F16_02:              f16_02,
-		F16_03:              f16_03,
-		F16_04:              f16_04,
-		F16_05:              f16_05,
-		F16_06:              f16_06,
-		F16_07:              f16_07,
-		F16_08:              f16_08,
-		F16_09:              f16_09,
-		F16_10:              f16_10,
-		F16_11:              f16_11,
-		F16_12:              f16_12,
-		F16_13:              f16_13,
-		F16_14:              f16_14,
-		NamaAtasan:          namaAtasan,
-		HpAtasan:            hpAtasan,
-		EmailAtasan:         emailAtasan,
-		TinggalSelamaKuliah: tinggalSelamaKuliah,
+		KodeProdi:           kodeProdi,
+		TahunSidang:           tahunSidang,
 		CreatedAt:           time.Now(),
 		UpdatedAt:           time.Now(),
 	}
@@ -172,14 +89,14 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 	updateMap := make(map[string]interface{})
 
 	utils.AddItemToMap(updateMap, "f8", fields.F8)
-	utils.AddItemToMap(updateMap, "f5_04", fields.F5_04)
-	utils.AddItemToMap(updateMap, "f5_02", fields.F5_02)
-	utils.AddItemToMap(updateMap, "f5_06", fields.F5_06)
-	utils.AddItemToMap(updateMap, "f5_05", fields.F5_05)
+	utils.AddItemToMap(updateMap, "f504", fields.F504)
+	utils.AddItemToMap(updateMap, "f502", fields.F502)
+	utils.AddItemToMap(updateMap, "f506", fields.F506)
+	utils.AddItemToMap(updateMap, "f505", fields.F505)
 	utils.AddItemToMap(updateMap, "f5a1", fields.F5a1)
 	utils.AddItemToMap(updateMap, "f5a2", fields.F5a2)
-	utils.AddItemToMap(updateMap, "f11_01", fields.F11_01)
-	utils.AddItemToMap(updateMap, "f11_02", fields.F11_02)
+	utils.AddItemToMap(updateMap, "f1101", fields.F1101)
+	utils.AddItemToMap(updateMap, "f1102", fields.F1102)
 	utils.AddItemToMap(updateMap, "f5b", fields.F5b)
 	utils.AddItemToMap(updateMap, "f5c", fields.F5c)
 	utils.AddItemToMap(updateMap, "f5d", fields.F5d)
@@ -187,8 +104,8 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 	utils.AddItemToMap(updateMap, "f18b", fields.F18b)
 	utils.AddItemToMap(updateMap, "f18c", fields.F18c)
 	utils.AddItemToMap(updateMap, "f18d", fields.F18d)
-	utils.AddItemToMap(updateMap, "f12_01", fields.F12_01)
-	utils.AddItemToMap(updateMap, "f12_02", fields.F12_02)
+	utils.AddItemToMap(updateMap, "f1201", fields.F1201)
+	utils.AddItemToMap(updateMap, "f1202", fields.F1202)
 	utils.AddItemToMap(updateMap, "f14", fields.F14)
 	utils.AddItemToMap(updateMap, "f15", fields.F15)
 	utils.AddItemToMap(updateMap, "f1761", fields.F1761)
@@ -215,41 +132,41 @@ func (svc *PKTSService) Update(ctx context.Context, nim string, fields *entity.P
 	utils.AddItemToMap(updateMap, "f301", fields.F301)
 	utils.AddItemToMap(updateMap, "f302", fields.F302)
 	utils.AddItemToMap(updateMap, "f303", fields.F303)
-	utils.AddItemToMap(updateMap, "f4_01", fields.F4_01)
-	utils.AddItemToMap(updateMap, "f4_02", fields.F4_02)
-	utils.AddItemToMap(updateMap, "f4_03", fields.F4_03)
-	utils.AddItemToMap(updateMap, "f4_04", fields.F4_04)
-	utils.AddItemToMap(updateMap, "f4_05", fields.F4_05)
-	utils.AddItemToMap(updateMap, "f4_06", fields.F4_06)
-	utils.AddItemToMap(updateMap, "f4_07", fields.F4_07)
-	utils.AddItemToMap(updateMap, "f4_08", fields.F4_08)
-	utils.AddItemToMap(updateMap, "f4_09", fields.F4_09)
-	utils.AddItemToMap(updateMap, "f4_10", fields.F4_10)
-	utils.AddItemToMap(updateMap, "f4_11", fields.F4_11)
-	utils.AddItemToMap(updateMap, "f4_12", fields.F4_12)
-	utils.AddItemToMap(updateMap, "f4_13", fields.F4_13)
-	utils.AddItemToMap(updateMap, "f4_14", fields.F4_14)
-	utils.AddItemToMap(updateMap, "f4_15", fields.F4_15)
-	utils.AddItemToMap(updateMap, "f4_16", fields.F4_16)
+	utils.AddItemToMap(updateMap, "f401", fields.F401)
+	utils.AddItemToMap(updateMap, "f402", fields.F402)
+	utils.AddItemToMap(updateMap, "f403", fields.F403)
+	utils.AddItemToMap(updateMap, "f404", fields.F404)
+	utils.AddItemToMap(updateMap, "f405", fields.F405)
+	utils.AddItemToMap(updateMap, "f406", fields.F406)
+	utils.AddItemToMap(updateMap, "f407", fields.F407)
+	utils.AddItemToMap(updateMap, "f408", fields.F408)
+	utils.AddItemToMap(updateMap, "f409", fields.F409)
+	utils.AddItemToMap(updateMap, "f410", fields.F410)
+	utils.AddItemToMap(updateMap, "f411", fields.F411)
+	utils.AddItemToMap(updateMap, "f412", fields.F412)
+	utils.AddItemToMap(updateMap, "f413", fields.F413)
+	utils.AddItemToMap(updateMap, "f414", fields.F414)
+	utils.AddItemToMap(updateMap, "f415", fields.F415)
+	utils.AddItemToMap(updateMap, "f416", fields.F416)
 	utils.AddItemToMap(updateMap, "f6", fields.F6)
 	utils.AddItemToMap(updateMap, "f7", fields.F7)
 	utils.AddItemToMap(updateMap, "f7a", fields.F7a)
-	utils.AddItemToMap(updateMap, "f10_01", fields.F10_01)
-	utils.AddItemToMap(updateMap, "f10_02", fields.F10_02)
-	utils.AddItemToMap(updateMap, "f16_01", fields.F16_01)
-	utils.AddItemToMap(updateMap, "f16_02", fields.F16_02)
-	utils.AddItemToMap(updateMap, "f16_03", fields.F16_03)
-	utils.AddItemToMap(updateMap, "f16_04", fields.F16_04)
-	utils.AddItemToMap(updateMap, "f16_05", fields.F16_05)
-	utils.AddItemToMap(updateMap, "f16_06", fields.F16_06)
-	utils.AddItemToMap(updateMap, "f16_07", fields.F16_07)
-	utils.AddItemToMap(updateMap, "f16_08", fields.F16_08)
-	utils.AddItemToMap(updateMap, "f16_09", fields.F16_09)
-	utils.AddItemToMap(updateMap, "f16_10", fields.F16_10)
-	utils.AddItemToMap(updateMap, "f16_11", fields.F16_11)
-	utils.AddItemToMap(updateMap, "f16_12", fields.F16_12)
-	utils.AddItemToMap(updateMap, "f16_13", fields.F16_13)
-	utils.AddItemToMap(updateMap, "f16_14", fields.F16_14)
+	utils.AddItemToMap(updateMap, "f1001", fields.F1001)
+	utils.AddItemToMap(updateMap, "f1002", fields.F1002)
+	utils.AddItemToMap(updateMap, "f1601", fields.F1601)
+	utils.AddItemToMap(updateMap, "f1602", fields.F1602)
+	utils.AddItemToMap(updateMap, "f1603", fields.F1603)
+	utils.AddItemToMap(updateMap, "f1604", fields.F1604)
+	utils.AddItemToMap(updateMap, "f1605", fields.F1605)
+	utils.AddItemToMap(updateMap, "f1606", fields.F1606)
+	utils.AddItemToMap(updateMap, "f1607", fields.F1607)
+	utils.AddItemToMap(updateMap, "f1608", fields.F1608)
+	utils.AddItemToMap(updateMap, "f1609", fields.F1609)
+	utils.AddItemToMap(updateMap, "f1610", fields.F1610)
+	utils.AddItemToMap(updateMap, "f1611", fields.F1611)
+	utils.AddItemToMap(updateMap, "f1612", fields.F1612)
+	utils.AddItemToMap(updateMap, "f1613", fields.F1613)
+	utils.AddItemToMap(updateMap, "f1614", fields.F1614)
 	utils.AddItemToMap(updateMap, "nama_atasan", fields.NamaAtasan)
 	utils.AddItemToMap(updateMap, "hp_atasan", fields.HpAtasan)
 	utils.AddItemToMap(updateMap, "email_atasan", fields.EmailAtasan)
@@ -394,7 +311,7 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 	for i, row := range rows {
 		file.SetCellValue(sheetName, fmt.Sprintf("A%d", i+2), row.CreatedAt)
 		file.SetCellValue(sheetName, fmt.Sprintf("B%d", i+2), row.UpdatedAt)
-		file.SetCellValue(sheetName, fmt.Sprintf("C%d", i+2), row.Kodeprodi)
+		file.SetCellValue(sheetName, fmt.Sprintf("C%d", i+2), row.KodeProdi)
 		file.SetCellValue(sheetName, fmt.Sprintf("D%d", i+2), row.NamaProdi)
 		file.SetCellValue(sheetName, fmt.Sprintf("E%d", i+2), kodePT)
 		file.SetCellValue(sheetName, fmt.Sprintf("F%d", i+2), row.KodeDikti)
@@ -404,18 +321,18 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 		file.SetCellValue(sheetName, fmt.Sprintf("J%d", i+2), row.JK)
 		file.SetCellValue(sheetName, fmt.Sprintf("K%d", i+2), row.Hp)
 		file.SetCellValue(sheetName, fmt.Sprintf("L%d", i+2), row.Email)
-		file.SetCellValue(sheetName, fmt.Sprintf("M%d", i+2), row.ThnSidang)
+		file.SetCellValue(sheetName, fmt.Sprintf("M%d", i+2), row.TahunSidang)
 		file.SetCellValue(sheetName, fmt.Sprintf("N%d", i+2), row.Nik)
 		file.SetCellValue(sheetName, fmt.Sprintf("O%d", i+2), row.Npwp)
 		file.SetCellValue(sheetName, fmt.Sprintf("P%d", i+2), row.F8)
-		file.SetCellValue(sheetName, fmt.Sprintf("Q%d", i+2), row.F5_04)
-		file.SetCellValue(sheetName, fmt.Sprintf("R%d", i+2), row.F5_02)
-		file.SetCellValue(sheetName, fmt.Sprintf("S%d", i+2), row.F5_05)
-		file.SetCellValue(sheetName, fmt.Sprintf("T%d", i+2), row.F5_06)
+		file.SetCellValue(sheetName, fmt.Sprintf("Q%d", i+2), row.F504)
+		file.SetCellValue(sheetName, fmt.Sprintf("R%d", i+2), row.F502)
+		file.SetCellValue(sheetName, fmt.Sprintf("S%d", i+2), row.F505)
+		file.SetCellValue(sheetName, fmt.Sprintf("T%d", i+2), row.F506)
 		file.SetCellValue(sheetName, fmt.Sprintf("U%d", i+2), row.F5a1)
 		file.SetCellValue(sheetName, fmt.Sprintf("V%d", i+2), row.F5a2)
-		file.SetCellValue(sheetName, fmt.Sprintf("W%d", i+2), row.F11_01)
-		file.SetCellValue(sheetName, fmt.Sprintf("X%d", i+2), row.F11_02)
+		file.SetCellValue(sheetName, fmt.Sprintf("W%d", i+2), row.F1101)
+		file.SetCellValue(sheetName, fmt.Sprintf("X%d", i+2), row.F1102)
 		file.SetCellValue(sheetName, fmt.Sprintf("Y%d", i+2), row.F5b)
 		file.SetCellValue(sheetName, fmt.Sprintf("Z%d", i+2), row.F5c)
 		file.SetCellValue(sheetName, fmt.Sprintf("AA%d", i+2), row.F5d)
@@ -423,8 +340,8 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 		file.SetCellValue(sheetName, fmt.Sprintf("AC%d", i+2), row.F18b)
 		file.SetCellValue(sheetName, fmt.Sprintf("AD%d", i+2), row.F18c)
 		file.SetCellValue(sheetName, fmt.Sprintf("AE%d", i+2), row.F18d)
-		file.SetCellValue(sheetName, fmt.Sprintf("AF%d", i+2), row.F12_01)
-		file.SetCellValue(sheetName, fmt.Sprintf("AG%d", i+2), row.F12_02)
+		file.SetCellValue(sheetName, fmt.Sprintf("AF%d", i+2), row.F1201)
+		file.SetCellValue(sheetName, fmt.Sprintf("AG%d", i+2), row.F1202)
 		file.SetCellValue(sheetName, fmt.Sprintf("AH%d", i+2), row.F14)
 		file.SetCellValue(sheetName, fmt.Sprintf("AI%d", i+2), row.F15)
 		file.SetCellValue(sheetName, fmt.Sprintf("AJ%d", i+2), row.F1761)
@@ -451,41 +368,41 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 		file.SetCellValue(sheetName, fmt.Sprintf("BE%d", i+2), row.F301)
 		file.SetCellValue(sheetName, fmt.Sprintf("BF%d", i+2), row.F302)
 		file.SetCellValue(sheetName, fmt.Sprintf("BG%d", i+2), row.F303)
-		file.SetCellValue(sheetName, fmt.Sprintf("BH%d", i+2), row.F4_01)
-		file.SetCellValue(sheetName, fmt.Sprintf("BI%d", i+2), row.F4_02)
-		file.SetCellValue(sheetName, fmt.Sprintf("BJ%d", i+2), row.F4_03)
-		file.SetCellValue(sheetName, fmt.Sprintf("BK%d", i+2), row.F4_04)
-		file.SetCellValue(sheetName, fmt.Sprintf("BL%d", i+2), row.F4_05)
-		file.SetCellValue(sheetName, fmt.Sprintf("BM%d", i+2), row.F4_06)
-		file.SetCellValue(sheetName, fmt.Sprintf("BN%d", i+2), row.F4_07)
-		file.SetCellValue(sheetName, fmt.Sprintf("BO%d", i+2), row.F4_08)
-		file.SetCellValue(sheetName, fmt.Sprintf("BP%d", i+2), row.F4_09)
-		file.SetCellValue(sheetName, fmt.Sprintf("BQ%d", i+2), row.F4_10)
-		file.SetCellValue(sheetName, fmt.Sprintf("BR%d", i+2), row.F4_11)
-		file.SetCellValue(sheetName, fmt.Sprintf("BS%d", i+2), row.F4_12)
-		file.SetCellValue(sheetName, fmt.Sprintf("BT%d", i+2), row.F4_13)
-		file.SetCellValue(sheetName, fmt.Sprintf("BU%d", i+2), row.F4_14)
-		file.SetCellValue(sheetName, fmt.Sprintf("BV%d", i+2), row.F4_15)
-		file.SetCellValue(sheetName, fmt.Sprintf("BW%d", i+2), row.F4_16)
+		file.SetCellValue(sheetName, fmt.Sprintf("BH%d", i+2), row.F401)
+		file.SetCellValue(sheetName, fmt.Sprintf("BI%d", i+2), row.F402)
+		file.SetCellValue(sheetName, fmt.Sprintf("BJ%d", i+2), row.F403)
+		file.SetCellValue(sheetName, fmt.Sprintf("BK%d", i+2), row.F404)
+		file.SetCellValue(sheetName, fmt.Sprintf("BL%d", i+2), row.F405)
+		file.SetCellValue(sheetName, fmt.Sprintf("BM%d", i+2), row.F406)
+		file.SetCellValue(sheetName, fmt.Sprintf("BN%d", i+2), row.F407)
+		file.SetCellValue(sheetName, fmt.Sprintf("BO%d", i+2), row.F408)
+		file.SetCellValue(sheetName, fmt.Sprintf("BP%d", i+2), row.F409)
+		file.SetCellValue(sheetName, fmt.Sprintf("BQ%d", i+2), row.F410)
+		file.SetCellValue(sheetName, fmt.Sprintf("BR%d", i+2), row.F411)
+		file.SetCellValue(sheetName, fmt.Sprintf("BS%d", i+2), row.F412)
+		file.SetCellValue(sheetName, fmt.Sprintf("BT%d", i+2), row.F413)
+		file.SetCellValue(sheetName, fmt.Sprintf("BU%d", i+2), row.F414)
+		file.SetCellValue(sheetName, fmt.Sprintf("BV%d", i+2), row.F415)
+		file.SetCellValue(sheetName, fmt.Sprintf("BW%d", i+2), row.F416)
 		file.SetCellValue(sheetName, fmt.Sprintf("BX%d", i+2), row.F6)
 		file.SetCellValue(sheetName, fmt.Sprintf("BY%d", i+2), row.F7)
 		file.SetCellValue(sheetName, fmt.Sprintf("BZ%d", i+2), row.F7a)
-		file.SetCellValue(sheetName, fmt.Sprintf("CA%d", i+2), row.F10_01)
-		file.SetCellValue(sheetName, fmt.Sprintf("CB%d", i+2), row.F10_02)
-		file.SetCellValue(sheetName, fmt.Sprintf("CC%d", i+2), row.F16_01)
-		file.SetCellValue(sheetName, fmt.Sprintf("CD%d", i+2), row.F16_02)
-		file.SetCellValue(sheetName, fmt.Sprintf("CE%d", i+2), row.F16_03)
-		file.SetCellValue(sheetName, fmt.Sprintf("CF%d", i+2), row.F16_04)
-		file.SetCellValue(sheetName, fmt.Sprintf("CG%d", i+2), row.F16_05)
-		file.SetCellValue(sheetName, fmt.Sprintf("CH%d", i+2), row.F16_06)
-		file.SetCellValue(sheetName, fmt.Sprintf("CI%d", i+2), row.F16_07)
-		file.SetCellValue(sheetName, fmt.Sprintf("CJ%d", i+2), row.F16_08)
-		file.SetCellValue(sheetName, fmt.Sprintf("CK%d", i+2), row.F16_09)
-		file.SetCellValue(sheetName, fmt.Sprintf("CL%d", i+2), row.F16_10)
-		file.SetCellValue(sheetName, fmt.Sprintf("CM%d", i+2), row.F16_11)
-		file.SetCellValue(sheetName, fmt.Sprintf("CN%d", i+2), row.F16_12)
-		file.SetCellValue(sheetName, fmt.Sprintf("CO%d", i+2), row.F16_13)
-		file.SetCellValue(sheetName, fmt.Sprintf("CP%d", i+2), row.F16_14)
+		file.SetCellValue(sheetName, fmt.Sprintf("CA%d", i+2), row.F1001)
+		file.SetCellValue(sheetName, fmt.Sprintf("CB%d", i+2), row.F1002)
+		file.SetCellValue(sheetName, fmt.Sprintf("CC%d", i+2), row.F1601)
+		file.SetCellValue(sheetName, fmt.Sprintf("CD%d", i+2), row.F1602)
+		file.SetCellValue(sheetName, fmt.Sprintf("CE%d", i+2), row.F1603)
+		file.SetCellValue(sheetName, fmt.Sprintf("CF%d", i+2), row.F1604)
+		file.SetCellValue(sheetName, fmt.Sprintf("CG%d", i+2), row.F1605)
+		file.SetCellValue(sheetName, fmt.Sprintf("CH%d", i+2), row.F1606)
+		file.SetCellValue(sheetName, fmt.Sprintf("CI%d", i+2), row.F1607)
+		file.SetCellValue(sheetName, fmt.Sprintf("CJ%d", i+2), row.F1608)
+		file.SetCellValue(sheetName, fmt.Sprintf("CK%d", i+2), row.F1609)
+		file.SetCellValue(sheetName, fmt.Sprintf("CL%d", i+2), row.F1610)
+		file.SetCellValue(sheetName, fmt.Sprintf("CM%d", i+2), row.F1611)
+		file.SetCellValue(sheetName, fmt.Sprintf("CN%d", i+2), row.F1612)
+		file.SetCellValue(sheetName, fmt.Sprintf("CO%d", i+2), row.F1613)
+		file.SetCellValue(sheetName, fmt.Sprintf("CP%d", i+2), row.F1614)
 		file.SetCellValue(sheetName, fmt.Sprintf("CQ%d", i+2), row.NamaAtasan)
 		file.SetCellValue(sheetName, fmt.Sprintf("CR%d", i+2), row.HpAtasan)
 		file.SetCellValue(sheetName, fmt.Sprintf("CS%d", i+2), row.EmailAtasan)

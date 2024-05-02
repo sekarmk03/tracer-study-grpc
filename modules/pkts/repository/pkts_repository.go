@@ -133,7 +133,7 @@ func (p *PKTSRepository) FindAllReport(ctx context.Context, req any) ([]*entity.
 
     var pkts []*entity.PKTSReport
     query := `
-        SELECT pk.*, r.nama, r.jk, r.hp, r.email, r.thn_sidang, r.nik, r.npwp, pk.kodeprodi, p.nama AS nama_prodi, p.kode_dikti, p.jenjang
+        SELECT pk.*, r.nama, r.jenis_kelamin, r.hp, r.email, r.tahun_sidang, r.nik, r.npwp, pk.kode_prodi, p.nama AS nama_prodi, p.kode_dikti, p.jenjang
         FROM pkts AS pk
         JOIN responden AS r ON pk.nim = r.nim
         JOIN ref_prodi AS p ON pk.kodeprodi = p.kode;
@@ -152,7 +152,7 @@ func (p *PKTSRepository) FindPKTSRekap(ctx context.Context, kodeprodi string) ([
 
 	var pkts []*entity.PKTSRekap
 	query := `
-		SELECT r.nim, r.nama, pk.f8, r.email, r.hp, r.tgl_sidang, p.nama AS prov_kerja, pk.f5_05 AS penghasilan, pk.created_at AS input_pkts, pk.updated_at AS update_pkts
+		SELECT r.nim, r.nama, pk.f8, r.email, r.hp, r.tanggal_sidang, p.nama AS prov_kerja, pk.f5_05 AS penghasilan, pk.created_at AS input_pkts, pk.updated_at AS update_pkts
 		FROM pkts AS pk
 		JOIN responden AS r ON pk.nim = r.nim
 		JOIN ref_provinsi AS p ON pk.f5a1 = p.id_wil
