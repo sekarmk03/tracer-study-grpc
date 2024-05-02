@@ -14,7 +14,7 @@ const (
 )
 
 type UserStudy struct {
-	ID                                uint32         `json:"id"`
+	Id                                uint64         `json:"id"`
 	NamaResponden                     string         `json:"nama_responden"`
 	EmailResponden                    string         `json:"email_responden"`
 	HpResponden                       string         `json:"hp_responden"`
@@ -45,9 +45,9 @@ type UserStudy struct {
 	DeletedAt                         gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
-func NewUserStudy(id uint32, namaResponden, emailResponden, hpResponden, namaInstansi, jabatan, alamatInstansi, nimLulusan, namaLulusan, prodiLulusan, tahunLulusan, lamaMengenalLulusan, etika, keahlianBidIlmu, bahasaInggris, penggunaanTi, komunikasi, kerjasamaTim, pengembanganDiri, kesiapanTerjunMasy, keunggulanLulusan, kelemahanLulusan, saranPeningkatanKompetensiLulusan, saranPerbaikanKurikulum, createdBy, updatedBy string) *UserStudy {
+func NewUserStudy(id uint64, namaResponden, emailResponden, hpResponden, namaInstansi, jabatan, alamatInstansi, nimLulusan, namaLulusan, prodiLulusan, tahunLulusan, lamaMengenalLulusan, etika, keahlianBidIlmu, bahasaInggris, penggunaanTi, komunikasi, kerjasamaTim, pengembanganDiri, kesiapanTerjunMasy, keunggulanLulusan, kelemahanLulusan, saranPeningkatanKompetensiLulusan, saranPerbaikanKurikulum, createdBy, updatedBy string) *UserStudy {
 	return &UserStudy{
-		ID:                                id,
+		Id:                                id,
 		NamaResponden:                     namaResponden,
 		EmailResponden:                    emailResponden,
 		HpResponden:                       hpResponden,
@@ -84,7 +84,7 @@ func (r *UserStudy) TableName() string {
 
 func ConvertEntityToProto(r *UserStudy) *pb.UserStudy {
 	return &pb.UserStudy{
-		Id:                                r.ID,
+		Id:                                r.Id,
 		NamaResponden:                     r.NamaResponden,
 		EmailResponden:                    r.EmailResponden,
 		HpResponden:                       r.HpResponden,
@@ -117,7 +117,7 @@ func ConvertEntityToProto(r *UserStudy) *pb.UserStudy {
 
 func ConvertProtoToEntity(r *pb.UserStudy) *UserStudy {
 	return &UserStudy{
-		ID:                                r.GetId(),
+		Id:                                r.GetId(),
 		NamaResponden:                     r.GetNamaResponden(),
 		EmailResponden:                    r.GetEmailResponden(),
 		HpResponden:                       r.GetHpResponden(),

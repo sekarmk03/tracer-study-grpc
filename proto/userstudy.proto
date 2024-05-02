@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 message UserStudy {
-    uint32 id = 1;
+    uint64 id = 1;
     string nama_responden = 2;
     string email_responden = 3;
     string hp_responden = 4;
