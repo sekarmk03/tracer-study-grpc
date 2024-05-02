@@ -41,6 +41,10 @@ func NewProdi(
 	}
 }
 
+func (r *Prodi) TableName() string {
+	return ProdiTableName
+}
+
 func ConvertEntityToProto(p *Prodi) *pb.Prodi {
 	return &pb.Prodi{
 		Kode:          p.Kode,

@@ -24,11 +24,9 @@ message Responden {
     string tanggal_wisuda = 15;
     string nik = 16;
     string npwp = 17;
-    string created_by = 18;
-    string updated_by = 19;
-    google.protobuf.Timestamp created_at = 20;
-    google.protobuf.Timestamp updated_at = 21;
-    google.protobuf.Timestamp deleted_at = 22;
+    google.protobuf.Timestamp created_at = 18;
+    google.protobuf.Timestamp updated_at = 19;
+    google.protobuf.Timestamp deleted_at = 20;
 }
 
 message GetAllRespondenResponse {

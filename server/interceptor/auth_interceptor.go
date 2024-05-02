@@ -48,11 +48,11 @@ func (a *AuthInterceptor) authorize(ctx context.Context, method string) error {
 		return status.Errorf(codes.Unauthenticated, "metadata is not provided")
 	}
 
-	values := md["authorization"]
-	if len(values) == 0 {
-		log.Println("ERROR: [Auth Interceptor - Authorize] Authorization token is not provided")
-		return status.Errorf(codes.Unauthenticated, "authorization token is not provided")
-	}
+	values, ok := md["authorization"]
+    if !ok || len(values) == 0 {
+        log.Println("ERROR: [Auth Interceptor - Authorize] Authorization token is not provided")
+        return status.Errorf(codes.Unauthenticated, "authorization token is not provided")
+    }
 
 	accessToken := values[0]
 	claims, err := a.jwtManager.Verify(accessToken)

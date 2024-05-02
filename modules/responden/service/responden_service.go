@@ -63,21 +63,21 @@ func (svc *RespondenService) Update(ctx context.Context, nim string, fields *ent
 
 	updateMap := map[string]interface{}{
 		"updated_at":    time.Now(),
-		"status_update": "1",
-		"updated_by":    "system",
 	}
 
-	utils.AddItemToMap(updateMap, "ipk", fields.Ipk)
-	utils.AddItemToMap(updateMap, "kode_prodi", fields.KodeProdi)
-	utils.AddItemToMap(updateMap, "kode_fakultas", fields.KodeFakultas)
+	utils.AddItemToMap(updateMap, "nama", fields.Nama)
 	utils.AddItemToMap(updateMap, "jalur_masuk", fields.JalurMasuk)
 	utils.AddItemToMap(updateMap, "tahun_masuk", fields.TahunMasuk)
 	utils.AddItemToMap(updateMap, "lama_studi", fields.LamaStudi)
+	utils.AddItemToMap(updateMap, "kode_fakultas", fields.KodeFakultas)
+	utils.AddItemToMap(updateMap, "kode_prodi", fields.KodeProdi)
+	utils.AddItemToMap(updateMap, "jenis_kelamin", fields.JenisKelamin)
 	utils.AddItemToMap(updateMap, "email", fields.Email)
 	utils.AddItemToMap(updateMap, "hp", fields.Hp)
+	utils.AddItemToMap(updateMap, "ipk", fields.Ipk)
 	utils.AddItemToMap(updateMap, "nik", fields.Nik)
 	utils.AddItemToMap(updateMap, "npwp", fields.Npwp)
-	// tanggal wisuda?
+	utils.AddItemToMap(updateMap, "tanggal_wisuda", fields.TanggalWisuda)
 
 	res, err := svc.respondenRepository.Update(ctx, responden, updateMap)
 	if err != nil {

@@ -76,7 +76,6 @@ func (r *RespondenRepository) Update(ctx context.Context, responden *entity.Resp
 	// }
 
 	updatedFields["updated_at"] = time.Now()
-	updatedFields["updated_by"] = "system"
 	if err := r.db.Debug().WithContext(ctxSpan).Model(&responden).Updates(updatedFields).Error; err != nil {
 		log.Println("ERROR: [RespondenRepository - Update] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)

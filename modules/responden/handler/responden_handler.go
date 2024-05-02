@@ -77,19 +77,33 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 		return nil, status.Errorf(parseError.Code, parseError.Message)
 	}
 
+	var kodeProdi string
+	if len(mhsbiodata.KODEPST) > 4 {
+		kodeProdi = mhsbiodata.KODEPST[:4]
+	} else {
+		kodeProdi = mhsbiodata.KODEPST
+	}
+
+	var thnSidang string
+	if len(mhsbiodata.TGLSIDANG) > 4 {
+		thnSidang = mhsbiodata.TGLSIDANG[:4]
+		} else {
+		thnSidang = ""
+	}
+
 	convertedProto := &entity.Responden{
 		Nama:          mhsbiodata.NAMA,
 		JalurMasuk:    mhsbiodata.JLRMASUK,
 		TahunMasuk:    mhsbiodata.THNMASUK,
 		LamaStudi:     uint32(utils.ConvStrToUint(mhsbiodata.LAMASTD, "lama_studi")),
 		KodeFakultas:  mhsbiodata.KODEFAK,
-		KodeProdi:     mhsbiodata.KODEPST[:4],
+		KodeProdi:     kodeProdi,
 		JenisKelamin:  mhsbiodata.KODEJK,
 		Email:         mhsbiodata.EMAIL,
 		Hp:            mhsbiodata.HP,
 		Ipk:           mhsbiodata.IPK,
 		TanggalSidang: mhsbiodata.TGLSIDANG,
-		TahunSidang:   mhsbiodata.TGLSIDANG[:4],
+		TahunSidang:   thnSidang,
 		// tanggal wisuda?
 	}
 

@@ -30,14 +30,12 @@ type Responden struct {
 	TanggalWisuda string         `json:"tanggal_wisuda"`
 	Nik           string         `json:"nik"`
 	Npwp          string         `json:"npwp"`
-	CreatedBy     string         `json:"created_by"`
-	UpdatedBy     string         `json:"updated_by"`
 	CreatedAt     time.Time      `gorm:"type:timestamptz;not_null" json:"created_at"`
 	UpdatedAt     time.Time      `gorm:"type:timestamptz;not_null" json:"updated_at"`
 	DeletedAt     gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
-func NewResponden(id uint32, nim, nama, jlrMasuk, thnMasuk string, lamaStudi uint32, kodeFak, kodeProdi, jenisKel, email, hp, ipk, tglSidang, thnSidang, tglWisuda, nik, npwp, createdBy, updatedBy string) *Responden {
+func NewResponden(id uint32, nim, nama, jlrMasuk, thnMasuk string, lamaStudi uint32, kodeFak, kodeProdi, jenisKel, email, hp, ipk, tglSidang, thnSidang, tglWisuda, nik, npwp string) *Responden {
 	return &Responden{
 		Id:            id,
 		Nim:           nim,
@@ -56,8 +54,6 @@ func NewResponden(id uint32, nim, nama, jlrMasuk, thnMasuk string, lamaStudi uin
 		TanggalWisuda: tglWisuda,
 		Nik:           nik,
 		Npwp:          npwp,
-		CreatedBy:     createdBy,
-		UpdatedBy:     updatedBy,
 		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Now(),
 	}
@@ -86,8 +82,6 @@ func ConvertEntityToProto(r *Responden) *pb.Responden {
 		TanggalWisuda: r.TanggalWisuda,
 		Nik:           r.Nik,
 		Npwp:          r.Npwp,
-		CreatedBy:     r.CreatedBy,
-		UpdatedBy:     r.UpdatedBy,
 		CreatedAt:     timestamppb.New(r.CreatedAt),
 		UpdatedAt:     timestamppb.New(r.UpdatedAt),
 	}
@@ -112,8 +106,6 @@ func ConvertProtoToEntity(r *pb.Responden) *Responden {
 		TanggalWisuda: r.GetTanggalWisuda(),
 		Nik:           r.GetNik(),
 		Npwp:          r.GetNpwp(),
-		CreatedBy:     r.GetCreatedBy(),
-		UpdatedBy:     r.GetUpdatedBy(),
 		CreatedAt:     r.GetCreatedAt().AsTime(),
 		UpdatedAt:     r.GetUpdatedAt().AsTime(),
 	}
