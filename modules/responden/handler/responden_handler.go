@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/errors"
+	"tracer-study-grpc/common/utils"
 	mhsbSvc "tracer-study-grpc/modules/mhsbiodata/service"
 	"tracer-study-grpc/modules/responden/entity"
 	resSvc "tracer-study-grpc/modules/responden/service"
@@ -77,19 +78,19 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 	}
 
 	convertedProto := &entity.Responden{
-		Ipk:        mhsbiodata.IPK,
-		Kodedikti:  mhsbiodata.KODEPSTD,
-		Jenjang:    mhsbiodata.JENJANG,
-		Namaprodi:  mhsbiodata.PRODI,
-		Namaprodi2: mhsbiodata.NAMAPST,
-		Kodeprodi:  mhsbiodata.KODEPST,
-		Kodeprodi2: mhsbiodata.KODEPST[:4],
-		Kodefak:    mhsbiodata.KODEFAK,
-		Namafak:    mhsbiodata.NAMAFAK,
-		Jlrmasuk:   mhsbiodata.JLRMASUK,
-		Thnmasuk:   mhsbiodata.THNMASUK,
-		ThnAk:      mhsbiodata.THNMASUK,
-		Lamastd:    mhsbiodata.LAMASTD,
+		Nama:          mhsbiodata.NAMA,
+		JalurMasuk:    mhsbiodata.JLRMASUK,
+		TahunMasuk:    mhsbiodata.THNMASUK,
+		LamaStudi:     uint32(utils.ConvStrToUint(mhsbiodata.LAMASTD, "lama_studi")),
+		KodeFakultas:  mhsbiodata.KODEFAK,
+		KodeProdi:     mhsbiodata.KODEPST[:4],
+		JenisKelamin:  mhsbiodata.KODEJK,
+		Email:         mhsbiodata.EMAIL,
+		Hp:            mhsbiodata.HP,
+		Ipk:           mhsbiodata.IPK,
+		TanggalSidang: mhsbiodata.TGLSIDANG,
+		TahunSidang:   mhsbiodata.TGLSIDANG[:4],
+		// tanggal wisuda?
 	}
 
 	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), convertedProto)
@@ -109,7 +110,7 @@ func (rh *RespondenHandler) UpdateRespondenFromSiak(ctx context.Context, req *pb
 }
 
 func (rh *RespondenHandler) CreateResponden(ctx context.Context, req *pb.CreateRespondenRequest) (*pb.CreateRespondenResponse, error) {
-	responden, err := rh.respondenSvc.Create(ctx, req.GetNim(), req.GetSemester(), req.GetType(), req.GetNama(), req.GetKodeprodi(), req.GetJk(), req.GetTglWisuda(), req.GetTglSidang(), req.GetThnSidang())
+	responden, err := rh.respondenSvc.Create(ctx, req.GetNim())
 
 	if err != nil {
 		parseError := errors.ParseError(err)
@@ -128,10 +129,11 @@ func (rh *RespondenHandler) CreateResponden(ctx context.Context, req *pb.CreateR
 
 func (rh *RespondenHandler) UpdateResponden(ctx context.Context, req *pb.Responden) (*pb.UpdateRespondenResponse, error) {
 	respDataUpdate := &entity.Responden{
-		Email: req.GetEmail(),
-		Hp:    req.GetHp(),
-		Nik:   req.GetNik(),
-		Npwp:  req.GetNpwp(),
+		Email:         req.GetEmail(),
+		Hp:            req.GetHp(),
+		Nik:           req.GetNik(),
+		Npwp:          req.GetNpwp(),
+		TanggalWisuda: req.GetTanggalWisuda(),
 	}
 
 	responden, err := rh.respondenSvc.Update(ctx, req.GetNim(), respDataUpdate)

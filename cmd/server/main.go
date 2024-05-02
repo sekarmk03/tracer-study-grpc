@@ -11,14 +11,15 @@ import (
 	"tracer-study-grpc/common/mysql"
 	"tracer-study-grpc/server"
 
-	authModules "tracer-study-grpc/modules/auth"
-	kabkotaModules "tracer-study-grpc/modules/kabkota"
-	mhsbiodataModules "tracer-study-grpc/modules/mhsbiodata"
-	pktsModules "tracer-study-grpc/modules/pkts"
-	prodiModules "tracer-study-grpc/modules/prodi"
-	provinsiModules "tracer-study-grpc/modules/provinsi"
-	respondenModules "tracer-study-grpc/modules/responden"
-	userstudyModules "tracer-study-grpc/modules/userstudy"
+	authModule "tracer-study-grpc/modules/auth"
+	kabkotaModule "tracer-study-grpc/modules/kabkota"
+	mhsbiodataModule "tracer-study-grpc/modules/mhsbiodata"
+	pktsModule "tracer-study-grpc/modules/pkts"
+	prodiModule "tracer-study-grpc/modules/prodi"
+	provinsiModule "tracer-study-grpc/modules/provinsi"
+	respondenModule "tracer-study-grpc/modules/responden"
+	userstudyModule "tracer-study-grpc/modules/userstudy"
+	fakultasModule "tracer-study-grpc/modules/fakultas"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -51,14 +52,15 @@ func main() {
 }
 
 func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, jwtManager *commonJwt.JWT, grpcConn *grpc.ClientConn) {
-	prodiModules.InitGrpc(server, cfg, db, grpcConn)
-	provinsiModules.InitGrpc(server, cfg, db, grpcConn)
-	kabkotaModules.InitGrpc(server, cfg, db, grpcConn)
-	mhsbiodataModules.InitGrpc(server, cfg, db, grpcConn)
-	respondenModules.InitGrpc(server, cfg, db, grpcConn)
-	pktsModules.InitGrpc(server, cfg, db, grpcConn)
-	authModules.InitGrpc(server, cfg, db, jwtManager, grpcConn)
-	userstudyModules.InitGrpc(server, cfg, db, grpcConn)
+	prodiModule.InitGrpc(server, cfg, db, grpcConn)
+	provinsiModule.InitGrpc(server, cfg, db, grpcConn)
+	kabkotaModule.InitGrpc(server, cfg, db, grpcConn)
+	mhsbiodataModule.InitGrpc(server, cfg, db, grpcConn)
+	respondenModule.InitGrpc(server, cfg, db, grpcConn)
+	pktsModule.InitGrpc(server, cfg, db, grpcConn)
+	authModule.InitGrpc(server, cfg, db, jwtManager, grpcConn)
+	userstudyModule.InitGrpc(server, cfg, db, grpcConn)
+	fakultasModule.InitGrpc(server, cfg, db, grpcConn)
 }
 
 // func createRestServer(port string) *server.Rest {
