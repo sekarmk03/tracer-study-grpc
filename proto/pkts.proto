@@ -161,12 +161,16 @@ message GetPKTSRekapByProdiResponse {
     repeated PKTSRekap data = 3;
 }
 
+message ExportPKTSReportRequest {
+    string tahun_sidang = 1;
+}
+
 service PKTSService {
     rpc GetAllPKTS(google.protobuf.Empty) returns (GetAllPKTSResponse);
     rpc GetPKTSByNim(GetPKTSByNimRequest) returns (GetPKTSResponse);
     rpc CreatePKTS(PKTS) returns (GetPKTSResponse);
     rpc UpdatePKTS(PKTS) returns (GetPKTSResponse);
     rpc GetNimByDataAtasan(GetNimByDataAtasanRequest) returns (GetNimByDataAtasanResponse);
-    rpc ExportPKTSReport(google.protobuf.Empty) returns (ExportPKTSReportResponse);
+    rpc ExportPKTSReport(ExportPKTSReportRequest) returns (ExportPKTSReportResponse);
     rpc GetPKTSRekapByProdi(GetPKTSRekapByProdiRequest) returns (GetPKTSRekapByProdiResponse);
 }

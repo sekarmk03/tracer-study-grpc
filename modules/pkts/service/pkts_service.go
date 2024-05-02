@@ -27,7 +27,7 @@ type PKTSServiceUseCase interface {
 	Create(ctx context.Context, nim, kodeProdi, tahunSidang string) (*entity.PKTS, error)
 	Update(ctx context.Context, nim string, fields *entity.PKTS) (*entity.PKTS, error)
 	FindByAtasan(ctx context.Context, namaA, hpA, emailA string) ([]*string, error)
-	ExportPKTSReport(ctx context.Context, req any) (*bytes.Buffer, error)
+	ExportPKTSReport(ctx context.Context, tahunSidang string) (*bytes.Buffer, error)
 	FindPKTSRekap(ctx context.Context, kodeprodi string) ([]*entity.PKTSRekap, error)
 }
 
@@ -192,8 +192,8 @@ func (svc *PKTSService) FindByAtasan(ctx context.Context, namaA, hpA, emailA str
 	return res, nil
 }
 
-func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.Buffer, error) {
-	rows, err := svc.pktsRepository.FindAllReport(ctx, req)
+func (svc *PKTSService) ExportPKTSReport(ctx context.Context, tahunSidang string) (*bytes.Buffer, error) {
+	rows, err := svc.pktsRepository.FindAllReport(ctx, tahunSidang)
 	if err != nil {
 		parseError := errors.ParseError(err)
 		log.Println("ERROR: [PKTSService - FindAll] Error while find all pkts:", parseError.Message)
@@ -220,7 +220,7 @@ func (svc *PKTSService) ExportPKTSReport(ctx context.Context, req any) (*bytes.B
 	file.SetCellValue(sheetName, "J1", "jenis_kelamin")
 	file.SetCellValue(sheetName, "K1", "telpomsmh")
 	file.SetCellValue(sheetName, "L1", "emailmsmh")
-	file.SetCellValue(sheetName, "M1", "thn_lulus")
+	file.SetCellValue(sheetName, "M1", "tahun_lulus")
 	file.SetCellValue(sheetName, "N1", "nik")
 	file.SetCellValue(sheetName, "O1", "npwp")
 	file.SetCellValue(sheetName, "P1", "f8")

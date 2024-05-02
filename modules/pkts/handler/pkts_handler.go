@@ -213,8 +213,8 @@ func (ph *PKTSHandler) GetNimByDataAtasan(ctx context.Context, req *pb.GetNimByD
 	}, nil
 }
 
-func (ph *PKTSHandler) ExportPKTSReport(ctx context.Context, req *emptypb.Empty) (*pb.ExportPKTSReportResponse, error) {
-	pkts, err := ph.PKTSSvc.ExportPKTSReport(ctx, req)
+func (ph *PKTSHandler) ExportPKTSReport(ctx context.Context, req *pb.ExportPKTSReportRequest) (*pb.ExportPKTSReportResponse, error) {
+	pkts, err := ph.PKTSSvc.ExportPKTSReport(ctx, req.GetTahunSidang())
 	if err != nil {
 		parseError := errors.ParseError(err)
 		log.Println("ERROR: [PKTSHandler - ExportPKTSReport] Internal server error:", parseError.Message)
