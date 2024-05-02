@@ -31,8 +31,6 @@ message UserStudy {
     string kelemahan_lulusan = 22;
     string saran_peningkatan_kompetensi_lulusan = 23;
     string saran_perbaikan_kurikulum = 24;
-    string created_by = 25;
-    string updated_by = 26;
     google.protobuf.Timestamp created_at = 27;
     google.protobuf.Timestamp updated_at = 28;
     google.protobuf.Timestamp deleted_at = 29;

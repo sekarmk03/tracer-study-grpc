@@ -68,7 +68,6 @@ func (svc *UserStudyService) Update(ctx context.Context, nim, emailResponden, hp
 
 	updateMap := map[string]interface{}{
 		"updated_at": time.Now(),
-		"updated_by": nim,
 	}
 
 	utils.AddItemToMap(updateMap, "nama_instansi", fields.NamaInstansi)
@@ -111,9 +110,7 @@ func (svc *UserStudyService) Create(ctx context.Context, namaResponden, emailRes
 		ProdiLulusan:   prodiLulusan,
 		TahunLulusan:   tahunLulusan,
 		CreatedAt:      time.Now(),
-		CreatedBy:      "system",
 		UpdatedAt:      time.Now(),
-		UpdatedBy:      "system",
 	}
 
 	res, err := svc.userStudyRepository.Create(ctx, reqEntity)

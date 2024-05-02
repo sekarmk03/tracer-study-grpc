@@ -38,8 +38,6 @@ type UserStudy struct {
 	KelemahanLulusan                  string         `json:"kelemahan_lulusan"`
 	SaranPeningkatanKompetensiLulusan string         `json:"saran_peningkatan_kompetensi_lulusan"`
 	SaranPerbaikanKurikulum           string         `json:"saran_peningkatan_kurikulum"`
-	CreatedBy                         string         `json:"created_by"`
-	UpdatedBy                         string         `json:"updated_by"`
 	CreatedAt                         time.Time      `gorm:"type:timestamptz;not_null" json:"created_at"`
 	UpdatedAt                         time.Time      `gorm:"type:timestamptz;not_null" json:"updated_at"`
 	DeletedAt                         gorm.DeletedAt `gorm:"index" json:"deleted_at"`
@@ -71,8 +69,6 @@ func NewUserStudy(id uint64, namaResponden, emailResponden, hpResponden, namaIns
 		KelemahanLulusan:                  kelemahanLulusan,
 		SaranPeningkatanKompetensiLulusan: saranPeningkatanKompetensiLulusan,
 		SaranPerbaikanKurikulum:           saranPerbaikanKurikulum,
-		CreatedBy:                         createdBy,
-		UpdatedBy:                         updatedBy,
 		CreatedAt:                         time.Now(),
 		UpdatedAt:                         time.Now(),
 	}
@@ -108,8 +104,6 @@ func ConvertEntityToProto(r *UserStudy) *pb.UserStudy {
 		KelemahanLulusan:                  r.KelemahanLulusan,
 		SaranPeningkatanKompetensiLulusan: r.SaranPeningkatanKompetensiLulusan,
 		SaranPerbaikanKurikulum:           r.SaranPerbaikanKurikulum,
-		CreatedBy:                         r.CreatedBy,
-		UpdatedBy:                         r.UpdatedBy,
 		CreatedAt:                         timestamppb.New(r.CreatedAt),
 		UpdatedAt:                         timestamppb.New(r.UpdatedAt),
 	}
@@ -141,8 +135,6 @@ func ConvertProtoToEntity(r *pb.UserStudy) *UserStudy {
 		KelemahanLulusan:                  r.GetKelemahanLulusan(),
 		SaranPeningkatanKompetensiLulusan: r.GetSaranPeningkatanKompetensiLulusan(),
 		SaranPerbaikanKurikulum:           r.GetSaranPerbaikanKurikulum(),
-		CreatedBy:                         r.GetCreatedBy(),
-		UpdatedBy:                         r.GetUpdatedBy(),
 		CreatedAt:                         r.GetCreatedAt().AsTime(),
 		UpdatedAt:                         r.GetUpdatedAt().AsTime(),
 	}
