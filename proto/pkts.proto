@@ -101,7 +101,7 @@ message PKTS {
     google.protobuf.Timestamp deleted_at = 92;
 }
 
-message PKTSRekap {
+message PKTSRekapByProdi {
     string nim = 1;
     string nama = 2;
     uint32 f8 = 3;
@@ -115,6 +115,24 @@ message PKTSRekap {
     string penghasilan = 11;
     google.protobuf.Timestamp input_pkts = 12;
     google.protobuf.Timestamp update_pkts = 13;
+}
+
+message PKTSRekapAll {
+    string fakultas = 1;
+    string kode_prodi = 2;
+    string nama_prodi = 3;
+    string jenjang = 4;
+    uint32 alumni_count = 5;
+    uint32 pkts_count = 6;
+    double pkts_percentage = 7;
+    uint32 lanjut_studi_count = 8;
+    uint32 kerja_count = 9;
+    uint32 kerja_ump_pkts_count = 10;
+    double kerja_ump_pkts_percentage = 11;
+    uint32 wirausaha_count = 12;
+    uint32 wirausaha_ump_pkts_count = 13;
+    double wirausaha_ump_pkts_percentage = 14;
+    uint32 lainnya_count = 15;
 }
 
 message GetAllPKTSResponse {
@@ -158,7 +176,7 @@ message GetPKTSRekapByProdiRequest {
 message GetPKTSRekapByProdiResponse {
     uint32 code = 1;
     string message = 2;
-    repeated PKTSRekap data = 3;
+    repeated PKTSRekapByProdi data = 3;
 }
 
 message ExportPKTSReportRequest {
