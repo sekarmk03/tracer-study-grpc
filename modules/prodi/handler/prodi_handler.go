@@ -72,7 +72,7 @@ func (ph *ProdiHandler) GetProdiByKode(ctx context.Context, req *pb.GetProdiByKo
 }
 
 func (ph *ProdiHandler) CreateProdi(ctx context.Context, req *pb.Prodi) (*pb.GetProdiResponse, error) {
-	prodi, err := ph.prodiSvc.Create(ctx, req.GetKode(), req.GetKodeDikti(), req.GetKodeFakultas(), req.GetKodeIntegrasi(), req.GetNama(), req.GetJenjang())
+	prodi, err := ph.prodiSvc.Create(ctx, req.GetKode(), req.GetKodeDikti(), req.GetKodeFakultas(), req.GetKodeIntegrasi(), req.GetNama(), req.GetJenjang(), req.GetNamaFakultas(), req.GetAkronimFakultas())
 
 	if err != nil {
 		parseError := errors.ParseError(err)
@@ -91,11 +91,13 @@ func (ph *ProdiHandler) CreateProdi(ctx context.Context, req *pb.Prodi) (*pb.Get
 
 func (ph *ProdiHandler) UpdateProdi(ctx context.Context, req *pb.Prodi) (*pb.GetProdiResponse, error) {
 	prodiDataUpdate := &entity.Prodi{
-		KodeDikti:     req.GetKodeDikti(),
-		KodeIntegrasi: req.GetKodeIntegrasi(),
-		Nama:          req.GetNama(),
-		Jenjang:       req.GetJenjang(),
-		KodeFakultas:  req.GetKodeFakultas(),
+		KodeDikti:       req.GetKodeDikti(),
+		KodeIntegrasi:   req.GetKodeIntegrasi(),
+		Nama:            req.GetNama(),
+		Jenjang:         req.GetJenjang(),
+		KodeFakultas:    req.GetKodeFakultas(),
+		NamaFakultas:    req.GetNamaFakultas(),
+		AkronimFakultas: req.GetAkronimFakultas(),
 	}
 
 	prodi, err := ph.prodiSvc.Update(ctx, req.GetKode(), prodiDataUpdate)

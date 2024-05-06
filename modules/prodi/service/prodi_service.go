@@ -18,7 +18,7 @@ type ProdiService struct {
 type ProdiServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.Prodi, error)
 	FindProdiByKode(ctx context.Context, kode string) (*entity.Prodi, error)
-	Create(ctx context.Context, kode, kodeDikti, kodeFakultas, kodeIntegrasi, nama, jenjang string) (*entity.Prodi, error)
+	Create(ctx context.Context, kode, kodeDikti, kodeFakultas, kodeIntegrasi, nama, jenjang, namaFakultas, akronimFakultas string) (*entity.Prodi, error)
 	Update(ctx context.Context, kode string, fields *entity.Prodi) (*entity.Prodi, error)
 	Delete(ctx context.Context, kode string) error
 }
@@ -51,14 +51,16 @@ func (svc *ProdiService) FindProdiByKode(ctx context.Context, kode string) (*ent
 	return res, nil
 }
 
-func (svc *ProdiService) Create(ctx context.Context, kode, kodeDikti, kodeFakultas, kodeIntegrasi, nama, jenjang string) (*entity.Prodi, error) {
+func (svc *ProdiService) Create(ctx context.Context, kode, kodeDikti, kodeFakultas, kodeIntegrasi, nama, jenjang, namaFakultas, akronimFakultas string) (*entity.Prodi, error) {
 	prodi := &entity.Prodi{
-		Kode:          kode,
-		KodeDikti:     kodeDikti,
-		KodeIntegrasi: kodeIntegrasi,
-		Nama:          nama,
-		Jenjang:       jenjang,
-		KodeFakultas:  kodeFakultas,
+		Kode:            kode,
+		KodeDikti:       kodeDikti,
+		KodeIntegrasi:   kodeIntegrasi,
+		Nama:            nama,
+		Jenjang:         jenjang,
+		KodeFakultas:    kodeFakultas,
+		NamaFakultas:    namaFakultas,
+		AkronimFakultas: akronimFakultas,
 	}
 
 	res, err := svc.prodiRepository.Create(ctx, prodi)
@@ -86,6 +88,8 @@ func (svc *ProdiService) Update(ctx context.Context, kode string, fields *entity
 	utils.AddItemToMap(updatedMap, "nama", fields.Nama)
 	utils.AddItemToMap(updatedMap, "jenjang", fields.Jenjang)
 	utils.AddItemToMap(updatedMap, "kode_fakultas", fields.KodeFakultas)
+	utils.AddItemToMap(updatedMap, "nama_fakultas", fields.NamaFakultas)
+	utils.AddItemToMap(updatedMap, "akronim_fakultas", fields.AkronimFakultas)
 
 	res, err := svc.prodiRepository.Update(ctx, prodi, updatedMap)
 	if err != nil {

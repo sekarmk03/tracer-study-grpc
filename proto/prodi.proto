@@ -14,9 +14,11 @@ message Prodi {
     string nama = 5;
     string jenjang = 6;
     string kode_fakultas = 7;
-    google.protobuf.Timestamp created_at = 8;
-    google.protobuf.Timestamp updated_at = 9;
-    google.protobuf.Timestamp deleted_at = 10;
+    string nama_fakultas = 8;
+    string akronim_fakultas = 9;
+    google.protobuf.Timestamp created_at = 10;
+    google.protobuf.Timestamp updated_at = 11;
+    google.protobuf.Timestamp deleted_at = 12;
 }
 
 message GetAllProdiResponse {
