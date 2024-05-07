@@ -129,22 +129,22 @@ func (p *PKTSRepository) FindByAtasan(ctx context.Context, namaA, hpA, emailA st
 
 func (p *PKTSRepository) FindAllReport(ctx context.Context, tahunSidang string) ([]*entity.PKTSReport, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "PKTSRepository - FindAll")
-    defer span.End()
+	defer span.End()
 
-    var pkts []*entity.PKTSReport
-    query := `
+	var pkts []*entity.PKTSReport
+	query := `
         SELECT pk.*, r.nama, r.jenis_kelamin, r.hp, r.email, r.tahun_sidang, r.nik, r.npwp, pk.kode_prodi, p.nama AS nama_prodi, p.kode_dikti, p.jenjang
         FROM pkts AS pk
         JOIN responden AS r ON pk.nim = r.nim
         JOIN ref_prodi AS p ON pk.kode_prodi = p.kode
 		WHERE pk.tahun_sidang = ?;
     `
-    if err := p.db.Debug().WithContext(ctxSpan).Raw(query, tahunSidang).Scan(&pkts).Error; err != nil {
-        log.Println("ERROR: [PKTSRepository - FindAll] Internal server error:", err)
-        return nil, status.Errorf(codes.Internal, "%v", err)
-    }
+	if err := p.db.Debug().WithContext(ctxSpan).Raw(query, tahunSidang).Scan(&pkts).Error; err != nil {
+		log.Println("ERROR: [PKTSRepository - FindAll] Internal server error:", err)
+		return nil, status.Errorf(codes.Internal, "%v", err)
+	}
 
-    return pkts, nil
+	return pkts, nil
 }
 
 func (p *PKTSRepository) FindPKTSRekap(ctx context.Context, kodeprodi string) ([]*entity.PKTSRekap, error) {
@@ -166,18 +166,18 @@ func (p *PKTSRepository) FindPKTSRekap(ctx context.Context, kodeprodi string) ([
 	}
 
 	codeToStatus := map[int]string{
-        1: "Bekerja",
-        2: "Belum Memungkinkan Bekerja",
-        3: "Wiraswasta",
-        4: "Melanjutkan Pendidikan",
-        5: "Tidak Kerja tetapi sedang mencari kerja",
-    }
+		1: "Bekerja",
+		2: "Belum Memungkinkan Bekerja",
+		3: "Wiraswasta",
+		4: "Melanjutkan Pendidikan",
+		5: "Tidak Kerja tetapi sedang mencari kerja",
+	}
 
 	for _, p := range pkts {
 		status, ok := codeToStatus[int(p.F8)]
 		if !ok {
 			status = ""
-        }
+		}
 		p.Status = status
 	}
 

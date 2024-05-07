@@ -1,27 +1,25 @@
 package main
 
 import (
-	// "context"
 	"fmt"
 	"tracer-study-grpc/common/config"
 
-	// errUtils "tracer-study-grpc/common/errors"
 	gormConn "tracer-study-grpc/common/gorm"
 	commonJwt "tracer-study-grpc/common/jwt"
 	"tracer-study-grpc/common/mysql"
 	"tracer-study-grpc/server"
 
 	authModule "tracer-study-grpc/modules/auth"
+	fakultasModule "tracer-study-grpc/modules/fakultas"
 	kabkotaModule "tracer-study-grpc/modules/kabkota"
 	mhsbiodataModule "tracer-study-grpc/modules/mhsbiodata"
 	pktsModule "tracer-study-grpc/modules/pkts"
+	postModule "tracer-study-grpc/modules/post"
 	prodiModule "tracer-study-grpc/modules/prodi"
 	provinsiModule "tracer-study-grpc/modules/provinsi"
 	respondenModule "tracer-study-grpc/modules/responden"
 	userstudyModule "tracer-study-grpc/modules/userstudy"
-	fakultasModule "tracer-study-grpc/modules/fakultas"
 
-	// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
 )
@@ -31,6 +29,9 @@ func main() {
 	checkError(cerr)
 
 	splash(cfg)
+
+	// http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("./public/uploads"))))
+	// log.Fatal(http.ListenAndServe(":8080", nil))
 
 	dsn, derr := mysql.NewPool(&cfg.MySQL)
 	checkError(derr)
@@ -61,6 +62,7 @@ func registerGrpcHandlers(server *grpc.Server, cfg config.Config, db *gorm.DB, j
 	authModule.InitGrpc(server, cfg, db, jwtManager, grpcConn)
 	userstudyModule.InitGrpc(server, cfg, db, grpcConn)
 	fakultasModule.InitGrpc(server, cfg, db, grpcConn)
+	postModule.InitGrpc(server, cfg, db, grpcConn)
 }
 
 // func createRestServer(port string) *server.Rest {

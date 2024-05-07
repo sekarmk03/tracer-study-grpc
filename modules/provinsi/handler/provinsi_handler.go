@@ -89,8 +89,8 @@ func (ph *ProvinsiHandler) CreateProvinsi(ctx context.Context, req *pb.Provinsi)
 
 func (ph *ProvinsiHandler) UpdateProvinsi(ctx context.Context, req *pb.Provinsi) (*pb.GetProvinsiResponse, error) {
 	provinsiDataUpdate := &entity.Provinsi{
-		Nama:  req.GetNama(),
-		Ump: req.GetUmp(),
+		Nama: req.GetNama(),
+		Ump:  req.GetUmp(),
 	}
 
 	provinsi, err := ph.provinsiSvc.Update(ctx, req.GetIdWil(), provinsiDataUpdate)

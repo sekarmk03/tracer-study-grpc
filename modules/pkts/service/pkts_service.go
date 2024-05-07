@@ -62,11 +62,11 @@ func (svc *PKTSService) FindByNim(ctx context.Context, nim string) (*entity.PKTS
 
 func (svc *PKTSService) Create(ctx context.Context, nim, kodeProdi, tahunSidang string) (*entity.PKTS, error) {
 	reqEntity := &entity.PKTS{
-		Nim:                 nim,
-		KodeProdi:           kodeProdi,
-		TahunSidang:           tahunSidang,
-		CreatedAt:           time.Now(),
-		UpdatedAt:           time.Now(),
+		Nim:         nim,
+		KodeProdi:   kodeProdi,
+		TahunSidang: tahunSidang,
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}
 
 	res, err := svc.pktsRepository.Create(ctx, reqEntity)
