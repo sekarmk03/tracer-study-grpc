@@ -38,7 +38,7 @@ type PKTSServiceClient interface {
 	CreatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	UpdatePKTS(ctx context.Context, in *PKTS, opts ...grpc.CallOption) (*GetPKTSResponse, error)
 	GetNimByDataAtasan(ctx context.Context, in *GetNimByDataAtasanRequest, opts ...grpc.CallOption) (*GetNimByDataAtasanResponse, error)
-	ExportPKTSReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExportPKTSReportResponse, error)
+	ExportPKTSReport(ctx context.Context, in *ExportPKTSReportRequest, opts ...grpc.CallOption) (*ExportPKTSReportResponse, error)
 	GetPKTSRekapByProdi(ctx context.Context, in *GetPKTSRekapByProdiRequest, opts ...grpc.CallOption) (*GetPKTSRekapByProdiResponse, error)
 }
 
@@ -95,7 +95,7 @@ func (c *pKTSServiceClient) GetNimByDataAtasan(ctx context.Context, in *GetNimBy
 	return out, nil
 }
 
-func (c *pKTSServiceClient) ExportPKTSReport(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExportPKTSReportResponse, error) {
+func (c *pKTSServiceClient) ExportPKTSReport(ctx context.Context, in *ExportPKTSReportRequest, opts ...grpc.CallOption) (*ExportPKTSReportResponse, error) {
 	out := new(ExportPKTSReportResponse)
 	err := c.cc.Invoke(ctx, PKTSService_ExportPKTSReport_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -122,7 +122,7 @@ type PKTSServiceServer interface {
 	CreatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	UpdatePKTS(context.Context, *PKTS) (*GetPKTSResponse, error)
 	GetNimByDataAtasan(context.Context, *GetNimByDataAtasanRequest) (*GetNimByDataAtasanResponse, error)
-	ExportPKTSReport(context.Context, *emptypb.Empty) (*ExportPKTSReportResponse, error)
+	ExportPKTSReport(context.Context, *ExportPKTSReportRequest) (*ExportPKTSReportResponse, error)
 	GetPKTSRekapByProdi(context.Context, *GetPKTSRekapByProdiRequest) (*GetPKTSRekapByProdiResponse, error)
 	mustEmbedUnimplementedPKTSServiceServer()
 }
@@ -146,7 +146,7 @@ func (UnimplementedPKTSServiceServer) UpdatePKTS(context.Context, *PKTS) (*GetPK
 func (UnimplementedPKTSServiceServer) GetNimByDataAtasan(context.Context, *GetNimByDataAtasanRequest) (*GetNimByDataAtasanResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNimByDataAtasan not implemented")
 }
-func (UnimplementedPKTSServiceServer) ExportPKTSReport(context.Context, *emptypb.Empty) (*ExportPKTSReportResponse, error) {
+func (UnimplementedPKTSServiceServer) ExportPKTSReport(context.Context, *ExportPKTSReportRequest) (*ExportPKTSReportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExportPKTSReport not implemented")
 }
 func (UnimplementedPKTSServiceServer) GetPKTSRekapByProdi(context.Context, *GetPKTSRekapByProdiRequest) (*GetPKTSRekapByProdiResponse, error) {
@@ -256,7 +256,7 @@ func _PKTSService_GetNimByDataAtasan_Handler(srv interface{}, ctx context.Contex
 }
 
 func _PKTSService_ExportPKTSReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(ExportPKTSReportRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -268,7 +268,7 @@ func _PKTSService_ExportPKTSReport_Handler(srv interface{}, ctx context.Context,
 		FullMethod: PKTSService_ExportPKTSReport_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PKTSServiceServer).ExportPKTSReport(ctx, req.(*emptypb.Empty))
+		return srv.(PKTSServiceServer).ExportPKTSReport(ctx, req.(*ExportPKTSReportRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

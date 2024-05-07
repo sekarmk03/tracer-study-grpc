@@ -14,7 +14,7 @@ const (
 )
 
 type UserStudy struct {
-	ID                                uint32         `json:"id"`
+	Id                                uint64         `json:"id"`
 	NamaResponden                     string         `json:"nama_responden"`
 	EmailResponden                    string         `json:"email_responden"`
 	HpResponden                       string         `json:"hp_responden"`
@@ -38,16 +38,14 @@ type UserStudy struct {
 	KelemahanLulusan                  string         `json:"kelemahan_lulusan"`
 	SaranPeningkatanKompetensiLulusan string         `json:"saran_peningkatan_kompetensi_lulusan"`
 	SaranPerbaikanKurikulum           string         `json:"saran_peningkatan_kurikulum"`
-	CreatedBy                         string         `json:"created_by"`
-	UpdatedBy                         string         `json:"updated_by"`
 	CreatedAt                         time.Time      `gorm:"type:timestamptz;not_null" json:"created_at"`
 	UpdatedAt                         time.Time      `gorm:"type:timestamptz;not_null" json:"updated_at"`
 	DeletedAt                         gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
-func NewUserStudy(id uint32, namaResponden, emailResponden, hpResponden, namaInstansi, jabatan, alamatInstansi, nimLulusan, namaLulusan, prodiLulusan, tahunLulusan, lamaMengenalLulusan, etika, keahlianBidIlmu, bahasaInggris, penggunaanTi, komunikasi, kerjasamaTim, pengembanganDiri, kesiapanTerjunMasy, keunggulanLulusan, kelemahanLulusan, saranPeningkatanKompetensiLulusan, saranPerbaikanKurikulum, createdBy, updatedBy string) *UserStudy {
+func NewUserStudy(id uint64, namaResponden, emailResponden, hpResponden, namaInstansi, jabatan, alamatInstansi, nimLulusan, namaLulusan, prodiLulusan, tahunLulusan, lamaMengenalLulusan, etika, keahlianBidIlmu, bahasaInggris, penggunaanTi, komunikasi, kerjasamaTim, pengembanganDiri, kesiapanTerjunMasy, keunggulanLulusan, kelemahanLulusan, saranPeningkatanKompetensiLulusan, saranPerbaikanKurikulum, createdBy, updatedBy string) *UserStudy {
 	return &UserStudy{
-		ID:                                id,
+		Id:                                id,
 		NamaResponden:                     namaResponden,
 		EmailResponden:                    emailResponden,
 		HpResponden:                       hpResponden,
@@ -71,8 +69,6 @@ func NewUserStudy(id uint32, namaResponden, emailResponden, hpResponden, namaIns
 		KelemahanLulusan:                  kelemahanLulusan,
 		SaranPeningkatanKompetensiLulusan: saranPeningkatanKompetensiLulusan,
 		SaranPerbaikanKurikulum:           saranPerbaikanKurikulum,
-		CreatedBy:                         createdBy,
-		UpdatedBy:                         updatedBy,
 		CreatedAt:                         time.Now(),
 		UpdatedAt:                         time.Now(),
 	}
@@ -84,7 +80,7 @@ func (r *UserStudy) TableName() string {
 
 func ConvertEntityToProto(r *UserStudy) *pb.UserStudy {
 	return &pb.UserStudy{
-		Id:                                r.ID,
+		Id:                                r.Id,
 		NamaResponden:                     r.NamaResponden,
 		EmailResponden:                    r.EmailResponden,
 		HpResponden:                       r.HpResponden,
@@ -108,8 +104,6 @@ func ConvertEntityToProto(r *UserStudy) *pb.UserStudy {
 		KelemahanLulusan:                  r.KelemahanLulusan,
 		SaranPeningkatanKompetensiLulusan: r.SaranPeningkatanKompetensiLulusan,
 		SaranPerbaikanKurikulum:           r.SaranPerbaikanKurikulum,
-		CreatedBy:                         r.CreatedBy,
-		UpdatedBy:                         r.UpdatedBy,
 		CreatedAt:                         timestamppb.New(r.CreatedAt),
 		UpdatedAt:                         timestamppb.New(r.UpdatedAt),
 	}
@@ -117,7 +111,7 @@ func ConvertEntityToProto(r *UserStudy) *pb.UserStudy {
 
 func ConvertProtoToEntity(r *pb.UserStudy) *UserStudy {
 	return &UserStudy{
-		ID:                                r.GetId(),
+		Id:                                r.GetId(),
 		NamaResponden:                     r.GetNamaResponden(),
 		EmailResponden:                    r.GetEmailResponden(),
 		HpResponden:                       r.GetHpResponden(),
@@ -141,8 +135,6 @@ func ConvertProtoToEntity(r *pb.UserStudy) *UserStudy {
 		KelemahanLulusan:                  r.GetKelemahanLulusan(),
 		SaranPeningkatanKompetensiLulusan: r.GetSaranPeningkatanKompetensiLulusan(),
 		SaranPerbaikanKurikulum:           r.GetSaranPerbaikanKurikulum(),
-		CreatedBy:                         r.GetCreatedBy(),
-		UpdatedBy:                         r.GetUpdatedBy(),
 		CreatedAt:                         r.GetCreatedAt().AsTime(),
 		UpdatedAt:                         r.GetUpdatedAt().AsTime(),
 	}

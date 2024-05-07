@@ -2,11 +2,11 @@ todo
 - remove find by id check in update repository, modify service ✅
 - login user study responden ✅
 - authorization for all methods ✅
-- design new database (setelah semua selesai pake db yg sekarang)
+- design new database (setelah semua selesai pake db yg sekarang) ✅
 - role management table
-- refactor code based on new database
-- copy-ing data from old database to new database
-- data pipeline service
+- refactor code based on new database, make new branch
+- copy-ing data from old database to new database ✅
+- data pipeline service ✅
 - modify login cek alumni (nunggu api dri pa aceng) (0)
 - complete crud method all modules (1) kabkota✅ provinsi✅ prodi✅
 - add grpc clients (2)
@@ -55,6 +55,7 @@ services
   - responden✅
   - pkts✅
   - userstudy✅
+  - dashboard summary
 - notification
 - post article
-- data pipeline
+- data pipeline ✅

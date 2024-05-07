@@ -8,13 +8,14 @@ import "google/protobuf/empty.proto";
 import "provinsi.proto";
 
 message KabKota {
-    string id_wil = 1;
-    string nama = 2;
-    string id_induk_wilayah = 3;
-    Provinsi provinsi = 4;
-    google.protobuf.Timestamp created_at = 5;
-    google.protobuf.Timestamp updated_at = 6;
-    google.protobuf.Timestamp deleted_at = 7;
+    uint32 id = 1;
+    string id_wil = 2;
+    string nama = 3;
+    string id_induk_wil = 4;
+    Provinsi provinsi = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp updated_at = 7;
+    google.protobuf.Timestamp deleted_at = 8;
 }
 
 message GetAllKabKotaResponse {

@@ -7,19 +7,19 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 message PKTS {
-    uint32 id = 1;
+    uint64 id = 1;
     string nim = 2;
-    string kodeprodi = 3;
-    string thn_sidang = 4;
+    string kode_prodi = 3;
+    string tahun_sidang = 4;
     uint32 f8 = 5;
-    uint32 f5_04 = 6;
-    string f5_02 = 7;
-    string f5_06 = 8;
-    string f5_05 = 9;
+    uint32 f504 = 6;
+    uint32 f502 = 7;
+    uint32 f506 = 8;
+    uint64 f505 = 9;
     string f5a1 = 10;
     string f5a2 = 11;
-    uint32 f11_01 = 12;
-    string f11_02 = 13;
+    uint32 f1101 = 12;
+    string f1102 = 13;
     string f5b = 14;
     uint32 f5c = 15;
     uint32 f5d = 16;
@@ -27,8 +27,8 @@ message PKTS {
     string f18b = 18;
     string f18c = 19;
     string f18d = 20;
-    uint32 f12_01 = 21;
-    string f12_02 = 22;
+    uint32 f1201 = 21;
+    string f1202 = 22;
     uint32 f14 = 23;
     uint32 f15 = 24;
     uint32 f1761 = 25;
@@ -53,55 +53,55 @@ message PKTS {
     uint32 f26 = 44;
     uint32 f27 = 45;
     uint32 f301 = 46;
-    string f302 = 47;
+    uint32 f302 = 47;
     uint32 f303 = 48;
-    string f4_01 = 49;
-    string f4_02 = 50;
-    string f4_03 = 51;
-    string f4_04 = 52;
-    string f4_05 = 53;
-    string f4_06 = 54;
-    string f4_07 = 55;
-    string f4_08 = 56;
-    string f4_09 = 57;
-    string f4_10 = 58;
-    string f4_11 = 59;
-    string f4_12 = 60;
-    string f4_13 = 61;
-    string f4_14 = 62;
-    string f4_15 = 63;
-    string f4_16 = 64;
+    uint32 f401 = 49;
+    uint32 f402 = 50;
+    uint32 f403 = 51;
+    uint32 f404 = 52;
+    uint32 f405 = 53;
+    uint32 f406 = 54;
+    uint32 f407 = 55;
+    uint32 f408 = 56;
+    uint32 f409 = 57;
+    uint32 f410 = 58;
+    uint32 f411 = 59;
+    uint32 f412 = 60;
+    uint32 f413 = 61;
+    uint32 f414 = 62;
+    uint32 f415 = 63;
+    string f416 = 64;
     uint32 f6 = 65;
     uint32 f7 = 66;
     uint32 f7a = 67;
-    uint32 f10_01 = 68;
-    string f10_02 = 69;
-    string f16_01 = 70;
-    string f16_02 = 71;
-    string f16_03 = 72;
-    string f16_04 = 73;
-    string f16_05 = 74;
-    string f16_06 = 75;
-    string f16_07 = 76;
-    string f16_08 = 77;
-    string f16_09 = 78;
-    string f16_10 = 79;
-    string f16_11 = 80;
-    string f16_12 = 81;
-    string f16_13 = 82;
-    string f16_14 = 83;
+    uint32 f1001 = 68;
+    string f1002 = 69;
+    uint32 f1601 = 70;
+    uint32 f1602 = 71;
+    uint32 f1603 = 72;
+    uint32 f1604 = 73;
+    uint32 f1605 = 74;
+    uint32 f1606 = 75;
+    uint32 f1607 = 76;
+    uint32 f1608 = 77;
+    uint32 f1609 = 78;
+    uint32 f1610 = 79;
+    uint32 f1611 = 80;
+    uint32 f1612 = 81;
+    uint32 f1613 = 82;
+    string f1614 = 83;
     string nama_atasan = 84;
     string hp_atasan = 85;
     string email_atasan = 86;
     string tinggal_selama_kuliah = 87;
     string code = 88;
-    string mail_sent = 89;
+    google.protobuf.Timestamp mail_sent = 89;
     google.protobuf.Timestamp created_at = 90;
     google.protobuf.Timestamp updated_at = 91;
     google.protobuf.Timestamp deleted_at = 92;
 }
 
-message PKTSRekap {
+message PKTSRekapByProdi {
     string nim = 1;
     string nama = 2;
     uint32 f8 = 3;
@@ -115,6 +115,24 @@ message PKTSRekap {
     string penghasilan = 11;
     google.protobuf.Timestamp input_pkts = 12;
     google.protobuf.Timestamp update_pkts = 13;
+}
+
+message PKTSRekapAll {
+    string fakultas = 1;
+    string kode_prodi = 2;
+    string nama_prodi = 3;
+    string jenjang = 4;
+    uint32 alumni_count = 5;
+    uint32 pkts_count = 6;
+    double pkts_percentage = 7;
+    uint32 lanjut_studi_count = 8;
+    uint32 kerja_count = 9;
+    uint32 kerja_ump_pkts_count = 10;
+    double kerja_ump_pkts_percentage = 11;
+    uint32 wirausaha_count = 12;
+    uint32 wirausaha_ump_pkts_count = 13;
+    double wirausaha_ump_pkts_percentage = 14;
+    uint32 lainnya_count = 15;
 }
 
 message GetAllPKTSResponse {
@@ -158,7 +176,11 @@ message GetPKTSRekapByProdiRequest {
 message GetPKTSRekapByProdiResponse {
     uint32 code = 1;
     string message = 2;
-    repeated PKTSRekap data = 3;
+    repeated PKTSRekapByProdi data = 3;
+}
+
+message ExportPKTSReportRequest {
+    string tahun_sidang = 1;
 }
 
 service PKTSService {
@@ -167,6 +189,6 @@ service PKTSService {
     rpc CreatePKTS(PKTS) returns (GetPKTSResponse);
     rpc UpdatePKTS(PKTS) returns (GetPKTSResponse);
     rpc GetNimByDataAtasan(GetNimByDataAtasanRequest) returns (GetNimByDataAtasanResponse);
-    rpc ExportPKTSReport(google.protobuf.Empty) returns (ExportPKTSReportResponse);
+    rpc ExportPKTSReport(ExportPKTSReportRequest) returns (ExportPKTSReportResponse);
     rpc GetPKTSRekapByProdi(GetPKTSRekapByProdiRequest) returns (GetPKTSRekapByProdiResponse);
 }

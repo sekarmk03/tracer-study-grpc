@@ -23,8 +23,8 @@ type PKTSRekap struct {
 	UpdatePkts  time.Time `json:"update_pkts"`
 }
 
-func ConvertEntityPKTSRekapToProto(p *PKTSRekap) *pb.PKTSRekap {
-	return &pb.PKTSRekap{
+func ConvertEntityPKTSRekapToProto(p *PKTSRekap) *pb.PKTSRekapByProdi {
+	return &pb.PKTSRekapByProdi{
 		Nim:         p.Nim,
 		Nama:        p.Nama,
 		F8:          p.F8,

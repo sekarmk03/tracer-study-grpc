@@ -19,7 +19,7 @@ type KabKotaService struct {
 type KabKotaServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.KabKota, error)
 	FindByIdWil(ctx context.Context, idWil string) (*entity.KabKota, error)
-	Create(ctx context.Context, idWil, nama, idIndukWilayah string) (*entity.KabKota, error)
+	Create(ctx context.Context, idWil, nama, idIndukWil string) (*entity.KabKota, error)
 	Update(ctx context.Context, idWil string, fields *entity.KabKota) (*entity.KabKota, error)
 	Delete(ctx context.Context, idWil string) error
 }
@@ -52,13 +52,13 @@ func (svc *KabKotaService) FindByIdWil(ctx context.Context, idWil string) (*enti
 	return res, nil
 }
 
-func (svc *KabKotaService) Create(ctx context.Context, idWil, nama, idIndukWilayah string) (*entity.KabKota, error) {
+func (svc *KabKotaService) Create(ctx context.Context, idWil, nama, idIndukWil string) (*entity.KabKota, error) {
 	kabkota := &entity.KabKota{
-		IdWil:          idWil,
-		Nama:           nama,
-		IdIndukWilayah: idIndukWilayah,
-		CreatedAt:      time.Now(),
-		UpdatedAt:      time.Now(),
+		IdWil:      idWil,
+		Nama:       nama,
+		IdIndukWil: idIndukWil,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
 	}
 
 	res, err := svc.kabkotaRepository.Create(ctx, kabkota)
@@ -81,7 +81,7 @@ func (svc *KabKotaService) Update(ctx context.Context, idWil string, fields *ent
 	updateMap := make(map[string]interface{})
 
 	utils.AddItemToMap(updateMap, "nama", fields.Nama)
-	utils.AddItemToMap(updateMap, "id_induk_wilayah", fields.IdIndukWilayah)
+	utils.AddItemToMap(updateMap, "id_induk_wil", fields.IdIndukWil)
 
 	res, err := svc.kabkotaRepository.Update(ctx, kabkota, updateMap)
 	if err != nil {

@@ -7,12 +7,14 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 message Provinsi {
-    string id_wil = 1;
-    string nama = 2;
-    string ump12 = 3;
-    google.protobuf.Timestamp created_at = 4;
-    google.protobuf.Timestamp updated_at = 5;
-    google.protobuf.Timestamp deleted_at = 6;
+    uint32 id = 1;
+    string id_wil = 2;
+    string nama = 3;
+    uint64 ump = 4;
+    uint64 ump_pkts = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp updated_at = 7;
+    google.protobuf.Timestamp deleted_at = 8;
 }
 
 message GetAllProvinsiResponse {

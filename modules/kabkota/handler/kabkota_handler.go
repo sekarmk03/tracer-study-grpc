@@ -71,7 +71,7 @@ func (kh *KabKotaHandler) GetKabKotaByIdWil(ctx context.Context, req *pb.GetKabK
 }
 
 func (kh *KabKotaHandler) CreateKabKota(ctx context.Context, req *pb.KabKota) (*pb.GetKabKotaResponse, error) {
-	kabkota, err := kh.kabkotaSvc.Create(ctx, req.GetIdWil(), req.GetNama(), req.GetIdIndukWilayah())
+	kabkota, err := kh.kabkotaSvc.Create(ctx, req.GetIdWil(), req.GetNama(), req.GetIdIndukWil())
 
 	if err != nil {
 		parseError := errors.ParseError(err)
@@ -90,8 +90,8 @@ func (kh *KabKotaHandler) CreateKabKota(ctx context.Context, req *pb.KabKota) (*
 
 func (kh *KabKotaHandler) UpdateKabKota(ctx context.Context, req *pb.KabKota) (*pb.GetKabKotaResponse, error) {
 	kabkotaDataUpdate := &entity.KabKota{
-		Nama:           req.GetNama(),
-		IdIndukWilayah: req.GetIdIndukWilayah(),
+		Nama:       req.GetNama(),
+		IdIndukWil: req.GetIdIndukWil(),
 	}
 
 	kabkota, err := kh.kabkotaSvc.Update(ctx, req.GetIdWil(), kabkotaDataUpdate)

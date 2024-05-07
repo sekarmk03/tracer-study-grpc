@@ -7,36 +7,24 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 message Prodi {
-    string kode = 1;
-    string kode_dikti = 2;
-    string kode_fak = 3;
+    uint32 id = 1;
+    string kode = 2;
+    string kode_dikti = 3;
     string kode_integrasi = 4;
     string nama = 5;
     string jenjang = 6;
-    string nama_fak = 7;
-    google.protobuf.Timestamp created_at = 8;
-    google.protobuf.Timestamp updated_at = 9;
-    google.protobuf.Timestamp deleted_at = 10;
+    string kode_fakultas = 7;
+    string nama_fakultas = 8;
+    string akronim_fakultas = 9;
+    google.protobuf.Timestamp created_at = 10;
+    google.protobuf.Timestamp updated_at = 11;
+    google.protobuf.Timestamp deleted_at = 12;
 }
 
 message GetAllProdiResponse {
     uint32 code = 1;
     string message = 2;
     repeated Prodi data = 3;
-}
-
-message Fakultas {
-    string kode_fak = 1;
-    string nama_fak = 2;
-    google.protobuf.Timestamp created_at = 4;
-    google.protobuf.Timestamp updated_at = 5;
-    google.protobuf.Timestamp deleted_at = 6;
-}
-
-message GetAllFakultasResponse {
-    uint32 code = 1;
-    string message = 2;
-    repeated Fakultas data = 3;
 }
 
 message GetProdiByKodeRequest {
@@ -56,7 +44,6 @@ message DeleteProdiResponse {
 
 service ProdiService {
     rpc GetAllProdi(google.protobuf.Empty) returns (GetAllProdiResponse) {};
-    rpc GetAllFakultas(google.protobuf.Empty) returns (GetAllFakultasResponse) {};
     rpc GetProdiByKode(GetProdiByKodeRequest) returns (GetProdiResponse) {};
     rpc CreateProdi(Prodi) returns (GetProdiResponse) {};
     rpc UpdateProdi(Prodi) returns (GetProdiResponse) {};

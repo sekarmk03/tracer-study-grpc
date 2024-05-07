@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 	"tracer-study-grpc/modules/prodi/entity"
+	fentity "tracer-study-grpc/modules/fakultas/entity"
 
 	"go.opencensus.io/trace"
 	"google.golang.org/grpc/codes"
@@ -25,7 +26,7 @@ func NewProdiRepository(db *gorm.DB) *ProdiRepository {
 
 type ProdiRepositoryUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.Prodi, error)
-	FindAllFakultas(ctx context.Context, req any) ([]*entity.Fakultas, error)
+	FindAllFakultas(ctx context.Context, req any) ([]*fentity.Fakultas, error)
 	FindProdiByKode(ctx context.Context, kodeProdi string) (*entity.Prodi, error)
 	Create(ctx context.Context, req *entity.Prodi) (*entity.Prodi, error)
 	Update(ctx context.Context, prodi *entity.Prodi, updatedFields map[string]interface{}) (*entity.Prodi, error)
@@ -45,12 +46,12 @@ func (p *ProdiRepository) FindAll(ctx context.Context, req any) ([]*entity.Prodi
 	return prodi, nil
 }
 
-func (p *ProdiRepository) FindAllFakultas(ctx context.Context, req any) ([]*entity.Fakultas, error) {
+func(p *ProdiRepository) FindAllFakultas(ctx context.Context, req any) ([]*fentity.Fakultas, error) {
 	ctxSpan, span := trace.StartSpan(ctx, "ProdiRepository - FindAllFakultas")
 	defer span.End()
 
-	var fakultas []*entity.Fakultas
-	if err := p.db.Debug().WithContext(ctxSpan).Table(entity.ProdiTableName).Select("DISTINCT kode_fak, nama_fak, created_at, updated_at, deleted_at").Find(&fakultas).Error; err != nil {
+	var fakultas []*fentity.Fakultas
+	if err := p.db.Debug().WithContext(ctxSpan).Select("DISTINCT kode_fakultas AS kode, nama_fakultas AS nama, akronim_fakultas AS akronim").Find(&fakultas).Error; err != nil {
 		log.Println("ERROR: [ProdiRepository - FindAllFakultas] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
@@ -103,21 +104,6 @@ func (p *ProdiRepository) Update(ctx context.Context, prodi *entity.Prodi, updat
 		}
 		log.Println("ERROR: [ProdiRepository - Update] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
-	}
-
-	oldNamaFak := prodi.NamaFak
-	newNamaFak := updatedFields["nama_fak"]
-	if newNamaFak != nil {
-		if newNamaFak != "" {
-			if err := p.db.Debug().Model(&entity.Prodi{}).Where("nama_fak = ?", oldNamaFak).Update("nama_fak", newNamaFak).Error; err != nil {
-				if errors.Is(err, gorm.ErrInvalidValue) {
-					log.Println("ERROR: [ProdiRepository - Update] Invalid value for nama_fak:", err)
-					return nil, status.Errorf(codes.InvalidArgument, "invalid value for nama_fak: %v", err)
-				}
-				log.Println("ERROR: [ProdiRepository - Update] Failed to update nama_fak:", err)
-				return nil, status.Errorf(codes.Internal, "failed to update nama_fak: %v", err)
-			}
-		}
 	}
 
 	return prodi, nil

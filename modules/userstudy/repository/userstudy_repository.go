@@ -70,7 +70,6 @@ func (r *UserStudyRepository) Update(ctx context.Context, userStudy *entity.User
 	defer span.End()
 
 	updatedFields["updated_at"] = time.Now()
-	updatedFields["updated_by"] = "user"
 	if err := r.db.Debug().WithContext(ctxSpan).Model(&userStudy).Updates(updatedFields).Error; err != nil {
 		log.Println("ERROR: [UserStudyRepository - Update] Internal server error:", err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %v", err)

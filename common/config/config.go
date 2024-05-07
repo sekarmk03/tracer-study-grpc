@@ -14,8 +14,9 @@ type Config struct {
 	MySQL       MySQL
 	// Redis       Redis
 	// JWTConfig   JWTConfig
-	JWT      JWTConfig
-	SIAK_API SIAK_API
+	JWT         JWTConfig
+	SIAK_API    SIAK_API
+	StoragePath string `env:"STORAGE_PATH,default=./uploads/"`
 }
 
 type Port struct {

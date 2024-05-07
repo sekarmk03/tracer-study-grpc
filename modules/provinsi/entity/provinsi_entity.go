@@ -13,19 +13,23 @@ const (
 )
 
 type Provinsi struct {
+	Id        uint32         `json:"id"`
 	IdWil     string         `json:"id_wil"`
 	Nama      string         `json:"nama"`
-	UMP12     string         `json:"ump12"`
+	Ump       uint64         `json:"ump"`
+	UmpPkts   uint64         `json:"ump_pkts"`
 	CreatedAt time.Time      `gorm:"type:timestamptz;not_null" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"type:timestamptz;not_null" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
-func NewProvinsi(idWil, nama, ump12 string) *Provinsi {
+func NewProvinsi(id uint32, idWil, nama string, ump, umpPkts uint64) *Provinsi {
 	return &Provinsi{
+		Id:        id,
 		IdWil:     idWil,
 		Nama:      nama,
-		UMP12:     ump12,
+		Ump:       ump,
+		UmpPkts:   umpPkts,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -37,9 +41,11 @@ func (p *Provinsi) TableName() string {
 
 func ConvertEntityToProto(p *Provinsi) *pb.Provinsi {
 	return &pb.Provinsi{
+		Id:        p.Id,
 		IdWil:     p.IdWil,
 		Nama:      p.Nama,
-		Ump12:     p.UMP12,
+		Ump:       p.Ump,
+		UmpPkts:   p.UmpPkts,
 		CreatedAt: timestamppb.New(p.CreatedAt),
 		UpdatedAt: timestamppb.New(p.UpdatedAt),
 	}

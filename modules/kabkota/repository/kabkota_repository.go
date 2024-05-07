@@ -44,7 +44,7 @@ func (k *KabKotaRepository) FindAll(ctx context.Context, req any) ([]*kkentity.K
 
 	for _, kk := range kabkota {
 		var provinsi pentity.Provinsi
-		if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", kk.IdIndukWilayah).First(&provinsi).Error; err != nil {
+		if err := k.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", kk.IdIndukWil).First(&provinsi).Error; err != nil {
 			log.Println("ERROR: [KabKotaRepository - FindAll] Failed to fetch Provinsi data:", err)
 			return nil, status.Errorf(codes.Internal, "internal server error: %v", err)
 		}
