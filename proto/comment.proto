@@ -28,16 +28,26 @@ message GetCommentByIdRequest {
     uint64 id = 1;
 }
 
-message GetCommentByIdResponse {
+message GetCommentsByPostIdRequest {
+    uint64 postId = 1;
+}
+
+message GetCommentResponse {
     uint32 code = 1;
     string message = 2;
     Comment data = 3;
 }
 
+message DeleteCommentResponse {
+    uint32 code = 1;
+    string message = 2;
+}
+
 service CommentService {
     rpc GetAllComments(google.protobuf.Empty) returns (GetAllCommentsResponse) {};
-    rpc GetCommentById(GetCommentByIdRequest) returns (GetCommentByIdResponse) {};
-    rpc CreateComment(Comment) returns (GetCommentByIdResponse) {};
-    rpc UpdateComment(Comment) returns (GetCommentByIdResponse) {};
-    rpc DeleteComment(GetCommentByIdRequest) returns (GetCommentByIdResponse) {};
+    rpc GetCommentsByPostId(GetCommentsByPostIdRequest) returns (GetAllCommentsResponse) {};
+    rpc GetCommentById(GetCommentByIdRequest) returns (GetCommentResponse) {};
+    rpc CreateComment(Comment) returns (GetCommentResponse) {};
+    rpc ReplyComment(Comment) returns (GetCommentResponse) {};
+    rpc DeleteComment(GetCommentByIdRequest) returns (DeleteCommentResponse) {};
 }
