@@ -33,7 +33,7 @@ func NewAuthHandler(config config.Config, mhsService mhsSvc.MhsBiodataServiceUse
 	}
 }
 
-func (ah *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+func (ah *AuthHandler) LoginAlumni(ctx context.Context, req *pb.LoginAlumniRequest) (*pb.LoginResponse, error) {
 	mhs, err := ah.mhsSvc.FetchMhsBiodataByNimFromSiakApi(req.GetNim())
 	if err != nil {
 		if mhs == nil {

@@ -4,7 +4,7 @@ todo
 - authorization for all methods ✅
 - design new database (setelah semua selesai pake db yg sekarang) ✅
 - role management table
-- refactor code based on new database, make new branch
+- refactor code based on new database, make new branch ✅
 - copy-ing data from old database to new database ✅
 - data pipeline service ✅
 - modify login cek alumni (nunggu api dri pa aceng) (0)
@@ -14,9 +14,9 @@ todo
 - save token jwt in redis (4)
 - send email userstudy service (5)
 - implement sso service (6)
-- separate each module
+- separate each module ✅
 - simulate microservices with docker
-- post article service (7)
+- post article service (7) ✅
 
 - data PKTS dan report dibuat per tahun
 - data UMP per kabupaten dan besaran 1,2xUMP
@@ -57,5 +57,5 @@ services
   - userstudy✅
   - dashboard summary
 - notification
-- post article
+- post article ✅
 - data pipeline ✅

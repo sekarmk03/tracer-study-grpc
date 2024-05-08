@@ -100,9 +100,9 @@ func (p *ProvinsiRepository) Delete(ctx context.Context, idWil string) error {
 
 	if err := p.db.Debug().WithContext(ctxSpan).Where("id_wil = ?", idWil).Delete(&entity.Provinsi{}).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-            log.Println("WARNING: [ProvinsiRepository - Delete] Record not found for idWil", idWil)
-            return status.Errorf(codes.NotFound, "record not found for idWil %s", idWil)
-        }
+			log.Println("WARNING: [ProvinsiRepository - Delete] Record not found for idWil", idWil)
+			return status.Errorf(codes.NotFound, "record not found for idWil %s", idWil)
+		}
 		log.Println("ERROR: [ProvinsiRepository - Delete] Internal server error:", err)
 		return status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
