@@ -15,13 +15,13 @@ import (
 
 type CommentHandler struct {
 	pb.UnimplementedCommentServiceServer
-	config config.Config
+	config     config.Config
 	commentSvc service.CommentServiceUseCase
 }
 
 func NewCommentHandler(config config.Config, commentService service.CommentServiceUseCase) *CommentHandler {
 	return &CommentHandler{
-		config: config,
+		config:     config,
 		commentSvc: commentService,
 	}
 }
