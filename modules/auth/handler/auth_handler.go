@@ -7,9 +7,11 @@ import (
 	"tracer-study-grpc/common/config"
 	"tracer-study-grpc/common/errors"
 	commonJwt "tracer-study-grpc/common/jwt"
+	"tracer-study-grpc/common/utils"
 
 	mhsSvc "tracer-study-grpc/modules/mhsbiodata/service"
 	pktsSvc "tracer-study-grpc/modules/pkts/service"
+	userSvc "tracer-study-grpc/modules/user/service"
 	"tracer-study-grpc/pb"
 
 	"google.golang.org/grpc/codes"
@@ -21,14 +23,22 @@ type AuthHandler struct {
 	config     config.Config
 	mhsSvc     mhsSvc.MhsBiodataServiceUseCase
 	pktsSvc    pktsSvc.PKTSServiceUseCase
+	userSvc    userSvc.UserServiceUseCase
 	jwtManager *commonJwt.JWT
 }
 
-func NewAuthHandler(config config.Config, mhsService mhsSvc.MhsBiodataServiceUseCase, pktsService pktsSvc.PKTSServiceUseCase, jwtManager *commonJwt.JWT) *AuthHandler {
+func NewAuthHandler(
+	config config.Config,
+	mhsService mhsSvc.MhsBiodataServiceUseCase,
+	pktsService pktsSvc.PKTSServiceUseCase,
+	userService userSvc.UserServiceUseCase,
+	jwtManager *commonJwt.JWT,
+) *AuthHandler {
 	return &AuthHandler{
 		config:     config,
 		mhsSvc:     mhsService,
-		pktsSvc: pktsService,
+		pktsSvc:    pktsService,
+		userSvc:    userService,
 		jwtManager: jwtManager,
 	}
 }
@@ -92,5 +102,80 @@ func (ah *AuthHandler) LoginUserStudy(ctx context.Context, req *pb.LoginUserStud
 		Code:    uint32(http.StatusOK),
 		Message: "login user study success",
 		Token:   token,
+	}, nil
+}
+
+func (ah *AuthHandler) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (*pb.LoginResponse, error) {
+	user, err := ah.userSvc.FindByUsername(ctx, req.GetUsername())
+	if err != nil {
+		if user == nil {
+			log.Println("WARNING: [AuthHandler - LoginUser] User resource not found")
+			return nil, status.Errorf(codes.NotFound, "user resource not found")
+		}
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [AuthHandler - LoginUser] Error while fetching user:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	if user == nil {
+		log.Println("WARNING: [AuthHandler - LoginUser] User resource not found")
+		return nil, status.Errorf(codes.NotFound, "user resource not found")
+	}
+
+	match := utils.CheckPasswordHash(req.GetPassword(), user.Password)
+	if !match {
+		log.Println("WARNING: [AuthHandler - LoginUser] Invalid credentials")
+		return nil, status.Errorf(codes.Unauthenticated, "invalid credentials")
+	}
+
+	token, err := ah.jwtManager.GenerateToken(user.Username, user.RoleId)
+	if err != nil {
+		log.Println("ERROR: [AuthHandler - LoginUser] Error while generating token:", err)
+		return nil, status.Errorf(codes.Internal, "token failed to generate: %v", err)
+	}
+
+	return &pb.LoginResponse{
+		Code:    uint32(http.StatusOK),
+		Message: "login user success",
+		Token:   token,
+	}, nil
+}
+
+func (ah *AuthHandler) RegisterUser(ctx context.Context, req *pb.User) (*pb.RegisterUserResponse, error) {
+	user, err := ah.userSvc.FindByUsername(ctx, req.GetUsername())
+	if err != nil {
+		if user != nil {
+			log.Println("WARNING: [AuthHandler - RegisterUser] User already exists")
+			return nil, status.Errorf(codes.AlreadyExists, "user already exist")
+		}
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [AuthHandler - RegisterUser] Error while fetching user:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	if user != nil {
+		log.Println("WARNING: [AuthHandler - RegisterUser] User already exists")
+		return nil, status.Errorf(codes.AlreadyExists, "user already exists")
+	}
+
+	user, err = ah.userSvc.Create(ctx, req.GetName(), req.GetUsername(), req.GetEmail(), utils.HashPassword(req.GetPassword()), req.GetRoleId())
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [AuthHandler - RegisterUser] Error while creating user:", parseError.Message)
+		return nil, status.Errorf(parseError.Code, parseError.Message)
+	}
+
+	userProto := &pb.User{
+		Id:       user.Id,
+		Name:     user.Name,
+		Username: user.Username,
+		Email:    user.Email,
+		RoleId:   user.RoleId,
+	}
+
+	return &pb.RegisterUserResponse{
+		Code:    uint32(http.StatusCreated),
+		Message: "register user success",
+		Data:    userProto,
 	}, nil
 }

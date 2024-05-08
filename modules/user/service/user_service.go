@@ -19,6 +19,8 @@ type UserService struct {
 type UserServiceUseCase interface {
 	FindAll(ctx context.Context, req any) ([]*entity.User, error)
 	FindById(ctx context.Context, id uint64) (*entity.User, error)
+	FindByUsername(ctx context.Context, username string) (*entity.User, error)
+	FindByEmail(ctx context.Context, email string) (*entity.User, error)
 	Create(ctx context.Context, name, username, email, password string, roleId uint32) (*entity.User, error)
 	Update(ctx context.Context, id uint64, fields *entity.User) (*entity.User, error)
 	Delete(ctx context.Context, id uint64) error
@@ -47,6 +49,28 @@ func (svc *UserService) FindById(ctx context.Context, id uint64) (*entity.User, 
 	if err != nil {
 		parseError := errors.ParseError(err)
 		log.Println("ERROR: [UserService - FindById] Error while find user by ID: ", parseError.Message)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *UserService) FindByUsername(ctx context.Context, username string) (*entity.User, error) {
+	res, err := svc.userRepository.FindByUsername(ctx, username)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [UserService - FindByUsername] Error while find user by username: ", parseError.Message)
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (svc *UserService) FindByEmail(ctx context.Context, email string) (*entity.User, error) {
+	res, err := svc.userRepository.FindByEmail(ctx, email)
+	if err != nil {
+		parseError := errors.ParseError(err)
+		log.Println("ERROR: [UserService - FindByEmail] Error while find user by email: ", parseError.Message)
 		return nil, err
 	}
 

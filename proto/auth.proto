@@ -27,14 +27,15 @@ message LoginUserRequest {
     string password = 2;
 }
 
-message RegisterUserRequest {
-    User user = 1;
-    // role
+message RegisterUserResponse {
+    uint32 code = 1;
+    string message = 2;
+    User data = 3;
 }
 
 service AuthService {
     rpc LoginAlumni(LoginAlumniRequest) returns (LoginResponse);
     rpc LoginUserStudy(LoginUserStudyRequest) returns (LoginResponse);
     rpc LoginUser(LoginUserRequest) returns (LoginResponse);
-    rpc RegisterUser(RegisterUserRequest) returns (LoginResponse);
+    rpc RegisterUser(User) returns (RegisterUserResponse);
 }

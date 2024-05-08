@@ -32,7 +32,7 @@ type AuthServiceClient interface {
 	LoginAlumni(ctx context.Context, in *LoginAlumniRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	LoginUserStudy(ctx context.Context, in *LoginUserStudyRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	RegisterUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*RegisterUserResponse, error)
 }
 
 type authServiceClient struct {
@@ -70,8 +70,8 @@ func (c *authServiceClient) LoginUser(ctx context.Context, in *LoginUserRequest,
 	return out, nil
 }
 
-func (c *authServiceClient) RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
-	out := new(LoginResponse)
+func (c *authServiceClient) RegisterUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*RegisterUserResponse, error) {
+	out := new(RegisterUserResponse)
 	err := c.cc.Invoke(ctx, AuthService_RegisterUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ type AuthServiceServer interface {
 	LoginAlumni(context.Context, *LoginAlumniRequest) (*LoginResponse, error)
 	LoginUserStudy(context.Context, *LoginUserStudyRequest) (*LoginResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginResponse, error)
-	RegisterUser(context.Context, *RegisterUserRequest) (*LoginResponse, error)
+	RegisterUser(context.Context, *User) (*RegisterUserResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -103,7 +103,7 @@ func (UnimplementedAuthServiceServer) LoginUserStudy(context.Context, *LoginUser
 func (UnimplementedAuthServiceServer) LoginUser(context.Context, *LoginUserRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
 }
-func (UnimplementedAuthServiceServer) RegisterUser(context.Context, *RegisterUserRequest) (*LoginResponse, error) {
+func (UnimplementedAuthServiceServer) RegisterUser(context.Context, *User) (*RegisterUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterUser not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
@@ -174,7 +174,7 @@ func _AuthService_LoginUser_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _AuthService_RegisterUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterUserRequest)
+	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func _AuthService_RegisterUser_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: AuthService_RegisterUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).RegisterUser(ctx, req.(*RegisterUserRequest))
+		return srv.(AuthServiceServer).RegisterUser(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
